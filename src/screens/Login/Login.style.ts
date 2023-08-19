@@ -4,8 +4,10 @@ import { colorBlue, fontFamily } from "../../styles/Global.style";
 const LoginStyle = StyleSheet.create({
   container: {
     height: "100%",
+    minHeight: 800,
     backgroundColor: "white",
-    padding: 40,
+    paddingHorizontal: 40,
+    paddingBottom: 120,
     paddingTop: 90,
   },
   greeting: {

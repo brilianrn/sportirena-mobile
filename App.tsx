@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { LoginScreen } from "./src/screens";
+import { LoginScreen, RegisterScreen } from "./src/screens";
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +13,7 @@ const App = () => {
         }}
       >
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

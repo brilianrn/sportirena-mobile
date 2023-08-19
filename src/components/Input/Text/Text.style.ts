@@ -11,7 +11,7 @@ const TextStyle = StyleSheet.create({
   },
   inputError: {
     borderWidth: 1,
-    borderColor: colorDanger,
+    borderColor: colorDanger.default,
     borderRadius: 8,
     paddingVertical: 12,
     letterSpacing: 0.3,
@@ -55,7 +55,7 @@ const TextStyle = StyleSheet.create({
   },
   textErrorMessage: {
     fontSize: 12,
-    color: colorDanger,
+    color: colorDanger.default,
     letterSpacing: 0.3,
     lineHeight: 16,
   },

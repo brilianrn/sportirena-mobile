@@ -2,16 +2,45 @@ import { StyleSheet } from "react-native";
 
 export const fontFamily = "IBM Plex Sans Regular";
 
-export const colorDanger = "#CC3434";
+export const colorDanger = {
+  default: "#CC3434",
+  lighter: "#FCE3D6",
+};
+export const colorWarning = {
+  default: "#FFC32B",
+  lighter: "#FFF8EF",
+  darker: "#904E01",
+};
 export const colorPrimary = {
+  50: "#DFE7E5",
+  100: "#d0ede2",
+  200: "#A7E0CB",
+  250: "#B8D5C6",
+  300: "#6CE56E",
   default: "#004A2F",
+  lighter: "#12563E",
+};
+export const colorInfo = {
+  lighter: "#F0F7FF",
+  darker: "#2371C6",
 };
 export const colorGray = {
-  400: "#737374",
-  600: "#004A2F",
+  100: "#FAFAFA",
+  150: "#F0F1F7",
+  200: "#F5F5F5",
+  300: "#EBEBEB",
+  400: "#C5C7CD",
+  500: "#737374",
+  600: "#555555",
+  700: "#1A1A1A",
 };
 export const colorBlue = {
   500: "#2667C5",
+};
+export const colorDark = {
+  500: "#363740",
+  600: "#221E5F",
+  default: "#252733",
 };
 
 export const Global = StyleSheet.create({

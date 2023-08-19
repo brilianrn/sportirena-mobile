@@ -7,8 +7,15 @@ export interface ButtonProps {
   style?: StyleProp<ViewStyle>;
   onClick: () => void;
   isDisable?: boolean;
-  // btnType = "button",
-  type?: "button" | "submit" | "reset";
+  btnType: "button" | "submit" | "reset";
+  type:
+    | "primary"
+    | "danger"
+    | "info"
+    | "outline-primary"
+    | "secondary"
+    | "warning"
+    | "disabled";
   isSubmit?: boolean;
   size?: "md" | "sm" | "lg" | "xl";
   iconHeight?: number;
