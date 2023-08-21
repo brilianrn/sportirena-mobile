@@ -8,11 +8,14 @@ import { InputCheckbox, InputText } from "../../components/Input";
 import LoginStyle from "./Login.style";
 import { Global } from "../../styles/Global.style";
 import Button from "../../components/Button";
+import Modal from "../../components/Modal";
 
 const Login = ({ navigation }: any) => {
   /* Local State */
   const [showPassword, setShowpassword] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const [forgotPassword, setForgotPassword] = useState<boolean>(false);
+  const [emailForgot, setEmailForgot] = useState<string>();
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Wrong format email").required("Email required"),
@@ -31,6 +34,28 @@ const Login = ({ navigation }: any) => {
   return (
     <ScrollView>
       <View style={[LoginStyle.container, { height: 900 }]}>
+        <Modal
+          show={forgotPassword}
+          title="Forgot your password?"
+          description="Enter your email for a reset password link"
+          setShow={setForgotPassword}
+        >
+          <InputText
+            value={emailForgot}
+            setValue={setEmailForgot}
+            placeholder="Insert email address"
+            type="email-address"
+            style={{ marginTop: 35 }}
+          />
+          <Button
+            label="Send Reset Password Link"
+            onClick={() => emailForgot && navigation.push("ResetPassword")}
+            style={{ marginTop: 16 }}
+            type="primary"
+            btnType="button"
+            isDisable={!emailForgot}
+          />
+        </Modal>
         <Text style={LoginStyle.greeting}>Welcome back!</Text>
         <Text style={LoginStyle.title}>Login to continue.</Text>
         <Image source={IconLogin} style={LoginStyle.iconLogin} />
@@ -63,7 +88,10 @@ const Login = ({ navigation }: any) => {
             setChecked={setRememberMe}
             label="Remember me"
           />
-          <Button.Link label="Forgot Password" />
+          <Button.Link
+            label="Forgot Password"
+            onClick={() => setForgotPassword(true)}
+          />
         </View>
         <Button
           label="Log In"
