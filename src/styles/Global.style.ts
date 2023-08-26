@@ -42,6 +42,9 @@ export const colorDark = {
   600: "#221E5F",
   default: "#252733",
 };
+export const colorBrown = {
+  default: "#6D6262",
+};
 
 export const Global = StyleSheet.create({
   label: {
@@ -54,6 +57,10 @@ export const Global = StyleSheet.create({
   iconWarning: {
     maxHeight: 15,
   },
+  centerHorizontaly: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
   justifyBetween: {
     flex: 2,
     flexDirection: "row",
@@ -63,6 +70,12 @@ export const Global = StyleSheet.create({
     flex: 2,
     flexDirection: "row",
     justifyContent: "flex-start",
+    display: "flex",
+  },
+  justifyEnd: {
+    flex: 2,
+    flexDirection: "row",
+    justifyContent: "flex-end",
     display: "flex",
   },
   justifyCenter: {

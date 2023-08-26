@@ -41,105 +41,119 @@ const Register = ({ navigation }: any) => {
     resolver: yupResolver(validationSchema),
   });
   return (
-    <ScrollView>
-      <View style={[LoginStyle.container, { paddingTop: 70 }]}>
-        <Text style={LoginStyle.greeting}>Registration</Text>
-        <Text style={[LoginStyle.title, { marginBottom: 27 }]}>
-          Registration for customer only.
-        </Text>
-        <InputText
-          control={control}
-          name="name"
-          placeholder="Insert your name"
-          label="Name"
-          type="default"
-          style={{ marginBottom: 13 }}
-          errorMessage={errors?.name?.message?.toString()}
-        />
-        <InputText
-          control={control}
-          name="email"
-          placeholder="Insert email address"
-          label="Email"
-          type="email-address"
-          style={{ marginBottom: 13 }}
-          errorMessage={errors?.email?.message?.toString()}
-        />
-        <InputText
-          control={control}
-          name="phone"
-          placeholder="Insert phone number"
-          label="Phone Number"
-          type="default"
-          style={{ marginBottom: 13 }}
-          errorMessage={errors?.phone?.message?.toString()}
-        />
-        <InputRadio
-          label="Choose Gender"
-          style={{ marginBottom: 13 }}
-          type="row"
-          name="gender"
-          control={control}
-          options={[
-            {
-              label: "Male",
-              value: "male",
-            },
-            {
-              label: "Female",
-              value: "female",
-            },
-          ]}
-        />
-        <InputText
-          control={control}
-          name="password"
-          placeholder="Insert password"
-          label="Password"
-          type="visible-password"
-          secureTextEntry={!showPassword}
-          errorMessage={errors?.password?.message?.toString()}
-          icon={!showPassword ? IconEye : IconEyeOff}
-          style={{ marginBottom: 13 }}
-          iconPosition="right"
-          iconOnClick={() => setShowpassword(!showPassword)}
-        />
-        <InputText
-          control={control}
-          name="confirmPassword"
-          placeholder="Retype your password"
-          label="Confirm Password"
-          type="visible-password"
-          secureTextEntry={!showConfirmPassword}
-          errorMessage={errors?.confirmPassword?.message?.toString()}
-          icon={!showConfirmPassword ? IconEye : IconEyeOff}
-          iconPosition="right"
-          iconOnClick={() => setShowConfirmPassword(!showConfirmPassword)}
-        />
-        <Text
-          style={[
-            LoginStyle.haventAccount,
-            { marginTop: 30, textAlign: "center" },
-          ]}
-        >
-          By Registering, I agree with <Button.Link label="Term & Conditions" />{" "}
-          and <Button.Link label="Privacy Policy" /> of Sportirena
-        </Text>
-        <Button
-          label="Register"
-          onClick={console.log}
-          style={{ marginBottom: 10, marginTop: 60 }}
-          type="primary"
-          btnType="submit"
-          isDisable={!isValid || isSubmitting}
-          isSubmit={isSubmitting && isValid}
-        />
-        <View style={[Global.justifyCenter, { gap: 5 }]}>
-          <Text style={LoginStyle.haventAccount}>Already have an account?</Text>
-          <Button.Link label="Login" onClick={() => navigation.push("Login")} />
+    <View style={{ flex: 1 }}>
+      <View
+        style={{
+          backgroundColor: "white",
+          height: 33,
+        }}
+      />
+      <ScrollView>
+        <View style={[LoginStyle.container, { paddingTop: 60 }]}>
+          <Text style={LoginStyle.greeting}>Registration</Text>
+          <Text style={[LoginStyle.title, { marginBottom: 27 }]}>
+            Registration for customer only.
+          </Text>
+          <InputText
+            control={control}
+            name="name"
+            placeholder="Insert your name"
+            label="Name"
+            type="default"
+            style={{ marginBottom: 13 }}
+            errorMessage={errors?.name?.message?.toString()}
+          />
+          <InputText
+            control={control}
+            name="email"
+            placeholder="Insert email address"
+            label="Email"
+            type="email-address"
+            style={{ marginBottom: 13 }}
+            errorMessage={errors?.email?.message?.toString()}
+          />
+          <InputText
+            control={control}
+            name="phone"
+            placeholder="Insert phone number"
+            label="Phone Number"
+            type="default"
+            style={{ marginBottom: 13 }}
+            errorMessage={errors?.phone?.message?.toString()}
+          />
+          <InputRadio
+            label="Choose Gender"
+            style={{ marginBottom: 13 }}
+            type="row"
+            name="gender"
+            control={control}
+            options={[
+              {
+                label: "Male",
+                value: "male",
+              },
+              {
+                label: "Female",
+                value: "female",
+              },
+            ]}
+          />
+          <InputText
+            control={control}
+            name="password"
+            placeholder="Insert password"
+            label="Password"
+            type="visible-password"
+            secureTextEntry={!showPassword}
+            errorMessage={errors?.password?.message?.toString()}
+            icon={!showPassword ? IconEye : IconEyeOff}
+            style={{ marginBottom: 13 }}
+            iconPosition="right"
+            iconOnClick={() => setShowpassword(!showPassword)}
+          />
+          <InputText
+            control={control}
+            name="confirmPassword"
+            placeholder="Retype your password"
+            label="Confirm Password"
+            type="visible-password"
+            secureTextEntry={!showConfirmPassword}
+            errorMessage={errors?.confirmPassword?.message?.toString()}
+            icon={!showConfirmPassword ? IconEye : IconEyeOff}
+            iconPosition="right"
+            iconOnClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          />
+          <Text
+            style={[
+              LoginStyle.haventAccount,
+              { marginTop: 30, textAlign: "center" },
+            ]}
+          >
+            By Registering, I agree with{" "}
+            <Button.Link label="Term & Conditions" /> and{" "}
+            <Button.Link label="Privacy Policy" /> of Sportirena
+          </Text>
+          <Button
+            label="Register"
+            onClick={console.log}
+            style={{ marginBottom: 10, marginTop: 60 }}
+            type="primary"
+            btnType="submit"
+            isDisable={!isValid || isSubmitting}
+            isSubmit={isSubmitting && isValid}
+          />
+          <View style={[Global.justifyCenter, { gap: 5 }]}>
+            <Text style={LoginStyle.haventAccount}>
+              Already have an account?
+            </Text>
+            <Button.Link
+              label="Login"
+              onClick={() => navigation.push("Login")}
+            />
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 

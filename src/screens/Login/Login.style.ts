@@ -8,7 +8,7 @@ const LoginStyle = StyleSheet.create({
     backgroundColor: "white",
     paddingHorizontal: 40,
     paddingBottom: 120,
-    paddingTop: 90,
+    paddingTop: 30,
   },
   greeting: {
     fontFamily,
