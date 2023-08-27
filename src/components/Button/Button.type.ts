@@ -13,6 +13,7 @@ export interface ButtonProps {
     | "danger"
     | "info"
     | "outline-primary"
+    | "outline-secondary"
     | "secondary"
     | "warning"
     | "disabled";

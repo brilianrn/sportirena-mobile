@@ -8,7 +8,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { Loading } from "../../assets/images";
-import { Global, colorPrimary } from "../../styles/Global.style";
+import { Global, colorGray, colorPrimary } from "../../styles/Global.style";
 import ButtonStyle from "./Button.style";
 import { ButtonProps } from "./Button.type";
 import ButtonLink from "./Link";
@@ -24,6 +24,7 @@ const Button = ({
   rightIcon,
   style,
   type,
+  size = "lg",
 }: ButtonProps) => {
   const btnColor: StyleProp<ViewStyle> = useMemo(() => {
     if (isSubmit || isDisable) return ButtonStyle.btnDisabled;
@@ -36,6 +37,8 @@ const Button = ({
         return ButtonStyle.btnInfo;
       case "outline-primary":
         return ButtonStyle.btnOutlinePrimary;
+      case "outline-secondary":
+        return ButtonStyle.btnOutlineSecondary;
       case "secondary":
         return ButtonStyle.btnSecondary;
       case "warning":
@@ -44,10 +47,33 @@ const Button = ({
         return ButtonStyle.btnDisabled;
     }
   }, [type, isDisable, isSubmit]);
+
+  const sizes = useMemo(() => {
+    switch (size) {
+      case "sm":
+        return { padding: 10, text: 10 };
+      case "md":
+        return { padding: 14, text: 12 };
+      case "lg":
+        return { padding: 16, text: 14 };
+      case "xl":
+        return { padding: 18, text: 16 };
+      default:
+        break;
+    }
+  }, [size]);
   return (
     <View style={style}>
       <Pressable
-        style={[ButtonStyle.button, btnColor, { position: "relative" }]}
+        style={[
+          ButtonStyle.button,
+          btnColor,
+          {
+            position: "relative",
+            paddingVertical: sizes?.padding,
+            paddingHorizontal: (sizes?.padding as number) + 2,
+          },
+        ]}
         onPress={onClick}
       >
         {isSubmit && (
@@ -84,7 +110,17 @@ const Button = ({
               <Text
                 style={[
                   ButtonStyle.text,
-                  { marginVertical: "auto", marginLeft: 12, color: "white" },
+                  {
+                    fontSize: sizes?.text,
+                    marginVertical: "auto",
+                    marginLeft: 12,
+                    color:
+                      type === "outline-primary"
+                        ? colorPrimary.default
+                        : type === "outline-secondary"
+                        ? colorGray[500]
+                        : "white",
+                  },
                 ]}
               >
                 {label}
@@ -97,7 +133,11 @@ const Button = ({
               ButtonStyle.text,
               {
                 color:
-                  type === "outline-primary" ? colorPrimary.default : "white",
+                  type === "outline-primary"
+                    ? colorPrimary.default
+                    : type === "outline-secondary"
+                    ? colorGray[500]
+                    : "white",
               },
             ]}
           >

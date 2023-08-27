@@ -1,12 +1,36 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
-import { Dimensions, Image, View } from "react-native";
+import {
+  Image,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Carousel } from "react-native-auto-carousel";
 import { useSelector } from "react-redux";
+import {
+  IconArrowChevron,
+  IconCalendarTimeActive,
+  IconHeart,
+  IconMap,
+  IconShare,
+} from "../../assets/images";
 import Layout from "../../components/Layout";
 import { venueName } from "../../constants";
 import { IRootState } from "../../store/reducers";
-import { colorDark, deviceWidth } from "../../styles/Global.style";
+import {
+  Global,
+  colorDark,
+  colorPrimary,
+  deviceWidth,
+} from "../../styles/Global.style";
+import { subStringLongText } from "../../utils/formattor";
+import Button from "../../components/Button";
+import FacilityType from "../Home/FacilityType";
+import VenueDetailStyle from "./VenueDetail.style";
+import CarouselCourt from "react-native-snap-carousel";
+import Card from "../Home/Venues/Card";
 
 const IMAGES = [
   "https://gelora-public-storage.s3-ap-southeast-1.amazonaws.com/upload/public-20210216101046.jpg",
@@ -35,11 +59,23 @@ const VenueDetail = () => {
         label="Detail Venue"
         backHref={venueName}
       >
-        <View style={{ borderRadius: 10, flex: 1, backgroundColor: "red" }}>
+        <View
+          style={{
+            borderRadius: 10,
+            height: 182,
+          }}
+        >
           <Carousel
             data={IMAGES}
             autoPlay
             autoPlayTime={4000}
+            dotStyle={{
+              backgroundColor: "white",
+              width: 8,
+              height: 8,
+              borderRadius: 20,
+              marginBottom: 42,
+            }}
             renderItem={(item) => (
               <Image
                 key={item}
@@ -53,6 +89,117 @@ const VenueDetail = () => {
             )}
           />
         </View>
+        <View style={[Global.justifyBetween, { marginTop: 23 }]}>
+          <Text
+            style={{
+              color: colorPrimary.default,
+              fontSize: 14,
+              fontWeight: "bold",
+              marginTop: 4,
+            }}
+          >
+            {subStringLongText("Lapangan Tenis Puri Indah", 42)}
+          </Text>
+          <Image source={IconCalendarTimeActive} />
+        </View>
+        <View>
+          <Text
+            style={{
+              fontSize: 10,
+              color: colorDark[600],
+              textAlign: "justify",
+              marginTop: 10,
+            }}
+          >
+            Lapangan Tennis Puri Indah is a standard outdoor sports arena that
+            is located at Jl. Kembang Indah III. There are 5 private tennis
+            court is already using international standard.
+          </Text>
+        </View>
+        <View
+          style={[
+            Global.justifyStart,
+            { gap: 5, marginTop: 10, marginBottom: 19 },
+          ]}
+        >
+          <Button
+            btnType="button"
+            label="Favorite"
+            onClick={console.log}
+            type="outline-secondary"
+            size="sm"
+            icon={IconHeart}
+          />
+          <Button
+            btnType="button"
+            label="Share"
+            onClick={console.log}
+            type="outline-secondary"
+            size="sm"
+            icon={IconShare}
+          />
+        </View>
+        <FacilityType />
+        <View
+          style={[
+            Global.justifyStart,
+            VenueDetailStyle.cardAddress,
+            { gap: 12 },
+          ]}
+        >
+          <Image source={IconMap} />
+          <Text style={[Global.textDescription, { width: deviceWidth - 170 }]}>
+            Jl. Kembang Indah III Blok G. 1 No. 20, RT6/RW6, Kembangan Sel.,
+            Kec. Kembangan, Kota Jakarta Barat, 116010
+          </Text>
+        </View>
+        <View style={[Global.justifyBetween, { width: "100%" }]}>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "bold",
+              textAlignVertical: "center",
+              color: colorPrimary.default,
+            }}
+          >
+            Available Courts
+          </Text>
+          <TouchableOpacity
+            style={[Global.justifyEnd, { gap: 3, marginTop: 4 }]}
+          >
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 10,
+                color: colorPrimary.default,
+              }}
+            >
+              Show all
+            </Text>
+            <Image source={IconArrowChevron} style={{ marginTop: 1 }} />
+          </TouchableOpacity>
+        </View>
+        <SafeAreaView
+          style={{
+            width: "114%",
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <CarouselCourt
+              layout="default"
+              data={[1, 2, 3, 4, 5]}
+              sliderWidth={210}
+              itemWidth={190}
+              renderItem={() => <Card />}
+            />
+          </View>
+        </SafeAreaView>
       </Layout>
     </React.Fragment>
   );

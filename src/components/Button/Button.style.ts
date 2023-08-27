@@ -19,12 +19,10 @@ const ButtonStyle = StyleSheet.create({
   button: {
     alignItems: "center",
     justifyContent: "center",
-    padding: 16,
     borderRadius: 8,
     backgroundColor: colorPrimary.default,
   },
   text: {
-    fontSize: 14,
     fontWeight: "700",
     letterSpacing: 0.2,
   },
@@ -37,8 +35,15 @@ const ButtonStyle = StyleSheet.create({
     backgroundColor: "white",
     color: colorPrimary.default,
     fontWeight: "bold",
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: colorPrimary.default,
+  },
+  btnOutlineSecondary: {
+    backgroundColor: "white",
+    color: colorGray[400],
+    fontWeight: "bold",
+    borderWidth: 1,
+    borderColor: colorGray[400],
   },
   btnDanger: {
     color: "white",

@@ -42,6 +42,7 @@ export const colorBlue = {
 export const colorDark = {
   500: "#363740",
   600: "#221E5F",
+  700: "#1E1E1E",
   default: "#252733",
 };
 export const colorBrown = {
@@ -56,6 +57,11 @@ export const Global = StyleSheet.create({
     marginBottom: 6,
     letterSpacing: 0.3,
   },
+  textDescription: {
+    color: colorDark[700],
+    fontSize: 10,
+    lineHeight: 16.19,
+  },
   iconWarning: {
     maxHeight: 15,
   },
@@ -64,7 +70,6 @@ export const Global = StyleSheet.create({
     alignItems: "center",
   },
   justifyBetween: {
-    flex: 2,
     flexDirection: "row",
     justifyContent: "space-between",
   },
