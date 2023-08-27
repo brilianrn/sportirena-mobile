@@ -25,7 +25,7 @@ const TextStyle = StyleSheet.create({
   },
   inputWithIconLeft: {
     paddingRight: 12,
-    paddingLeft: 44,
+    paddingLeft: 50,
   },
   inputIconRight: {
     position: "absolute",

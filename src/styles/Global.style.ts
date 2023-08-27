@@ -1,6 +1,8 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
 export const fontFamily = "IBM Plex Sans Regular";
+
+export const deviceWidth = Dimensions.get("window").width;
 
 export const colorDanger = {
   default: "#CC3434",
@@ -67,7 +69,6 @@ export const Global = StyleSheet.create({
     justifyContent: "space-between",
   },
   justifyStart: {
-    flex: 2,
     flexDirection: "row",
     justifyContent: "flex-start",
     display: "flex",

@@ -10,6 +10,11 @@ const Layout: FC<LayoutProps> = ({
   useBottomBar,
   useTopBar,
   isSearchBar,
+  backHref,
+  label,
+  placeholderSearch,
+  search,
+  setSearch,
 }) => {
   return (
     <View style={{ flex: 1 }}>
@@ -19,9 +24,18 @@ const Layout: FC<LayoutProps> = ({
           height: 33,
         }}
       />
-      <ScrollView>
+      <ScrollView style={{ backgroundColor: "white" }}>
+        {useTopBar && (
+          <TopBar
+            isSearchBar={isSearchBar as boolean}
+            backHref={backHref}
+            label={label}
+            placeholderSearch={placeholderSearch}
+            search={search}
+            setSearch={setSearch}
+          />
+        )}
         <View style={[LoginStyle.container, { minHeight: 900 }]}>
-          {useTopBar && <TopBar isSearchBar={isSearchBar as boolean} />}
           {children}
         </View>
       </ScrollView>

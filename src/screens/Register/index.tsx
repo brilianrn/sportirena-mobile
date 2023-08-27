@@ -7,7 +7,7 @@ import { IconEye, IconEyeOff } from "../../assets/images";
 import Button from "../../components/Button";
 import { InputRadio, InputText } from "../../components/Input";
 import { Global } from "../../styles/Global.style";
-import { isPhone } from "../../utils/validatior";
+import { isPhone } from "../../utils/validator";
 import LoginStyle from "../Login/Login.style";
 
 const Register = ({ navigation }: any) => {

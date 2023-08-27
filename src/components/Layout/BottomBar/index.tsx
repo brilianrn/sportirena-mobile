@@ -11,7 +11,6 @@ import {
   IconUser,
   IconUserActive,
 } from "../../../assets/images";
-import { Global, colorGray, colorPrimary } from "../../../styles/Global.style";
 import {
   homeName,
   loginName,
@@ -19,6 +18,7 @@ import {
   userName,
   venueName,
 } from "../../../constants";
+import { Global, colorGray, colorPrimary } from "../../../styles/Global.style";
 
 const BottomBar = () => {
   /* Navigate */
@@ -38,7 +38,7 @@ const BottomBar = () => {
       }}
     >
       <View style={[Global.justifyCenter, { width: "100%", gap: 40 }]}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigate(homeName as never)}>
           <View
             style={{
               justifyContent: "center",
@@ -59,7 +59,7 @@ const BottomBar = () => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigate(venueName as never)}>
           <View
             style={{
               justifyContent: "center",
@@ -84,7 +84,7 @@ const BottomBar = () => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigate(myBookingName as never)}>
           <View
             style={{
               justifyContent: "center",

@@ -1,22 +1,17 @@
 import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
-import {
-  IconArrowChevronBlack,
-  IconBasketFieldActive,
-  IconCustomerBookingHome,
-  IconNotification,
-} from "../../assets/images";
+import { Image, Text, View } from "react-native";
+import { IconNotification } from "../../assets/images";
 import Layout from "../../components/Layout";
 import { Global } from "../../styles/Global.style";
+import CustomerBookingSchedule from "./CustomerBookingSchedule";
 import FacilityType from "./FacilityType";
 import HomeStyle from "./Home.style";
-import Venues from "./Venues";
-import CustomerBookingSchedule from "./CustomerBookingSchedule";
 import HowItWork from "./HowItWork";
+import Venues from "./Venues";
 
 const Home = () => {
   return (
-    <Layout useBottomBar>
+    <Layout useBottomBar isSearchBar={false}>
       <View>
         <View style={Global.justifyBetween}>
           <View>

@@ -1,0 +1,2 @@
+export const SET_VENUE_LIST = "SET_VENUE_LIST";
+export const SET_VENUE_DETAIL = "SET_VENUE_DETAIL";
