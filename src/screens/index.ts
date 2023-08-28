@@ -4,3 +4,4 @@ export { default as RegisterScreen } from "./Register";
 export { default as ResetPasswordScreen } from "./ResetPassword";
 export { default as VenueScreen } from "./Venue";
 export { default as VenueDetailScreen } from "./VenueDetail";
+export { default as BookingScreen } from "./Booking";

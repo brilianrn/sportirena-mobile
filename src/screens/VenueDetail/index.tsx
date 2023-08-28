@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Text, View } from "react-native";
 import { Carousel } from "react-native-auto-carousel";
 import { useSelector } from "react-redux";
@@ -25,6 +25,7 @@ import AvailableCourt from "./AvailableCourt";
 import VenueDetailStyle from "./VenueDetail.style";
 import VenueLocation from "./Location";
 import OtherVenue from "./OtherVenue";
+import Modal from "../../components/Modal";
 
 const IMAGES = [
   "https://gelora-public-storage.s3-ap-southeast-1.amazonaws.com/upload/public-20210216101046.jpg",
@@ -32,6 +33,9 @@ const IMAGES = [
   "https://liga.tennis/public/cache/images/1/9/4/6/1/1c2c656d0df11b6a72ee14d0c866eef9_1920_5760.jpg",
 ];
 const VenueDetail = () => {
+  /* Local State */
+  const [isShare, setIsShare] = useState<boolean>(false);
+
   /* Redux */
   const { venueDetail } = useSelector((state: IRootState) => state.venue);
 
@@ -46,6 +50,20 @@ const VenueDetail = () => {
 
   return (
     <React.Fragment>
+      <Modal
+        show={isShare}
+        title="Share with link"
+        description="Share this venue to your friends by copying the link below!"
+        setShow={setIsShare}
+      >
+        <Button
+          label="Copy Link"
+          onClick={() => setIsShare(false)}
+          style={{ marginTop: 16 }}
+          type="primary"
+          btnType="button"
+        />
+      </Modal>
       <Layout
         useBottomBar
         useTopBar
@@ -127,7 +145,7 @@ const VenueDetail = () => {
           <Button
             btnType="button"
             label="Share"
-            onClick={console.log}
+            onClick={() => setIsShare(true)}
             type="outline-secondary"
             size="sm"
             icon={IconShare}

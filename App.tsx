@@ -1,8 +1,10 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import { ToastProvider } from "react-native-toast-notifications";
 import { Provider } from "react-redux";
 import {
+  bookingName,
   homeName,
   loginName,
   registerName,
@@ -11,6 +13,7 @@ import {
   venueName,
 } from "./src/constants";
 import {
+  BookingScreen,
   HomeScreen,
   LoginScreen,
   RegisterScreen,
@@ -19,7 +22,6 @@ import {
   VenueScreen,
 } from "./src/screens";
 import store from "./src/store";
-import { ToastProvider } from "react-native-toast-notifications";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +45,7 @@ const App = () => {
               />
               <Stack.Screen name={homeName} component={HomeScreen} />
               <Stack.Screen name={venueName} component={VenueScreen} />
+              <Stack.Screen name={bookingName} component={BookingScreen} />
               <Stack.Screen
                 name={venueDetailName}
                 component={VenueDetailScreen}

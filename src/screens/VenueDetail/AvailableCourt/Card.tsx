@@ -4,8 +4,12 @@ import Button from "../../../components/Button";
 import { Global, colorBrown, colorPrimary } from "../../../styles/Global.style";
 import HomeStyle from "../../Home/Home.style";
 import { IconTennisBall } from "../../../assets/images";
+import { useNavigation } from "@react-navigation/native";
+import { bookingName } from "../../../constants";
 
 const AvailableCourtCard = () => {
+  /* Navigate */
+  const { navigate } = useNavigation();
   return (
     <TouchableOpacity
       style={[HomeStyle.cardVenue, { height: "auto", width: 211 }]}
@@ -72,7 +76,7 @@ const AvailableCourtCard = () => {
         btnType="button"
         type="primary"
         size="sm"
-        onClick={console.log}
+        onClick={() => navigate(bookingName as never)}
         style={{ paddingHorizontal: 14, marginTop: 25, marginBottom: 10 }}
       />
     </TouchableOpacity>
