@@ -1,21 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
-import {
-  Image,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, Text, View } from "react-native";
 import { Carousel } from "react-native-auto-carousel";
 import { useSelector } from "react-redux";
 import {
-  IconArrowChevron,
   IconCalendarTimeActive,
   IconHeart,
   IconMap,
   IconShare,
 } from "../../assets/images";
+import Button from "../../components/Button";
 import Layout from "../../components/Layout";
 import { venueName } from "../../constants";
 import { IRootState } from "../../store/reducers";
@@ -26,11 +20,11 @@ import {
   deviceWidth,
 } from "../../styles/Global.style";
 import { subStringLongText } from "../../utils/formattor";
-import Button from "../../components/Button";
 import FacilityType from "../Home/FacilityType";
+import AvailableCourt from "./AvailableCourt";
 import VenueDetailStyle from "./VenueDetail.style";
-import CarouselCourt from "react-native-snap-carousel";
-import Card from "../Home/Venues/Card";
+import VenueLocation from "./Location";
+import OtherVenue from "./OtherVenue";
 
 const IMAGES = [
   "https://gelora-public-storage.s3-ap-southeast-1.amazonaws.com/upload/public-20210216101046.jpg",
@@ -153,53 +147,9 @@ const VenueDetail = () => {
             Kec. Kembangan, Kota Jakarta Barat, 116010
           </Text>
         </View>
-        <View style={[Global.justifyBetween, { width: "100%" }]}>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "bold",
-              textAlignVertical: "center",
-              color: colorPrimary.default,
-            }}
-          >
-            Available Courts
-          </Text>
-          <TouchableOpacity
-            style={[Global.justifyEnd, { gap: 3, marginTop: 4 }]}
-          >
-            <Text
-              style={{
-                fontWeight: "bold",
-                fontSize: 10,
-                color: colorPrimary.default,
-              }}
-            >
-              Show all
-            </Text>
-            <Image source={IconArrowChevron} style={{ marginTop: 1 }} />
-          </TouchableOpacity>
-        </View>
-        <SafeAreaView
-          style={{
-            width: "114%",
-          }}
-        >
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "center",
-            }}
-          >
-            <CarouselCourt
-              layout="default"
-              data={[1, 2, 3, 4, 5]}
-              sliderWidth={210}
-              itemWidth={190}
-              renderItem={() => <Card />}
-            />
-          </View>
-        </SafeAreaView>
+        <AvailableCourt />
+        <VenueLocation />
+        <OtherVenue />
       </Layout>
     </React.Fragment>
   );
