@@ -65,7 +65,6 @@ const VenueDetail = () => {
         />
       </Modal>
       <Layout
-        useBottomBar
         useTopBar
         isSearchBar={false}
         label="Detail Venue"

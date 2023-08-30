@@ -24,6 +24,7 @@ const BottomBar = () => {
   /* Navigate */
   const { name } = useRoute();
   const { navigate } = useNavigation();
+  console.log(name);
   return (
     <View
       style={{

@@ -7,6 +7,7 @@ import {
   bookingName,
   homeName,
   loginName,
+  myBookingName,
   registerName,
   resetPasswordName,
   venueDetailName,
@@ -16,6 +17,7 @@ import {
   BookingScreen,
   HomeScreen,
   LoginScreen,
+  MyBookingScreen,
   RegisterScreen,
   ResetPasswordScreen,
   VenueDetailScreen,
@@ -46,6 +48,7 @@ const App = () => {
               <Stack.Screen name={homeName} component={HomeScreen} />
               <Stack.Screen name={venueName} component={VenueScreen} />
               <Stack.Screen name={bookingName} component={BookingScreen} />
+              <Stack.Screen name={myBookingName} component={MyBookingScreen} />
               <Stack.Screen
                 name={venueDetailName}
                 component={VenueDetailScreen}

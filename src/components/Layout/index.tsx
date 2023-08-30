@@ -15,6 +15,10 @@ const Layout: FC<LayoutProps> = ({
   placeholderSearch,
   search,
   setSearch,
+  isTabBar,
+  activeTab,
+  setActiveTab,
+  tabs,
 }) => {
   return (
     <View style={{ flex: 1 }}>
@@ -28,11 +32,15 @@ const Layout: FC<LayoutProps> = ({
         {useTopBar && (
           <TopBar
             isSearchBar={isSearchBar as boolean}
+            isTabBar={isTabBar}
             backHref={backHref}
             label={label}
             placeholderSearch={placeholderSearch}
             search={search}
             setSearch={setSearch}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            tabs={tabs}
           />
         )}
         <View style={[LoginStyle.container, { minHeight: 900 }]}>
