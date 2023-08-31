@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { IconArrowBlue, IconSearch, IconSetting } from "../../../assets/images";
 import { homeName } from "../../../constants";
@@ -8,6 +8,7 @@ import { InputText } from "../../Input";
 import Tabs from "../../Tab";
 import LayoutStyle from "../Layout.style";
 import { TopBarProps } from "../Layout.type";
+import { OptionType } from "../../../../App.type";
 
 const TopBar: FC<TopBarProps> = ({
   isSearchBar,
@@ -51,9 +52,10 @@ const TopBar: FC<TopBarProps> = ({
         </View>
       ) : isTabBar ? (
         <Tabs
-          activeTab={activeTab as string}
+          activeTab={activeTab as OptionType}
           setActiveTab={(value) => setActiveTab && setActiveTab(value)}
-          tabs={tabs as string[]}
+          tabs={tabs as OptionType[]}
+          style={{ paddingHorizontal: 29 }}
         />
       ) : (
         <TouchableOpacity

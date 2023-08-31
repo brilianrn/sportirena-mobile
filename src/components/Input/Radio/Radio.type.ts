@@ -1,6 +1,6 @@
 import { Control } from "react-hook-form";
 import { StyleProp, ViewStyle } from "react-native";
-import { OptionType } from "../../../../App.type";
+import { OptionType } from "../../../../App";
 
 export interface InputRadioProps {
   style?: StyleProp<ViewStyle>;

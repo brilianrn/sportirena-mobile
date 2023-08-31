@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { TabProps } from "../Tab/Tab.type";
+import { OptionType } from "../../../App.type";
 
 export interface LayoutProps extends TopBarProps {
   children: ReactNode;
@@ -10,9 +10,9 @@ export interface LayoutProps extends TopBarProps {
 export interface TopBarProps {
   isSearchBar: boolean;
   isTabBar?: boolean;
-  tabs?: string[];
-  setActiveTab?: (value: string) => void;
-  activeTab?: string;
+  tabs?: OptionType[];
+  setActiveTab?: (value: OptionType) => void;
+  activeTab?: OptionType;
   placeholderSearch?: string;
   search?: string;
   setSearch?: (value: string) => void;

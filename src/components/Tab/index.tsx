@@ -3,14 +3,14 @@ import { Text, TouchableOpacity, View } from "react-native";
 import TabStyle from "./Tab.style";
 import { TabProps } from "./Tab.type";
 
-const Tabs: FC<TabProps> = ({ activeTab, setActiveTab, tabs }) => {
+const Tabs: FC<TabProps> = ({ activeTab, setActiveTab, tabs, style }) => {
   return (
     <React.Fragment>
-      <View style={{ paddingHorizontal: 22 }}>
+      <View style={style}>
         <View style={[TabStyle.card, TabStyle.shadowProp]}>
           {tabs.map((e) => (
             <TouchableOpacity
-              key={e}
+              key={e.value}
               style={[
                 TabStyle[activeTab === e ? "cardItemActive" : ""],
                 { flex: 1 },
@@ -23,7 +23,7 @@ const Tabs: FC<TabProps> = ({ activeTab, setActiveTab, tabs }) => {
                   { textAlign: "center" },
                 ]}
               >
-                {e}
+                {e.label}
               </Text>
             </TouchableOpacity>
           ))}

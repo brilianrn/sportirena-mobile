@@ -5,5 +5,6 @@ export const resetPasswordName = "ResetPassword";
 export const venueName = "Venue";
 export const venueDetailName = "VenueDetail";
 export const myBookingName = "MyBooking";
+export const myBookingGuestName = "Guest";
 export const userName = "User";
 export const bookingName = "Booking";

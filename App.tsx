@@ -7,6 +7,7 @@ import {
   bookingName,
   homeName,
   loginName,
+  myBookingGuestName,
   myBookingName,
   registerName,
   resetPasswordName,
@@ -15,6 +16,7 @@ import {
 } from "./src/constants";
 import {
   BookingScreen,
+  GuestScreen,
   HomeScreen,
   LoginScreen,
   MyBookingScreen,
@@ -49,6 +51,7 @@ const App = () => {
               <Stack.Screen name={venueName} component={VenueScreen} />
               <Stack.Screen name={bookingName} component={BookingScreen} />
               <Stack.Screen name={myBookingName} component={MyBookingScreen} />
+              <Stack.Screen name={myBookingGuestName} component={GuestScreen} />
               <Stack.Screen
                 name={venueDetailName}
                 component={VenueDetailScreen}

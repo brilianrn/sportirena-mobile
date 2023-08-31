@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { useDispatch } from "react-redux";
-import { ToastPosition, ToastType } from "../../App.type";
+import { ToastPosition, ToastType } from "../../App";
 import { useNavigation } from "@react-navigation/native";
 import { venueDetailName } from "../constants";
 import { setVenueDetail } from "../store/actions/venue.action";
