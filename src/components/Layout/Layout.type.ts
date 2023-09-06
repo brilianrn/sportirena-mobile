@@ -5,6 +5,7 @@ export interface LayoutProps extends TopBarProps {
   children: ReactNode;
   useBottomBar?: boolean;
   useTopBar?: boolean;
+  isFixedTopBar?: boolean;
 }
 
 export interface TopBarProps {

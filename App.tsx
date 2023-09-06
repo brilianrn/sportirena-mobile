@@ -5,10 +5,11 @@ import { ToastProvider } from "react-native-toast-notifications";
 import { Provider } from "react-redux";
 import {
   bookingName,
-  homeName,
-  loginName,
+  homePath,
+  loginPath,
   myBookingGuestName,
   myBookingName,
+  profileName,
   registerName,
   resetPasswordName,
   venueDetailName,
@@ -20,6 +21,7 @@ import {
   HomeScreen,
   LoginScreen,
   MyBookingScreen,
+  ProfileScreen,
   RegisterScreen,
   ResetPasswordScreen,
   VenueDetailScreen,
@@ -36,22 +38,23 @@ const App = () => {
         <Provider store={store}>
           <NavigationContainer>
             <Stack.Navigator
-              initialRouteName={homeName}
+              initialRouteName={homePath}
               screenOptions={{
                 headerShown: false,
               }}
             >
-              <Stack.Screen name={loginName} component={LoginScreen} />
+              <Stack.Screen name={loginPath} component={LoginScreen} />
               <Stack.Screen name={registerName} component={RegisterScreen} />
               <Stack.Screen
                 name={resetPasswordName}
                 component={ResetPasswordScreen}
               />
-              <Stack.Screen name={homeName} component={HomeScreen} />
+              <Stack.Screen name={homePath} component={HomeScreen} />
               <Stack.Screen name={venueName} component={VenueScreen} />
               <Stack.Screen name={bookingName} component={BookingScreen} />
               <Stack.Screen name={myBookingName} component={MyBookingScreen} />
               <Stack.Screen name={myBookingGuestName} component={GuestScreen} />
+              <Stack.Screen name={profileName} component={ProfileScreen} />
               <Stack.Screen
                 name={venueDetailName}
                 component={VenueDetailScreen}

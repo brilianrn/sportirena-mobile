@@ -178,6 +178,7 @@ const MyBooking = () => {
     <React.Fragment>
       <Layout
         useTopBar
+        isFixedTopBar
         isSearchBar={false}
         isTabBar
         useBottomBar

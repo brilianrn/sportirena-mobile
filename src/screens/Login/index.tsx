@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Image, ScrollView, Text, View } from "react-native";
 import * as Yup from "yup";
@@ -8,8 +8,13 @@ import { IconEye, IconEyeOff, IconLogin } from "../../assets/images";
 import Button from "../../components/Button";
 import { InputCheckbox, InputText } from "../../components/Input";
 import Modal from "../../components/Modal";
-import { homeName, registerName, resetPasswordName } from "../../constants";
+import { homePath, registerName, resetPasswordName } from "../../constants";
+import { useAuth } from "../../hooks/useAuth";
 import { Global } from "../../styles/Global.style";
+import {
+  removeLocalStorageItem,
+  retrieveLocalStorageItem,
+} from "../../utils/localStorage";
 import LoginStyle from "./Login.style";
 
 const Login = () => {
@@ -22,6 +27,9 @@ const Login = () => {
   /* Navigate */
   const { navigate } = useNavigation();
 
+  /* Hooks */
+  const { signIn, loading } = useAuth();
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Wrong format email").required("Email required"),
     password: Yup.string().required("Password required"),
@@ -30,12 +38,25 @@ const Login = () => {
   const {
     control,
     handleSubmit,
-    reset,
-    formState: { errors, isSubmitting, isValid, defaultValues },
+    formState: { errors, isSubmitting, isValid },
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(validationSchema),
   });
+
+  useEffect(() => {
+    (async () => {
+      const token = await retrieveLocalStorageItem("accessToken");
+      const user = await retrieveLocalStorageItem("userInfo");
+      if (token || user) navigate(homePath as never);
+      else {
+        await Promise.all([
+          removeLocalStorageItem("accessToken"),
+          removeLocalStorageItem("userInfo"),
+        ]);
+      }
+    })();
+  }, []);
   return (
     <View style={{ flex: 1 }}>
       <View
@@ -112,12 +133,12 @@ const Login = () => {
           </View>
           <Button
             label="Log In"
-            onClick={() => navigate(homeName as never)}
+            onClick={handleSubmit(signIn)}
             style={{ marginBottom: 10 }}
             type="primary"
             btnType="submit"
-            isDisable={!isValid || isSubmitting}
-            isSubmit={isSubmitting && isValid}
+            isDisable={!isValid || isSubmitting || loading}
+            isSubmit={(isSubmitting && isValid) || loading}
           />
           <View style={[Global.justifyCenter, { gap: 5 }]}>
             <Text style={LoginStyle.haventAccount}>

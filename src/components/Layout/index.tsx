@@ -19,6 +19,7 @@ const Layout: FC<LayoutProps> = ({
   activeTab,
   setActiveTab,
   tabs,
+  isFixedTopBar,
 }) => {
   return (
     <View style={{ flex: 1 }}>
@@ -28,8 +29,22 @@ const Layout: FC<LayoutProps> = ({
           height: 33,
         }}
       />
+      {useTopBar && isFixedTopBar && (
+        <TopBar
+          isSearchBar={isSearchBar as boolean}
+          isTabBar={isTabBar}
+          backHref={backHref}
+          label={label}
+          placeholderSearch={placeholderSearch}
+          search={search}
+          setSearch={setSearch}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          tabs={tabs}
+        />
+      )}
       <ScrollView style={{ backgroundColor: "white" }}>
-        {useTopBar && (
+        {useTopBar && !isFixedTopBar && (
           <TopBar
             isSearchBar={isSearchBar as boolean}
             isTabBar={isTabBar}

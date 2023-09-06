@@ -12,10 +12,9 @@ import {
   IconUserActive,
 } from "../../../assets/images";
 import {
-  homeName,
-  loginName,
+  homePath,
   myBookingName,
-  userName,
+  profileName,
   venueName,
 } from "../../../constants";
 import { Global, colorGray, colorPrimary } from "../../../styles/Global.style";
@@ -38,21 +37,21 @@ const BottomBar = () => {
       }}
     >
       <View style={[Global.justifyCenter, { width: "100%", gap: 40 }]}>
-        <TouchableOpacity onPress={() => navigate(homeName as never)}>
+        <TouchableOpacity onPress={() => navigate(homePath as never)}>
           <View
             style={{
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <Image source={name === homeName ? IconHomeActive : IconHome} />
+            <Image source={name === homePath ? IconHomeActive : IconHome} />
             <Text
               style={{
                 textAlign: "center",
                 fontSize: 10,
                 fontWeight: "bold",
                 marginTop: 2,
-                color: name === homeName ? colorPrimary.default : "black",
+                color: name === homePath ? colorPrimary.default : "black",
               }}
             >
               Home
@@ -111,21 +110,21 @@ const BottomBar = () => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigate(loginName as never)}>
+        <TouchableOpacity onPress={() => navigate(profileName as never)}>
           <View
             style={{
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <Image source={name === userName ? IconUserActive : IconUser} />
+            <Image source={name === profileName ? IconUserActive : IconUser} />
             <Text
               style={{
                 textAlign: "center",
                 fontSize: 10,
                 fontWeight: "bold",
                 marginTop: 4,
-                color: name === userName ? colorPrimary.default : "black",
+                color: name === profileName ? colorPrimary.default : "black",
               }}
             >
               Profile

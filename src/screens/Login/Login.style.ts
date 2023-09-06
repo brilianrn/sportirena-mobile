@@ -1,12 +1,12 @@
 import { StyleSheet } from "react-native";
-import { colorBlue, fontFamily } from "../../styles/Global.style";
+import { colorBlue, colorGray, fontFamily } from "../../styles/Global.style";
 
 const LoginStyle = StyleSheet.create({
   container: {
     height: "100%",
     minHeight: 800,
     backgroundColor: "white",
-    paddingHorizontal: 40,
+    paddingHorizontal: 28,
     paddingBottom: 120,
     paddingTop: 30,
   },
@@ -17,7 +17,7 @@ const LoginStyle = StyleSheet.create({
     color: "#1E1E1E",
   },
   title: {
-    color: "#737374",
+    color: colorGray[500],
     fontFamily,
     fontSize: 12,
     fontWeight: "400",

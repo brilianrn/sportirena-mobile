@@ -1,2 +1,4 @@
 export const SET_VENUE_LIST = "SET_VENUE_LIST";
 export const SET_VENUE_DETAIL = "SET_VENUE_DETAIL";
+
+export const SET_USER_DETAIL = "SET_USER_DETAIL";

@@ -74,7 +74,7 @@ const Button = ({
             paddingHorizontal: (sizes?.padding as number) + 2,
           },
         ]}
-        onPress={onClick}
+        onPress={isDisable || isSubmit ? null : onClick}
       >
         {isSubmit && (
           <Image

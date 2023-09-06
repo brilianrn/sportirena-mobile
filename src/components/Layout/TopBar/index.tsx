@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { FC } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { IconArrowBlue, IconSearch, IconSetting } from "../../../assets/images";
-import { homeName } from "../../../constants";
+import { homePath } from "../../../constants";
 import { Global } from "../../../styles/Global.style";
 import { InputText } from "../../Input";
 import Tabs from "../../Tab";
@@ -12,7 +12,7 @@ import { OptionType } from "../../../../App.type";
 
 const TopBar: FC<TopBarProps> = ({
   isSearchBar,
-  backHref = homeName,
+  backHref = homePath,
   label,
   placeholderSearch,
   search,
@@ -51,12 +51,14 @@ const TopBar: FC<TopBarProps> = ({
           </TouchableOpacity>
         </View>
       ) : isTabBar ? (
-        <Tabs
-          activeTab={activeTab as OptionType}
-          setActiveTab={(value) => setActiveTab && setActiveTab(value)}
-          tabs={tabs as OptionType[]}
-          style={{ paddingHorizontal: 29 }}
-        />
+        <View style={{ backgroundColor: "white" }}>
+          <Tabs
+            activeTab={activeTab as OptionType}
+            setActiveTab={(value) => setActiveTab && setActiveTab(value)}
+            tabs={tabs as OptionType[]}
+            style={{ height: 63 }}
+          />
+        </View>
       ) : (
         <TouchableOpacity
           onPress={() => navigate(backHref as never)}

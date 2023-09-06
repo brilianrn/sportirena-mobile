@@ -1,3 +1,4 @@
+import { UserDetailType } from "../../types/common.type";
 import { VenueType } from "../../types/venue.type";
 
 export interface ReducerProps<
@@ -10,4 +11,8 @@ export interface ReducerProps<
 export interface VenueInitalState {
   venues: VenueType[] | null;
   venueDetail: VenueType | null;
+}
+
+export interface UserInitialState {
+  userDetail: UserDetailType | null;
 }

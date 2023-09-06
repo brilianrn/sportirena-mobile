@@ -14,7 +14,7 @@ import { InputText } from "../../components/Input";
 import Button from "../../components/Button";
 import { Global } from "../../styles/Global.style";
 import { useNavigation } from "@react-navigation/native";
-import { loginName } from "../../constants";
+import { loginPath } from "../../constants";
 
 const ResetPassowrd = ({ navigation }: any) => {
   /* Local State */
@@ -93,7 +93,7 @@ const ResetPassowrd = ({ navigation }: any) => {
           />
           <View
             style={[Global.justifyCenter, { gap: 8 }]}
-            onTouchStart={() => navigate(loginName as never)}
+            onTouchStart={() => navigate(loginPath as never)}
           >
             <Image source={IconArrowBlue} style={{ marginTop: 5 }} />
             <Button.Link label="Back to Login" />

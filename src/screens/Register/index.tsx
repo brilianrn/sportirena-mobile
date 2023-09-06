@@ -6,8 +6,14 @@ import * as Yup from "yup";
 import { IconEye, IconEyeOff } from "../../assets/images";
 import Button from "../../components/Button";
 import { InputRadio, InputText } from "../../components/Input";
+import { useAuth } from "../../hooks/useAuth";
 import { Global } from "../../styles/Global.style";
-import { isPhone } from "../../utils/validator";
+import {
+  isIncludeCapital,
+  isIncludeNumber,
+  isIncludeSpecialChar,
+  isPhone,
+} from "../../utils/validator";
 import LoginStyle from "../Login/Login.style";
 
 const Register = ({ navigation }: any) => {
@@ -16,25 +22,50 @@ const Register = ({ navigation }: any) => {
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
 
+  /* Hooks */
+  const { signUp, loading } = useAuth();
+
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Name required"),
+    name: Yup.string()
+      .required("Name required")
+      .test("name-check", "", (value) => {
+        return value?.length >= 6;
+      }),
     email: Yup.string().email("Wrong format email").required("Email required"),
-    phone: Yup.string()
+    phoneNumber: Yup.string()
       .required("Phone number required")
       .test("isPhone", "Invalid phone number", (value) => {
         return !isPhone(value) ? false : true;
       }),
-    password: Yup.string().required("Password required"),
-    gender: Yup.string().required("Gender required").default("male"),
+    password: Yup.string()
+      .required("Password required")
+      .test("password-check", "", (value) => {
+        return (
+          value?.length >= 8 &&
+          value?.length <= 15 &&
+          isIncludeNumber(value) &&
+          isIncludeCapital(value) &&
+          isIncludeSpecialChar(value)
+        );
+      }),
+    gender: Yup.string().required("Gender required").default("Male"),
     confirmPassword: Yup.string()
       .required("Confirm password required")
-      .oneOf([Yup.ref("password")], "Invalid password"),
+      .oneOf([Yup.ref("password")], "Invalid password")
+      .test("password-check", "", (value) => {
+        return (
+          value?.length >= 8 &&
+          value?.length <= 15 &&
+          isIncludeNumber(value) &&
+          isIncludeCapital(value) &&
+          isIncludeSpecialChar(value)
+        );
+      }),
   });
 
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting, isValid },
   } = useForm({
     mode: "onChange",
@@ -74,12 +105,12 @@ const Register = ({ navigation }: any) => {
           />
           <InputText
             control={control}
-            name="phone"
+            name="phoneNumber"
             placeholder="Insert phone number"
             label="Phone Number"
             type="default"
             style={{ marginBottom: 13 }}
-            errorMessage={errors?.phone?.message?.toString()}
+            errorMessage={errors?.phoneNumber?.message?.toString()}
           />
           <InputRadio
             label="Choose Gender"
@@ -90,11 +121,11 @@ const Register = ({ navigation }: any) => {
             options={[
               {
                 label: "Male",
-                value: "male",
+                value: "Male",
               },
               {
                 label: "Female",
-                value: "female",
+                value: "Female",
               },
             ]}
           />
@@ -135,12 +166,12 @@ const Register = ({ navigation }: any) => {
           </Text>
           <Button
             label="Register"
-            onClick={console.log}
+            onClick={handleSubmit(signUp)}
             style={{ marginBottom: 10, marginTop: 60 }}
             type="primary"
             btnType="submit"
             isDisable={!isValid || isSubmitting}
-            isSubmit={isSubmitting && isValid}
+            isSubmit={(isSubmitting && isValid) || loading}
           />
           <View style={[Global.justifyCenter, { gap: 5 }]}>
             <Text style={LoginStyle.haventAccount}>

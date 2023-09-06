@@ -21,3 +21,29 @@ export const IDRFormat = (num: number, prefix?: string) => {
   rupiah = split[1] !== undefined ? `${rupiah},${split[1]}` : rupiah;
   return prefix === undefined ? rupiah : rupiah ? `Rp. ${rupiah}` : "";
 };
+
+// eslint-disable-next-line
+export const serializeParam = (obj: Record<string, any>): string => {
+  let resolveObj = {};
+  Object.entries(obj).forEach(([key, value]) => {
+    if (obj[key]) {
+      resolveObj = { ...resolveObj, [key]: value };
+    }
+  });
+
+  const params = new URLSearchParams(resolveObj);
+  return params.toString();
+};
+
+// eslint-disable-next-line
+export const deserializeParam = (str: string): Record<string, any> => {
+  const params = new URLSearchParams(str);
+  // eslint-disable-next-line
+  const obj: Record<string, any> = {};
+
+  params.forEach((value, key) => {
+    obj[key] = value;
+  });
+
+  return obj;
+};
