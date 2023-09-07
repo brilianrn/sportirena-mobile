@@ -15,6 +15,9 @@ import Button from "../../components/Button";
 import { Global } from "../../styles/Global.style";
 import { useNavigation } from "@react-navigation/native";
 import { loginPath } from "../../constants";
+import { useSelector } from "react-redux";
+import { IRootState } from "../../store/reducers";
+import { useAuth } from "../../hooks/useAuth";
 
 const ResetPassowrd = ({ navigation }: any) => {
   /* Local State */
@@ -22,8 +25,14 @@ const ResetPassowrd = ({ navigation }: any) => {
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
 
+  /* Redux */
+  const { tokenRequestForgot } = useSelector((state: IRootState) => state.user);
+
   /* Navigate */
   const { navigate } = useNavigation();
+
+  /* Hooks */
+  const { forgotPassword, loading } = useAuth();
 
   const validationSchema = Yup.object().shape({
     password: Yup.string().required("Password required"),
@@ -35,8 +44,7 @@ const ResetPassowrd = ({ navigation }: any) => {
   const {
     control,
     handleSubmit,
-    reset,
-    formState: { errors, isSubmitting, isValid, defaultValues },
+    formState: { errors, isSubmitting, isValid },
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(validationSchema),
@@ -84,12 +92,14 @@ const ResetPassowrd = ({ navigation }: any) => {
           />
           <Button
             label="Save New Password"
-            onClick={console.log}
+            onClick={handleSubmit((e) =>
+              forgotPassword({ ...e, token: tokenRequestForgot })
+            )}
             style={{ marginBottom: 28 }}
             type="primary"
             btnType="submit"
             isDisable={!isValid || isSubmitting}
-            isSubmit={isSubmitting && isValid}
+            isSubmit={(isSubmitting && isValid) || loading}
           />
           <View
             style={[Global.justifyCenter, { gap: 8 }]}

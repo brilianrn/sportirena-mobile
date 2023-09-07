@@ -8,7 +8,7 @@ import { IconEye, IconEyeOff, IconLogin } from "../../assets/images";
 import Button from "../../components/Button";
 import { InputCheckbox, InputText } from "../../components/Input";
 import Modal from "../../components/Modal";
-import { homePath, registerName, resetPasswordName } from "../../constants";
+import { homePath, registerName } from "../../constants";
 import { useAuth } from "../../hooks/useAuth";
 import { Global } from "../../styles/Global.style";
 import {
@@ -28,7 +28,7 @@ const Login = () => {
   const { navigate } = useNavigation();
 
   /* Hooks */
-  const { signIn, loading } = useAuth();
+  const { signIn, loading, requestForgot } = useAuth();
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Wrong format email").required("Email required"),
@@ -57,6 +57,12 @@ const Login = () => {
       }
     })();
   }, []);
+
+  const onRequestForgot = async () => {
+    await requestForgot({ email: emailForgot as string });
+    setEmailForgot("");
+    return setForgotPassword(false);
+  };
   return (
     <View style={{ flex: 1 }}>
       <View
@@ -82,9 +88,7 @@ const Login = () => {
             />
             <Button
               label="Send Reset Password Link"
-              onClick={() =>
-                emailForgot && navigate(resetPasswordName as never)
-              }
+              onClick={onRequestForgot}
               style={{ marginTop: 16 }}
               type="primary"
               btnType="button"

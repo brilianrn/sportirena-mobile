@@ -15,4 +15,5 @@ export interface VenueInitalState {
 
 export interface UserInitialState {
   userDetail: UserDetailType | null;
+  tokenRequestForgot: string | null;
 }

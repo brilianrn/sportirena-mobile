@@ -1,16 +1,25 @@
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
+import { useDispatch } from "react-redux";
 import { ToastPosition, ToastType } from "../../App.type";
-import { homePath, loginPath } from "../constants";
+import { homePath, loginPath, resetPasswordName } from "../constants";
 import { getProfile } from "../core/GET_Profile";
 import { BodyLogin, postLogin } from "../core/POST_Login";
+import { BodyRegister, postRegister } from "../core/POST_Register";
+import {
+  BodyRequestForgot,
+  postRequestForgot,
+} from "../core/POST_RequestForgot";
+import { setTokenRequestForgot } from "../store/actions/user.action";
 import {
   retrieveLocalStorageItem,
   storeLocalStorageItem,
 } from "../utils/localStorage";
-import { BodyRegister, postRegister } from "../core/POST_Register";
-import { postVerification } from "../core/POST_VerificationAccount";
+import {
+  BodyForgotPassword,
+  postForgotPassword,
+} from "../core/POST_ForgotPassword";
 
 export const useAuth = () => {
   /* Local State */
@@ -20,6 +29,9 @@ export const useAuth = () => {
   const [messageData, setMessageData] = useState<string>("");
 
   /* Redux */
+  const dispatch = useDispatch();
+
+  /* Router */
   const { navigate } = useNavigation();
 
   /* Toast */
@@ -106,21 +118,64 @@ export const useAuth = () => {
 
   const signUp = async (payload: BodyRegister) => {
     try {
-      const { success, token, message } = await postRegister({
-        ...payload,
-      });
+      const { success, token, message } = await postRegister(payload);
       if (success && token) {
-        const verif = await postVerification({ token });
-        if (verif.success) {
-          setError(false);
-          navigate(loginPath as never);
-          setLoading(false);
-          return setMessageData(message);
-        }
+        showToast({
+          message: message || "Register successfully, please check your email!",
+          type: "success",
+          placement: "bottom",
+        });
+        setError(false);
+        navigate(loginPath as never);
+        setLoading(false);
+        return setMessageData(message);
       }
       setMessageData(message);
       showToast({
         message: "Register failed",
+        type: "danger",
+        placement: "bottom",
+      });
+      return setError(true);
+    } catch (err) {
+      return err;
+    }
+  };
+
+  const requestForgot = async (payload: BodyRequestForgot) => {
+    try {
+      const { success, token, message } = await postRequestForgot(payload);
+      if (success && token) {
+        dispatch(setTokenRequestForgot(token));
+        setError(false);
+        navigate(resetPasswordName as never);
+        setLoading(false);
+        return setMessageData(message);
+      }
+      setMessageData(message);
+      showToast({
+        message: "Request forgot password failed",
+        type: "danger",
+        placement: "bottom",
+      });
+      return setError(true);
+    } catch (err) {
+      return err;
+    }
+  };
+
+  const forgotPassword = async (payload: BodyForgotPassword) => {
+    try {
+      const { success, message } = await postForgotPassword(payload);
+      if (success) {
+        setError(false);
+        navigate(loginPath as never);
+        setLoading(false);
+        return setMessageData(message);
+      }
+      setMessageData(message);
+      showToast({
+        message: "Forgot password failed",
         type: "danger",
         placement: "bottom",
       });
@@ -137,5 +192,7 @@ export const useAuth = () => {
     loading,
     signIn,
     signUp,
+    requestForgot,
+    forgotPassword,
   };
 };

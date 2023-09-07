@@ -15,6 +15,7 @@ import { UserDetailType } from "../../types/common.type";
 const Profile = () => {
   /* Local State */
   const [userDetail, setUserDetail] = useState<UserDetailType>();
+
   /* Router */
   const { navigate } = useNavigation();
 
