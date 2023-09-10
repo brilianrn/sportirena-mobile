@@ -72,23 +72,6 @@ export const useVenue = () => {
     });
     setIsLoading(false);
     navigate(venueDetailName as never);
-    // try {
-    //   const { data, success, message } = await getHistories(params);
-    //   if (success && data) {
-    //     dispatch(setHistoryOrders(data));
-    //   } else {
-    //     dispatch(setHistoryOrders());
-    //     setMessage(message || 'Data not found');
-    //   }
-    //   return setIsLoading(false);
-    // } catch (err) {
-    //   setMessage(err.message || 'Internal server error!');
-    //   showToast({
-    //     message: err.message || 'Internal server error!',
-    //     type: 'error'
-    //   });
-    //   return setIsLoading(false);
-    // }
   };
 
   return { isError, message, isLoading, fetchVenueDetail };

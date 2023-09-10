@@ -9,3 +9,21 @@ export interface UserDetailType {
 }
 
 export type Gender = "Male" | "Female" | string;
+
+export type FacilityTypeName =
+  | "Fustal"
+  | "Badminton"
+  | "Football"
+  | "Basketball"
+  | "Swimming Pool"
+  | "Tennis";
+
+export type QueryParamList = {
+  page: number;
+  pageSize: number;
+  search?: string;
+};
+
+export interface PageComponent {
+  isLoading: boolean;
+}

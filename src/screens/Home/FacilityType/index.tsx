@@ -1,22 +1,51 @@
-import React from "react";
-import { View } from "react-native";
+import React, { FC } from "react";
+import { Text, View } from "react-native";
 import {
   IconBasketBall,
   IconPool,
   IconSoccer,
   IconTennisBall,
 } from "../../../assets/images";
-import CardFacilityType from "./Card";
 import { Global } from "../../../styles/Global.style";
+import { FacilityTypeName } from "../../../types/common.type";
+import HomeStyle from "../Home.style";
+import { FacilityTypeProps } from "../Home.type";
+import CardFacilityType from "./Card";
 
-const FacilityType = () => {
+const FacilityType: FC<FacilityTypeProps> = ({ data }) => {
+  const iconType = (facilityType: FacilityTypeName) => {
+    switch (facilityType) {
+      case "Football":
+        return IconSoccer;
+      case "Swimming Pool":
+        return IconPool;
+      case "Tennis":
+        return IconTennisBall;
+      case "Basketball":
+        return IconBasketBall;
+      default:
+        return IconTennisBall;
+    }
+  };
   return (
-    <View style={[Global.justifyBetween, { gap: 3 }]}>
-      <CardFacilityType titile="Tennis" icon={IconTennisBall} />
-      <CardFacilityType titile="Footbal" icon={IconSoccer} />
-      <CardFacilityType titile="Basketball" icon={IconBasketBall} />
-      <CardFacilityType titile="Pool" icon={IconPool} />
-    </View>
+    <React.Fragment>
+      {data?.length ? (
+        <>
+          <Text style={[HomeStyle.titleHome, { marginBottom: 15 }]}>
+            Facility Type
+          </Text>
+          <View style={[Global.justifyBetween, { gap: 3 }]}>
+            {data.map((e) => (
+              <CardFacilityType
+                titile={e.typeName}
+                icon={iconType(e.typeName)}
+                key={e.id}
+              />
+            ))}
+          </View>
+        </>
+      ) : null}
+    </React.Fragment>
   );
 };
 

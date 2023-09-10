@@ -90,4 +90,9 @@ export const Global = StyleSheet.create({
     justifyContent: "center",
     display: "flex",
   },
+  truncate: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
 });

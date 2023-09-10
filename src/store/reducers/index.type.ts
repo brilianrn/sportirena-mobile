@@ -1,3 +1,4 @@
+import { FacilityType } from "../../screens/Home/Home.type";
 import { UserDetailType } from "../../types/common.type";
 import { VenueType } from "../../types/venue.type";
 
@@ -16,4 +17,8 @@ export interface VenueInitalState {
 export interface UserInitialState {
   userDetail: UserDetailType | null;
   tokenRequestForgot: string | null;
+}
+
+export interface DashboardInitialState {
+  facilityTypes: FacilityType[] | null;
 }

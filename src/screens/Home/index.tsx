@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Image, Text, View } from "react-native";
+import { useSelector } from "react-redux";
 import { IconNotification } from "../../assets/images";
 import Layout from "../../components/Layout";
+import { useDashboard } from "../../hooks/useDashboard";
+import { IRootState } from "../../store/reducers";
 import { Global } from "../../styles/Global.style";
 import { UserDetailType } from "../../types/common.type";
 import { retrieveLocalStorageItem } from "../../utils/localStorage";
@@ -12,9 +15,22 @@ import HowItWork from "./HowItWork";
 import Venues from "./Venues";
 
 const Home = () => {
+  /* Local State */
   const [userDetail, setUserDetail] = useState<UserDetailType>();
+
+  /* Redux */
+  const { facilityTypes } = useSelector((state: IRootState) => state.dashboard);
+  const { venues } = useSelector((state: IRootState) => state.venue);
+
+  /* Hooks */
+  const { fetchFalicityType, fetchVenues, isLoading } = useDashboard();
+
   useEffect(() => {
     (async () => {
+      await Promise.all([
+        fetchFalicityType(),
+        fetchVenues({ page: 1, pageSize: 10 }),
+      ]);
       const data = await retrieveLocalStorageItem("userInfo");
       const dataParse = JSON.parse(data as string);
       setUserDetail(dataParse);
@@ -42,11 +58,8 @@ const Home = () => {
           }}
           style={HomeStyle.banner}
         />
-        <Text style={[HomeStyle.titleHome, { marginBottom: 15 }]}>
-          Facility Type
-        </Text>
-        <FacilityType />
-        <Venues />
+        <FacilityType isLoading={isLoading} data={facilityTypes} />
+        <Venues isLoading={isLoading} data={venues} />
         <CustomerBookingSchedule />
         <HowItWork />
       </View>
