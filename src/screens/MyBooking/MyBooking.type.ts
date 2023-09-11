@@ -10,7 +10,7 @@ export interface DetailBooking {
   bookingId: string;
   customerId: string;
   venueId: string;
-  venueName: string;
+  venuePath: string;
   customerName: string;
   customerEmail: string;
 }

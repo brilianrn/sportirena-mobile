@@ -1,12 +1,14 @@
-import React from "react";
+import React, { FC } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { IconPinLocation } from "../../../assets/images";
 import { useVenue } from "../../../hooks/useVenue";
 import { Global, colorGray, colorPrimary } from "../../../styles/Global.style";
-import { subStringLongText } from "../../../utils/formattor";
+import { IDRFormat, subStringLongText } from "../../../utils/formattor";
 import VenueStyle from "../Venue.style";
+import { VenueType } from "../../../types/venue.type";
+import { BASE_URL_PREVIEW_IMG } from "../../../constants/host";
 
-const CardVenue = () => {
+const CardVenue: FC<{ item: VenueType | any }> = ({ item }) => {
   /* Hooks */
   const { fetchVenueDetail } = useVenue();
 
@@ -21,7 +23,7 @@ const CardVenue = () => {
         <View style={[Global.justifyStart, { gap: 10 }]}>
           <Image
             source={{
-              uri: "https://www.reuters.com/resizer/2Y-zYYhSrudDXnjurH9iQpyU-z8=/1920x0/filters:quality(80)/cloudfront-us-east-2.images.arcpublishing.com/reuters/MIIB3ILLTNL2DLYO47IKHWBFRU.jpg",
+              uri: `${BASE_URL_PREVIEW_IMG}/${item?.pathName}/${item?.imageName}`,
               height: 73,
               width: 73,
             }}
@@ -33,19 +35,19 @@ const CardVenue = () => {
           />
           <View>
             <Text style={VenueStyle.cardTitle}>
-              {subStringLongText("Lapangan Puri Indah", 30)}
+              {subStringLongText(item.venueName, 30)}
             </Text>
             <View style={[Global.justifyStart, { gap: 5, width: 120 }]}>
               <Image
                 source={IconPinLocation}
                 style={{ justifyContent: "center" }}
               />
-              <Text style={VenueStyle.cardDescription}>Jakarta Barat</Text>
+              <Text style={VenueStyle.cardDescription}>{item.regencyName}</Text>
             </View>
             <Text style={[VenueStyle.cardDescription]}>
               Starting Price{" "}
               <Text style={{ color: colorPrimary.default, fontWeight: "bold" }}>
-                Rp 50.000,-
+                {IDRFormat(item.minPrice)}
               </Text>
             </Text>
           </View>
@@ -60,7 +62,7 @@ const CardVenue = () => {
         <Text style={[VenueStyle.cardDescription, { marginBottom: 0 }]}>
           Tersedia{" "}
           <Text style={{ color: colorPrimary.default, fontWeight: "bold" }}>
-            5 Lapangan
+            {item.totalCourt} Lapangan
           </Text>
         </Text>
       </TouchableOpacity>

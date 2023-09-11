@@ -11,7 +11,7 @@ import {
 } from "../../assets/images";
 import Button from "../../components/Button";
 import Layout from "../../components/Layout";
-import { venueName } from "../../constants";
+import { venuePath } from "../../constants";
 import { IRootState } from "../../store/reducers";
 import {
   Global,
@@ -68,7 +68,7 @@ const VenueDetail = () => {
         useTopBar
         isSearchBar={false}
         label="Detail Venue"
-        backHref={venueName}
+        backHref={venuePath}
       >
         <View
           style={{

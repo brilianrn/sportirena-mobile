@@ -28,7 +28,7 @@ const CardMyBooking: FC<MyBookingCard> = ({ data }) => {
           <View>
             <Text style={[MyBookingStyle.cardInv]}>#{data.invoiceCode}</Text>
             <Text style={[MyBookingStyle.cardTitle]}>
-              {data.detailbooking.venueName}
+              {data.detailbooking.venuePath}
             </Text>
           </View>
           <Text style={[MyBookingStyle.cardInv]}>

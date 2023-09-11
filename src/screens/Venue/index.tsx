@@ -1,14 +1,45 @@
-import { View, Text, Image } from "react-native";
-import React, { useState } from "react";
-import Layout from "../../components/Layout";
-import CardVenue from "./Card";
+import React, { useEffect, useState } from "react";
+import { Image, Text, View } from "react-native";
+import { FlatList } from "react-native-bidirectional-infinite-scroll";
+import { useSelector } from "react-redux";
 import { IconVenueNotFound } from "../../assets/images";
-import { Global, colorPrimary } from "../../styles/Global.style";
-
-const cards: number[] = [1, 2];
+import Layout from "../../components/Layout";
+import { useDashboard } from "../../hooks/useDashboard";
+import { IRootState } from "../../store/reducers";
+import { colorPrimary } from "../../styles/Global.style";
+import CardVenue from "./Card";
 
 const Venue = () => {
+  /* Local State */
   const [search, setSearch] = useState<string>("");
+  const [page, setPage] = useState<number>(0);
+
+  /* Redux */
+  const { venues } = useSelector((state: IRootState) => state.venue);
+
+  /* Hooks */
+  const { fetchVenues, isLoading } = useDashboard();
+
+  useEffect(() => {
+    fetchVenues({
+      page: 1,
+      pageSize: 10,
+      search,
+    });
+    setPage(page === 0 ? page + 1 : page);
+  }, [search]);
+
+  const getVenues = async () => {
+    if (page > 0) {
+      setPage(page + 1);
+      await fetchVenues({
+        page: page + 1,
+        pageSize: 10,
+        search,
+        isScroll: page + 1 > 1,
+      });
+    }
+  };
   return (
     <React.Fragment>
       <Layout
@@ -19,8 +50,17 @@ const Venue = () => {
         search={search}
         setSearch={setSearch}
       >
-        {cards?.length ? (
-          cards?.map((e) => <CardVenue key={e} />)
+        {venues?.length ? (
+          <FlatList
+            data={venues}
+            onEndReached={getVenues}
+            onEndReachedThreshold={0}
+            onStartReached={getVenues}
+            keyExtractor={(_item, i) => i.toString()}
+            renderItem={({ item, index }) => (
+              <CardVenue item={item} key={index} />
+            )}
+          />
         ) : (
           <View style={{ marginTop: 79 }}>
             <Image source={IconVenueNotFound} style={{ alignSelf: "center" }} />

@@ -42,6 +42,7 @@ export type VenueType = {
 };
 
 export interface QueryParamVenues extends QueryParamList {
+  isScroll?: boolean;
   facility?: string;
   location?: string;
 }

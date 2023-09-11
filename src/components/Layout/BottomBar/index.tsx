@@ -15,7 +15,7 @@ import {
   homePath,
   myBookingName,
   profileName,
-  venueName,
+  venuePath,
 } from "../../../constants";
 import { Global, colorGray, colorPrimary } from "../../../styles/Global.style";
 
@@ -58,7 +58,7 @@ const BottomBar = () => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigate(venueName as never)}>
+        <TouchableOpacity onPress={() => navigate(venuePath as never)}>
           <View
             style={{
               justifyContent: "center",
@@ -67,7 +67,7 @@ const BottomBar = () => {
           >
             <Image
               source={
-                name === venueName ? IconBasketFieldActive : IconBasketField
+                name === venuePath ? IconBasketFieldActive : IconBasketField
               }
             />
             <Text
@@ -76,7 +76,7 @@ const BottomBar = () => {
                 fontSize: 10,
                 fontWeight: "bold",
                 marginTop: 2,
-                color: name === venueName ? colorPrimary.default : "black",
+                color: name === venuePath ? colorPrimary.default : "black",
               }}
             >
               Venue

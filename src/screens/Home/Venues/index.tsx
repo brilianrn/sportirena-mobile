@@ -12,9 +12,12 @@ import { Global, colorPrimary } from "../../../styles/Global.style";
 import Card from "./Card";
 import { VenuesProps } from "../Home.type";
 import { VenueType } from "../../../types/venue.type";
+import { useNavigation } from "@react-navigation/native";
+import { venuePath } from "../../../constants";
 
 const Venues: FC<VenuesProps> = ({ data }) => {
-  const [activeItem, setActiveItem] = useState<any>();
+  /* Router */
+  const { navigate } = useNavigation();
   return (
     <View>
       <View style={[Global.justifyBetween, { marginTop: 38, width: "100%" }]}>
@@ -27,7 +30,10 @@ const Venues: FC<VenuesProps> = ({ data }) => {
         >
           Venues
         </Text>
-        <TouchableOpacity style={[Global.justifyEnd, { gap: 3, marginTop: 4 }]}>
+        <TouchableOpacity
+          style={[Global.justifyEnd, { gap: 3, marginTop: 4 }]}
+          onPress={() => navigate(venuePath as never)}
+        >
           <Text
             style={{
               fontWeight: "bold",
@@ -58,7 +64,6 @@ const Venues: FC<VenuesProps> = ({ data }) => {
             sliderWidth={210}
             itemWidth={190}
             renderItem={({ item, index }) => <Card data={item} key={index} />}
-            onSnapToItem={(index) => setActiveItem(index)}
           />
         </View>
       </SafeAreaView>

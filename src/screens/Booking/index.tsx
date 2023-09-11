@@ -18,7 +18,7 @@ import {
   InputText,
 } from "../../components/Input";
 import Layout from "../../components/Layout";
-import { venueName } from "../../constants";
+import { venuePath } from "../../constants";
 import {
   Global,
   colorBrown,
@@ -51,7 +51,7 @@ const Booking = () => {
         useTopBar
         isSearchBar={false}
         label="Booking Lapangan Tennis Puri Indah"
-        backHref={venueName}
+        backHref={venuePath}
       >
         <Image
           src="https://liga.tennis/public/cache/images/2/7/6/2/3/fd22b57f2195a328230ec31388a9552e_1920_5760.jpg"

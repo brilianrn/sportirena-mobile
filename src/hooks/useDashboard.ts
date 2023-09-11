@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastPosition, ToastType } from "../../App.type";
 import { getFacilityType } from "../core/GET_FacilityType";
 import { setFacilityTypes } from "../store/actions/dashboard.action";
 import { getVenues } from "../core/GET_Venues";
 import { setVenueList } from "../store/actions/venue.action";
 import { QueryParamVenues } from "../types/venue.type";
+import { IRootState } from "../store/reducers";
 
 export const useDashboard = () => {
   /* Local State */
@@ -16,6 +17,7 @@ export const useDashboard = () => {
 
   /* Redux */
   const dispatch = useDispatch();
+  const { venues } = useSelector((state: IRootState) => state.venue);
 
   /* Toast */
   const toast = useToast();
@@ -85,6 +87,9 @@ export const useDashboard = () => {
           placement: "bottom",
         });
         return setIsError(true);
+      }
+      if (queryParam?.isScroll) {
+        return dispatch(setVenueList(venues.concat(result)));
       }
       return dispatch(setVenueList(result));
     } catch (err) {

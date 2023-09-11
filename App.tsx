@@ -13,7 +13,7 @@ import {
   registerName,
   resetPasswordName,
   venueDetailName,
-  venueName,
+  venuePath,
 } from "./src/constants";
 import {
   BookingScreen,
@@ -50,7 +50,7 @@ const App = () => {
                 component={ResetPasswordScreen}
               />
               <Stack.Screen name={homePath} component={HomeScreen} />
-              <Stack.Screen name={venueName} component={VenueScreen} />
+              <Stack.Screen name={venuePath} component={VenueScreen} />
               <Stack.Screen name={bookingName} component={BookingScreen} />
               <Stack.Screen name={myBookingName} component={MyBookingScreen} />
               <Stack.Screen name={myBookingGuestName} component={GuestScreen} />
