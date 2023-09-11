@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import {
   Image,
   SafeAreaView,
@@ -9,9 +9,10 @@ import {
 import CarouselCourt from "react-native-snap-carousel";
 import { IconArrowChevron } from "../../../assets/images";
 import { Global, colorPrimary } from "../../../styles/Global.style";
+import { VenueCourt } from "../../../types/venue.type";
 import AvailableCourtCard from "./Card";
 
-const AvailableCourt = () => {
+const AvailableCourt: FC<{ data: VenueCourt[] }> = ({ data }) => {
   return (
     <React.Fragment>
       <View style={[Global.justifyBetween, { width: "100%" }]}>
@@ -53,10 +54,12 @@ const AvailableCourt = () => {
           <CarouselCourt
             layout="default"
             loop
-            data={[1, 2, 3, 4, 5]}
+            data={data}
             sliderWidth={210}
             itemWidth={220}
-            renderItem={() => <AvailableCourtCard />}
+            renderItem={({ item, index }) => (
+              <AvailableCourtCard item={item} key={index} />
+            )}
           />
         </View>
       </SafeAreaView>

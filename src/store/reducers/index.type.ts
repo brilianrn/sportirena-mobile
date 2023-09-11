@@ -1,6 +1,6 @@
 import { FacilityType } from "../../screens/Home/Home.type";
 import { UserDetailType } from "../../types/common.type";
-import { VenueType } from "../../types/venue.type";
+import { VenueCourt, VenueType } from "../../types/venue.type";
 
 export interface ReducerProps<
   T = object | object[] | [] | string | number | null
@@ -12,6 +12,7 @@ export interface ReducerProps<
 export interface VenueInitalState {
   venues: VenueType[] | null;
   venueDetail: VenueType | null;
+  venueCourt: VenueCourt[] | null;
 }
 
 export interface UserInitialState {

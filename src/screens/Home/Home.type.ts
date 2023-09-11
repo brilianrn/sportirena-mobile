@@ -12,6 +12,7 @@ export interface CardFacilityTypeProps {
 export interface FacilityType {
   id: string;
   typeName: FacilityTypeName;
+  facilityTypeName?: FacilityTypeName;
   description?: string;
 }
 

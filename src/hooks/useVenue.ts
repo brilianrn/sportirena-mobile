@@ -4,7 +4,10 @@ import { useDispatch } from "react-redux";
 import { ToastPosition, ToastType } from "../../App.type";
 import { useNavigation } from "@react-navigation/native";
 import { venueDetailName } from "../constants";
-import { setVenueDetail } from "../store/actions/venue.action";
+import { setVenueCourt, setVenueDetail } from "../store/actions/venue.action";
+import { QueryParamVenueCourt, VenueType } from "../types/venue.type";
+import { FacilityType } from "../screens/Home/Home.type";
+import { getVenueCourts } from "../core/GET_VenueCourts";
 
 export const useVenue = () => {
   /* Local State */
@@ -51,28 +54,38 @@ export const useVenue = () => {
     });
   };
 
-  /* History Order List */
-  const fetchVenueDetail = async (params: number) => {
+  /* Venue Detail */
+  const fetchVenueDetail = async (params: VenueType) => {
+    const facilities: FacilityType[] = params.facilities.map((e: any) => ({
+      ...e,
+      id: e.facilityTypeId,
+      typeName: e.facilityTypeName,
+    }));
     setIsLoading(true);
-    dispatch(
-      setVenueDetail({
-        vanueName: "Lapangan Puri Indah",
-        courtAvailable: 5,
-        image:
-          "https://admin.saraga.id/storage/images/anwa-cover_1680234506.jpg",
-        location: "Jakarta Barat",
-        startPrice: 50000,
-      })
-    );
-    // When error show toast
-    showToast({
-      message: "Helloworld" + params,
-      placement: "bottom",
-      type: "danger",
-    });
+    dispatch(setVenueDetail({ ...params, facilities }));
     setIsLoading(false);
     navigate(venueDetailName as never);
   };
 
-  return { isError, message, isLoading, fetchVenueDetail };
+  /* Venue Court */
+  const fetchVenueCourt = async (id: string, params: QueryParamVenueCourt) => {
+    setIsLoading(true);
+    try {
+      const { message, result } = await getVenueCourts(id, params);
+      setIsLoading(false);
+      if (!result?.length) {
+        setMessage(message);
+        showToast({
+          message: "Venue court not found",
+          type: "danger",
+          placement: "bottom",
+        });
+        return setIsError(true);
+      }
+      return dispatch(setVenueCourt(result));
+    } catch (err) {
+      return err;
+    }
+  };
+  return { isError, message, isLoading, fetchVenueDetail, fetchVenueCourt };
 };

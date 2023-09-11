@@ -1,13 +1,19 @@
-import React from "react";
+import React, { FC } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { IconPinLocation } from "../../../assets/images";
 import { Global, colorBrown, colorPrimary } from "../../../styles/Global.style";
 import HomeStyle from "../../Home/Home.style";
+import { VenueType } from "../../../types/venue.type";
+import { IDRFormat } from "../../../utils/formattor";
+import { useVenue } from "../../../hooks/useVenue";
 
-const OtherVenueCard = () => {
+const OtherVenueCard: FC<{ item: VenueType }> = ({ item }) => {
+  /* Hooks */
+  const { fetchVenueDetail } = useVenue();
   return (
     <TouchableOpacity
       style={[HomeStyle.cardVenue, { height: "auto", width: 211 }]}
+      onPress={() => fetchVenueDetail(item)}
     >
       <Image
         source={{
@@ -18,6 +24,7 @@ const OtherVenueCard = () => {
         style={{ borderTopRightRadius: 10, borderTopLeftRadius: 10 }}
       />
       <Text
+        numberOfLines={1}
         style={{
           fontSize: 12,
           fontWeight: "600",
@@ -26,7 +33,7 @@ const OtherVenueCard = () => {
           color: colorPrimary.default,
         }}
       >
-        Lapangan Basket Putra Jaya
+        {item.venueName}
       </Text>
       <View
         style={[Global.justifyStart, { gap: 6, marginTop: 6, marginLeft: 15 }]}
@@ -43,7 +50,7 @@ const OtherVenueCard = () => {
             fontWeight: "600",
           }}
         >
-          5 courts
+          {item.totalCourt} courts
         </Text>
       </View>
       <View
@@ -51,9 +58,10 @@ const OtherVenueCard = () => {
       >
         <Image source={IconPinLocation} />
         <Text
+          numberOfLines={1}
           style={{ color: colorBrown.default, fontSize: 10, fontWeight: "600" }}
         >
-          Jakarta Barat
+          {item.regencyName}
         </Text>
       </View>
       <View
@@ -74,7 +82,7 @@ const OtherVenueCard = () => {
             fontWeight: "600",
           }}
         >
-          Rp 50.000,-
+          Rp {IDRFormat(item.minPrice)} ,-
         </Text>
       </View>
     </TouchableOpacity>

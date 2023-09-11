@@ -1,10 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { SET_VENUE_DETAIL, SET_VENUE_LIST } from "../constants";
+import {
+  SET_VENUE_COURT,
+  SET_VENUE_DETAIL,
+  SET_VENUE_LIST,
+} from "../constants";
 import { ReducerProps, VenueInitalState } from "./index.type";
 
 const initialState: VenueInitalState = {
   venues: null,
   venueDetail: null,
+  venueCourt: null,
 };
 
 const venueReducer = (
@@ -21,6 +26,8 @@ const venueReducer = (
       return { ...state, venues: payload };
     case SET_VENUE_DETAIL:
       return { ...state, venueDetail: payload };
+    case SET_VENUE_COURT:
+      return { ...state, venueCourt: payload };
     default:
       return state;
   }

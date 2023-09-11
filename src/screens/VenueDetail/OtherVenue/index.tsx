@@ -5,13 +5,18 @@ import {
   SafeAreaView,
   Image,
 } from "react-native";
-import React from "react";
+import React, { FC } from "react";
 import { Global, colorPrimary } from "../../../styles/Global.style";
 import CarouselCourt from "react-native-snap-carousel";
 import { IconArrowChevron } from "../../../assets/images";
 import OtherVenueCard from "./Card";
+import { VenueType } from "../../../types/venue.type";
+import { useNavigation } from "@react-navigation/native";
+import { venuePath } from "../../../constants";
 
-const OtherVenue = () => {
+const OtherVenue: FC<{ data: VenueType[] }> = ({ data }) => {
+  /* Router */
+  const { navigate } = useNavigation();
   return (
     <React.Fragment>
       <View style={[Global.justifyBetween, { width: "100%", marginTop: 37 }]}>
@@ -23,9 +28,12 @@ const OtherVenue = () => {
             color: colorPrimary.default,
           }}
         >
-          Available Courts
+          Other venue you may like
         </Text>
-        <TouchableOpacity style={[Global.justifyEnd, { gap: 3, marginTop: 4 }]}>
+        <TouchableOpacity
+          style={[Global.justifyEnd, { gap: 3, marginTop: 4 }]}
+          onPress={() => navigate(venuePath as never)}
+        >
           <Text
             style={{
               fontWeight: "bold",
@@ -53,10 +61,12 @@ const OtherVenue = () => {
           <CarouselCourt
             layout="default"
             loop
-            data={[1, 2, 3, 4, 5]}
+            data={data}
             sliderWidth={210}
             itemWidth={220}
-            renderItem={() => <OtherVenueCard />}
+            renderItem={({ item, index }) => (
+              <OtherVenueCard item={item} key={index} />
+            )}
           />
         </View>
       </SafeAreaView>

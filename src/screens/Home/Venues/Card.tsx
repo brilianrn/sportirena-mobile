@@ -5,10 +5,16 @@ import { Global, colorBrown } from "../../../styles/Global.style";
 import { IconPinLocation } from "../../../assets/images";
 import { VenueType } from "../../../types/venue.type";
 import { BASE_URL_PREVIEW_IMG } from "../../../constants/host";
+import { useVenue } from "../../../hooks/useVenue";
 
 const Card: FC<{ data: VenueType }> = ({ data }) => {
+  /* Hooks */
+  const { fetchVenueDetail } = useVenue();
   return (
-    <TouchableOpacity style={[HomeStyle.cardVenue]}>
+    <TouchableOpacity
+      style={[HomeStyle.cardVenue]}
+      onPress={() => fetchVenueDetail(data)}
+    >
       <Image
         source={{
           uri: `${BASE_URL_PREVIEW_IMG}/${data?.pathName}/${data?.imageName}`,

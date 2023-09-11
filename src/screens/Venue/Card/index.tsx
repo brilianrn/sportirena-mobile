@@ -16,9 +16,7 @@ const CardVenue: FC<{ item: VenueType | any }> = ({ item }) => {
     <React.Fragment>
       <TouchableOpacity
         style={[VenueStyle.cardVenue]}
-        onPress={() => {
-          fetchVenueDetail(1);
-        }}
+        onPress={() => fetchVenueDetail(item)}
       >
         <View style={[Global.justifyStart, { gap: 10 }]}>
           <Image

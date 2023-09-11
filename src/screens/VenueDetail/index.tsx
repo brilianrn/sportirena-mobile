@@ -11,7 +11,11 @@ import {
 } from "../../assets/images";
 import Button from "../../components/Button";
 import Layout from "../../components/Layout";
+import Modal from "../../components/Modal";
 import { venuePath } from "../../constants";
+import { BASE_URL_PREVIEW_IMG } from "../../constants/host";
+import { useDashboard } from "../../hooks/useDashboard";
+import { useVenue } from "../../hooks/useVenue";
 import { IRootState } from "../../store/reducers";
 import {
   Global,
@@ -22,32 +26,34 @@ import {
 import { subStringLongText } from "../../utils/formattor";
 import FacilityType from "../Home/FacilityType";
 import AvailableCourt from "./AvailableCourt";
-import VenueDetailStyle from "./VenueDetail.style";
 import VenueLocation from "./Location";
 import OtherVenue from "./OtherVenue";
-import Modal from "../../components/Modal";
+import VenueDetailStyle from "./VenueDetail.style";
 
-const IMAGES = [
-  "https://gelora-public-storage.s3-ap-southeast-1.amazonaws.com/upload/public-20210216101046.jpg",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrvoLuL2zhXNoQ5UcCUCxc3eRkBuCNqtgstKMp9SxKy_fvQ4sbS6frHfrL6__IW6e7z-M&usqp=CAU",
-  "https://liga.tennis/public/cache/images/1/9/4/6/1/1c2c656d0df11b6a72ee14d0c866eef9_1920_5760.jpg",
-];
 const VenueDetail = () => {
   /* Local State */
   const [isShare, setIsShare] = useState<boolean>(false);
 
   /* Redux */
-  const { venueDetail } = useSelector((state: IRootState) => state.venue);
+  const { venueDetail, venueCourt, venues } = useSelector(
+    (state: IRootState) => state.venue
+  );
 
   /* Navigate */
   const { goBack } = useNavigation();
 
+  /* Hooks */
+  const { fetchVenueCourt } = useVenue();
+  const { fetchVenues } = useDashboard();
+
   useEffect(() => {
+    fetchVenues({ page: 1, pageSize: 10 });
     if (!venueDetail) {
       goBack();
+    } else {
+      fetchVenueCourt(venueDetail.id, { page: 1, pageSize: 10 });
     }
   }, [venueDetail]);
-
   return (
     <React.Fragment>
       <Modal
@@ -77,7 +83,9 @@ const VenueDetail = () => {
           }}
         >
           <Carousel
-            data={IMAGES}
+            data={[
+              `${BASE_URL_PREVIEW_IMG}/${venueDetail?.pathName}/${venueDetail?.imageName}`,
+            ]}
             autoPlay
             autoPlayTime={4000}
             dotStyle={{
@@ -109,7 +117,7 @@ const VenueDetail = () => {
               marginTop: 4,
             }}
           >
-            {subStringLongText("Lapangan Tenis Puri Indah", 42)}
+            {subStringLongText(venueDetail.venueName, 42)}
           </Text>
           <Image source={IconCalendarTimeActive} />
         </View>
@@ -122,9 +130,7 @@ const VenueDetail = () => {
               marginTop: 10,
             }}
           >
-            Lapangan Tennis Puri Indah is a standard outdoor sports arena that
-            is located at Jl. Kembang Indah III. There are 5 private tennis
-            court is already using international standard.
+            {venueDetail.description}
           </Text>
         </View>
         <View
@@ -150,7 +156,7 @@ const VenueDetail = () => {
             icon={IconShare}
           />
         </View>
-        <FacilityType />
+        <FacilityType isLoading={!venueDetail} data={venueDetail.facilities} />
         <View
           style={[
             Global.justifyStart,
@@ -160,13 +166,15 @@ const VenueDetail = () => {
         >
           <Image source={IconMap} />
           <Text style={[Global.textDescription, { width: deviceWidth - 170 }]}>
-            Jl. Kembang Indah III Blok G. 1 No. 20, RT6/RW6, Kembangan Sel.,
-            Kec. Kembangan, Kota Jakarta Barat, 116010
+            {venueDetail.address}
           </Text>
         </View>
-        <AvailableCourt />
-        <VenueLocation />
-        <OtherVenue />
+        <AvailableCourt data={venueCourt} />
+        <VenueLocation
+          lat={+venueDetail.latitude}
+          lng={+venueDetail.longitude}
+        />
+        <OtherVenue data={venues} />
       </Layout>
     </React.Fragment>
   );

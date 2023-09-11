@@ -1,13 +1,17 @@
-import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import React, { FC } from "react";
+import { Image as ImageRN, Text, TouchableOpacity, View } from "react-native";
 import Button from "../../../components/Button";
 import { Global, colorBrown, colorPrimary } from "../../../styles/Global.style";
 import HomeStyle from "../../Home/Home.style";
 import { IconTennisBall } from "../../../assets/images";
 import { useNavigation } from "@react-navigation/native";
 import { bookingName } from "../../../constants";
+import { VenueCourt } from "../../../types/venue.type";
+import { IDRFormat } from "../../../utils/formattor";
+import { BASE_URL_PREVIEW_IMG } from "../../../constants/host";
+import Image from "../../../components/Image";
 
-const AvailableCourtCard = () => {
+const AvailableCourtCard: FC<{ item: VenueCourt }> = ({ item }) => {
   /* Navigate */
   const { navigate } = useNavigation();
   return (
@@ -26,7 +30,7 @@ const AvailableCourtCard = () => {
             top: 6,
           }}
         >
-          <Image
+          <ImageRN
             source={IconTennisBall}
             height={10}
             width={10}
@@ -34,11 +38,9 @@ const AvailableCourtCard = () => {
           />
         </View>
         <Image
-          source={{
-            uri: "https://gelora-public-storage.s3-ap-southeast-1.amazonaws.com/upload/public-20210216101046.jpg",
-            height: 75,
-            width: 211,
-          }}
+          src={`${BASE_URL_PREVIEW_IMG}/${item?.pathName}/${item?.imageName}`}
+          height={75}
+          width={211}
           style={{ borderTopRightRadius: 10, borderTopLeftRadius: 10 }}
         />
       </View>
@@ -51,7 +53,7 @@ const AvailableCourtCard = () => {
           color: colorPrimary.default,
         }}
       >
-        Lapangan Outdor #1
+        {item.courtName}
       </Text>
       <View
         style={[Global.justifyStart, { gap: 6, marginTop: 6, marginLeft: 15 }]}
@@ -68,7 +70,7 @@ const AvailableCourtCard = () => {
             fontWeight: "600",
           }}
         >
-          Rp 50.000,-
+          Rp {IDRFormat(Number(item?.min) as number)} ,-
         </Text>
       </View>
       <Button

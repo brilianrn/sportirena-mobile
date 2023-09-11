@@ -34,11 +34,11 @@ const FacilityType: FC<FacilityTypeProps> = ({ data }) => {
           <Text style={[HomeStyle.titleHome, { marginBottom: 15 }]}>
             Facility Type
           </Text>
-          <View style={[Global.justifyBetween, { gap: 3 }]}>
+          <View style={[Global.justifyStart, { gap: 15 }]}>
             {data.map((e) => (
               <CardFacilityType
                 titile={e.typeName}
-                icon={iconType(e.typeName)}
+                icon={iconType(e.typeName || e.facilityTypeName)}
                 key={e.id}
               />
             ))}
