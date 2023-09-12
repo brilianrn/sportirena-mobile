@@ -52,6 +52,10 @@ export interface MyBookingType {
   price: number;
   statusBook: BookingStatus;
   linkUrl: string;
+  booking: {
+    id: string;
+    invoiceCode: string;
+  };
 }
 
 export interface ResultMyBooking extends ResultDataList {

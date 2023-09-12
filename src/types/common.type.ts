@@ -27,3 +27,7 @@ export type QueryParamList = {
 export interface PageComponent {
   isLoading: boolean;
 }
+
+export type QueryParamMyBooking = QueryParamList & {
+  isCount?: boolean;
+};

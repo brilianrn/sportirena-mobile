@@ -3,6 +3,7 @@ export const subStringLongText = (text: string, limit: number) => {
 };
 
 export const IDRFormat = (num: number, prefix?: string) => {
+  if (!num) return "0";
   const number_string = num
     .toString()
     .replace(/[^,\d]/g, "")

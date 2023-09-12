@@ -18,7 +18,7 @@ import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
 import { myBookingGuestName } from "../../../constants";
 
-const CardMyBooking: FC<MyBookingCard> = ({ data }) => {
+const CardMyBooking: FC<MyBookingCard> = ({ data, status }) => {
   /* Navigate */
   const { navigate } = useNavigation();
   return (
@@ -26,9 +26,14 @@ const CardMyBooking: FC<MyBookingCard> = ({ data }) => {
       <View style={[MyBookingStyle.card, TabStyle.shadowProp]}>
         <View style={[Global.justifyBetween]}>
           <View>
-            <Text style={[MyBookingStyle.cardInv]}>#{data.invoiceCode}</Text>
+            <Text style={[MyBookingStyle.cardInv]}>
+              #
+              {status === "WAITING_FOR_PAYMENT"
+                ? data?.invoiceCode
+                : data?.booking?.invoiceCode}
+            </Text>
             <Text style={[MyBookingStyle.cardTitle]}>
-              {data.detailbooking.venuePath}
+              {data.detailbooking?.venuePath}
             </Text>
           </View>
           <Text style={[MyBookingStyle.cardInv]}>
@@ -50,16 +55,35 @@ const CardMyBooking: FC<MyBookingCard> = ({ data }) => {
                 },
               ]}
             >
-              <Text
-                style={[
-                  MyBookingStyle.cardInv,
-                  { color: colorDark.default, fontWeight: "400" },
-                ]}
-              >
-                Booking Lapangan
-              </Text>
+              {status === "WAITING_FOR_PAYMENT" ? (
+                <Text
+                  style={[
+                    MyBookingStyle.cardInv,
+                    { color: colorDark.default, fontWeight: "400" },
+                  ]}
+                >
+                  Booking Lapangan
+                </Text>
+              ) : (
+                <Text
+                  style={[
+                    MyBookingStyle.cardInv,
+                    { color: colorDark.default, fontWeight: "400" },
+                  ]}
+                >
+                  {moment(data.bookDate).format("DD MMMM yyyy")}
+                </Text>
+              )}
               <Text style={[{ fontSize: 5 }]}>●</Text>
-              <Text style={[MyBookingStyle.cardInv]}>{data.totalHour} Jam</Text>
+              {status === "WAITING_FOR_PAYMENT" ? (
+                <Text style={[MyBookingStyle.cardInv]}>
+                  {data.totalHour} Jam
+                </Text>
+              ) : (
+                <Text style={[MyBookingStyle.cardInv]}>
+                  {data.startTime} - {data.endTime}
+                </Text>
+              )}
             </View>
             <TouchableOpacity
               style={[
@@ -87,7 +111,12 @@ const CardMyBooking: FC<MyBookingCard> = ({ data }) => {
             >
               <ImageRN source={IconMoney} />
               <Text style={[MyBookingStyle.cardInv]}>
-                Rp {IDRFormat(data.totalPrice)}
+                Rp{" "}
+                {IDRFormat(
+                  status === "WAITING_FOR_PAYMENT"
+                    ? data.totalPrice
+                    : data.price
+                )}
               </Text>
             </View>
           </View>
@@ -107,7 +136,7 @@ const CardMyBooking: FC<MyBookingCard> = ({ data }) => {
                 {
                   alignItems: "center",
                   alignSelf:
-                    data.statusBook === "RESERVED" ? "flex-end" : "auto",
+                    data.statusBook === "APPROVED" ? "flex-end" : "auto",
                 },
               ]}
             >
@@ -141,7 +170,7 @@ const CardMyBooking: FC<MyBookingCard> = ({ data }) => {
                   onClick={console.log}
                   size="sm"
                 />
-              ) : data.statusBook === "RESERVED" ? (
+              ) : data.statusBook === "APPROVED" ? (
                 <View style={{}}>
                   <Button
                     label="Guest"
