@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Image as ImageRN, Text, TouchableOpacity, View } from "react-native";
 import Button from "../../../components/Button";
 import { Global, colorBrown, colorPrimary } from "../../../styles/Global.style";
@@ -10,10 +10,18 @@ import { VenueCourt } from "../../../types/venue.type";
 import { IDRFormat } from "../../../utils/formattor";
 import { BASE_URL_PREVIEW_IMG } from "../../../constants/host";
 import Image from "../../../components/Image";
+import { useBooking } from "../../../hooks/useBooking";
 
 const AvailableCourtCard: FC<{ item: VenueCourt }> = ({ item }) => {
   /* Navigate */
   const { navigate } = useNavigation();
+
+  /* Hooks */
+  const { fetchCourtDetail, isLoading, isError } = useBooking();
+
+  useEffect(() => {
+    if (!isLoading && !isError) navigate(bookingName as never);
+  }, [isLoading, isError]);
   return (
     <TouchableOpacity
       style={[HomeStyle.cardVenue, { height: "auto", width: 211 }]}
@@ -78,7 +86,7 @@ const AvailableCourtCard: FC<{ item: VenueCourt }> = ({ item }) => {
         btnType="button"
         type="primary"
         size="sm"
-        onClick={() => navigate(bookingName as never)}
+        onClick={() => fetchCourtDetail(item.id)}
         style={{ paddingHorizontal: 14, marginTop: 25, marginBottom: 10 }}
       />
     </TouchableOpacity>

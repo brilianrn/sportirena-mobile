@@ -1,9 +1,18 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Image as ImageRN } from "react-native";
+import { BASE_URL_PREVIEW_IMG } from "../../constants/host";
 import { ImageProps } from "./Image.type";
 
-const Image: FC<ImageProps> = ({ src, height, style, width }) => {
+const Image: FC<ImageProps> = ({ src, height, style, width, useBaseUrl }) => {
   const [uri, setUri] = useState<string>(src);
+
+  useEffect(() => {
+    if (src && useBaseUrl) {
+      setUri(`${BASE_URL_PREVIEW_IMG}/${src}/`);
+    } else {
+      setUri(src);
+    }
+  }, [src, useBaseUrl]);
 
   const onError = () => {
     setUri(

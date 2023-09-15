@@ -8,11 +8,12 @@ import {
   homePath,
   loginPath,
   myBookingGuestName,
-  myBookingName,
+  myBookingPath,
+  paymentPath,
   profileName,
   registerName,
   resetPasswordName,
-  venueDetailName,
+  venueDetailPath,
   venuePath,
 } from "./src/constants";
 import {
@@ -21,6 +22,7 @@ import {
   HomeScreen,
   LoginScreen,
   MyBookingScreen,
+  PaymentScreen,
   ProfileScreen,
   RegisterScreen,
   ResetPasswordScreen,
@@ -52,11 +54,12 @@ const App = () => {
               <Stack.Screen name={homePath} component={HomeScreen} />
               <Stack.Screen name={venuePath} component={VenueScreen} />
               <Stack.Screen name={bookingName} component={BookingScreen} />
-              <Stack.Screen name={myBookingName} component={MyBookingScreen} />
+              <Stack.Screen name={myBookingPath} component={MyBookingScreen} />
               <Stack.Screen name={myBookingGuestName} component={GuestScreen} />
               <Stack.Screen name={profileName} component={ProfileScreen} />
+              <Stack.Screen name={paymentPath} component={PaymentScreen} />
               <Stack.Screen
-                name={venueDetailName}
+                name={venueDetailPath}
                 component={VenueDetailScreen}
               />
             </Stack.Navigator>

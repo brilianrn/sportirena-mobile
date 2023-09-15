@@ -4,7 +4,7 @@ import { Image as ImageRN, ScrollView, Text, View } from "react-native";
 import * as Yup from "yup";
 import React from "react";
 import Layout from "../../components/Layout";
-import { myBookingName } from "../../constants";
+import { myBookingPath } from "../../constants";
 import { InputRadio, InputText } from "../../components/Input";
 import Button from "../../components/Button";
 import MyBookingStyle from "./MyBooking.style";
@@ -35,7 +35,7 @@ const Guest = () => {
         useTopBar
         isSearchBar={false}
         label="Guest"
-        backHref={myBookingName}
+        backHref={myBookingPath}
       >
         <Text style={{ fontSize: 14, fontWeight: "bold", marginBottom: 3 }}>
           Tell us who will be come over with you

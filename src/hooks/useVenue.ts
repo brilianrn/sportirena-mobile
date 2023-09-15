@@ -3,7 +3,7 @@ import { useToast } from "react-native-toast-notifications";
 import { useDispatch } from "react-redux";
 import { ToastPosition, ToastType } from "../../App.type";
 import { useNavigation } from "@react-navigation/native";
-import { venueDetailName } from "../constants";
+import { venueDetailPath } from "../constants";
 import { setVenueCourt, setVenueDetail } from "../store/actions/venue.action";
 import { QueryParamVenueCourt, VenueType } from "../types/venue.type";
 import { FacilityType } from "../screens/Home/Home.type";
@@ -64,7 +64,7 @@ export const useVenue = () => {
     setIsLoading(true);
     dispatch(setVenueDetail({ ...params, facilities }));
     setIsLoading(false);
-    navigate(venueDetailName as never);
+    navigate(venueDetailPath as never);
   };
 
   /* Venue Court */

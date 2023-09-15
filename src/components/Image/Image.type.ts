@@ -5,4 +5,5 @@ export interface ImageProps {
   height?: number;
   width?: number;
   style?: StyleProp<ImageStyle>;
+  useBaseUrl?: boolean;
 }

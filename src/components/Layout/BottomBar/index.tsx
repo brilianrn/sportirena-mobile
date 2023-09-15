@@ -13,7 +13,7 @@ import {
 } from "../../../assets/images";
 import {
   homePath,
-  myBookingName,
+  myBookingPath,
   profileName,
   venuePath,
 } from "../../../constants";
@@ -83,7 +83,7 @@ const BottomBar = () => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigate(myBookingName as never)}>
+        <TouchableOpacity onPress={() => navigate(myBookingPath as never)}>
           <View
             style={{
               justifyContent: "center",
@@ -92,7 +92,7 @@ const BottomBar = () => {
           >
             <Image
               source={
-                name === myBookingName
+                name === myBookingPath
                   ? IconCalendarTimeActive
                   : IconCalendarTime
               }
@@ -103,7 +103,7 @@ const BottomBar = () => {
                 fontSize: 10,
                 fontWeight: "bold",
                 marginTop: 2,
-                color: name === myBookingName ? colorPrimary.default : "black",
+                color: name === myBookingPath ? colorPrimary.default : "black",
               }}
             >
               My Booking

@@ -51,7 +51,7 @@ export const colorBrown = {
 
 export const Global = StyleSheet.create({
   label: {
-    fontFamily,
+    // fontFamily,
     fontWeight: "700",
     fontSize: 12,
     marginBottom: 6,

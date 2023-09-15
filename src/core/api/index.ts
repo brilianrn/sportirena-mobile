@@ -38,7 +38,8 @@ const get = async ({ endpoint, queryParam, port, config }: GetPayload) => {
   if (queryParam && Object.keys(queryParam).length > 0) {
     url = url + "?" + serializeParam(queryParam);
   }
-  return await http.get(url, config);
+  const res = await http.get(url, config);
+  return res;
 };
 
 const post = async ({
@@ -55,7 +56,8 @@ const post = async ({
   if (queryParam && Object.keys(queryParam).length > 0) {
     url = url + "?" + serializeParam(queryParam);
   }
-  return await http.post(url, body, config);
+  const res = await http.post(url, body, config);
+  return res;
 };
 
 const put = async ({
@@ -72,7 +74,8 @@ const put = async ({
   if (queryParam && Object.keys(queryParam).length > 0) {
     url = url + "?" + serializeParam(queryParam);
   }
-  return await http.put(url, body, config);
+  const res = await http.put(url, body, config);
+  return res;
 };
 
 const patch = async ({
@@ -89,7 +92,8 @@ const patch = async ({
   if (queryParam && Object.keys(queryParam).length > 0) {
     url = url + "?" + serializeParam(queryParam);
   }
-  return await http.patch(url, body, config);
+  const res = await http.patch(url, body, config);
+  return res;
 };
 
 const apiDelete = async ({
@@ -110,7 +114,8 @@ const apiDelete = async ({
     ...config,
     data: bodyparam,
   };
-  return await http.delete(url, axiosConfig);
+  const res = await http.delete(url, axiosConfig);
+  return res;
 };
 
 export default { delete: apiDelete, get, post, patch, put, http };

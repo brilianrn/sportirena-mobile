@@ -1,3 +1,4 @@
+import { BookingType, CourtDetail } from "../../screens/Booking/Booking.type";
 import { FacilityType } from "../../screens/Home/Home.type";
 import { MyBookingType } from "../../screens/MyBooking/MyBooking.type";
 import { UserDetailType } from "../../types/common.type";
@@ -29,4 +30,10 @@ export interface MyBookingInitialState {
   waitingPayment: MyBookingType[] | null;
   reserved: MyBookingType[] | null;
   done: MyBookingType[] | null;
+}
+
+export interface BookingInitialState {
+  courtDetail: CourtDetail | null;
+  scheduleTime: BookingType[] | null;
+  cart: BookingType[] | null;
 }

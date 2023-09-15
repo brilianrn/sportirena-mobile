@@ -10,3 +10,7 @@ export const SET_FACILITY_TYPE = "SET_FACILITY_TYPE";
 export const SET_WAITING_PAYMENT = "SET_WAITING_PAYMENT";
 export const SET_RESERVED = "SET_RESERVED";
 export const SET_DONE = "SET_DONE";
+
+export const SET_COURT_DETAIL = "SET_COURT_DETAIL";
+export const SET_SCHEDULE_TIME = "SET_SCHEDULE_TIME";
+export const SET_CART = "SET_CART";

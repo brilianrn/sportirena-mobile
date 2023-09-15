@@ -1,4 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -9,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import {
   IconInformation,
@@ -17,10 +20,14 @@ import {
   IconToilet,
   IconWifi,
 } from "../../assets/images";
+import Button from "../../components/Button";
 import Image from "../../components/Image";
 import { InputDate, InputRadio, InputSelect } from "../../components/Input";
 import Layout from "../../components/Layout";
-import { venuePath } from "../../constants";
+import { paymentPath, venueDetailPath } from "../../constants";
+import { useBooking } from "../../hooks/useBooking";
+import { setCart, setScheduleTime } from "../../store/actions/booking.action";
+import { IRootState } from "../../store/reducers";
 import {
   Global,
   colorBrown,
@@ -33,50 +40,73 @@ import CardFacilityType from "../Home/FacilityType/Card";
 import HomeStyle from "../Home/Home.style";
 import BookingStyle from "./Booking.style";
 import { BookingType } from "./Booking.type";
-import Button from "../../components/Button";
 
 const Booking = () => {
   /* Local State */
   const [dataSource, setDataSource] = useState<BookingType[]>();
 
+  /* Router */
+  const { navigate } = useNavigation();
+
+  /* Redux */
+  const dispatch = useDispatch();
+  const { courtDetail, scheduleTime } = useSelector(
+    (state: IRootState) => state.booking
+  );
+
+  /* Hooks */
+  const { fetchScheduleTime } = useBooking();
+
   const validationSchema = Yup.object().shape({
     bookingType: Yup.string().required("Booking type required"),
     repeatType: Yup.string().required("Repeat type required"),
-    untilDate: Yup.date().notRequired(),
+    every: Yup.string().notRequired(),
+    untilDate: Yup.date().required("Until date required"),
   });
 
   const {
     control,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting, isValid, defaultValues },
+    watch,
+    formState: { errors },
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(validationSchema),
   });
 
   useEffect(() => {
-    let items: BookingType[] = Array.apply(null, Array(60)).map((v, i) => {
-      return {
-        id: "505ae2d5-ab50-4713-9e59-5d357cbd0cc0" + i,
-        idRelation: "0c8a4d15-8631-4781-a7a2-eeeed611f283",
-        day: "THURSDAY",
-        startTime: "06.00",
-        endTime: "07.00",
-        startEndTime: "06000700",
-        startTimeOri: "06:00",
-        status: true,
-        statusBook:
-          i % 2 === 0 && i !== 2
-            ? "AVAILABLE"
-            : i === 2
-            ? "APPROVED"
-            : "WAITING_FOR_PAYMENT",
-        price: 60000,
-      };
-    });
-    setDataSource(items);
-  }, []);
+    if (!courtDetail) navigate(venueDetailPath as never);
+  }, [courtDetail]);
+
+  useEffect(() => {
+    if (
+      courtDetail?.id &&
+      watch("bookingType") &&
+      watch("repeatType") &&
+      watch("untilDate")
+    ) {
+      fetchScheduleTime(
+        courtDetail?.id,
+        watch("untilDate")?.toString() as string
+      );
+    } else {
+      dispatch(setScheduleTime(undefined));
+    }
+  }, [
+    courtDetail,
+    watch("bookingType"),
+    watch("repeatType"),
+    watch("untilDate"),
+  ]);
+
+  useEffect(() => {
+    setDataSource(
+      scheduleTime?.map((e: BookingType) => ({
+        ...e,
+        isOldCard: e.statusBook === "CART",
+        isChecked: true,
+      }))
+    );
+  }, [scheduleTime]);
 
   const onChooseCard = (id: string) => {
     setDataSource(
@@ -91,16 +121,36 @@ const Booking = () => {
       })
     );
   };
+
+  const onSubmit = () => {
+    dispatch(
+      setCart(
+        dataSource
+          ?.filter(
+            (e) => e.statusBook === "SELECTED" || e.statusBook === "CART"
+          )
+          .map((e) => ({
+            ...e,
+            date: moment(watch("untilDate")).format("yyyy-MM-DD"),
+            openHoursId: e.id,
+            courtId: courtDetail?.id,
+            venueId: courtDetail?.idVenue,
+          }))
+      )
+    );
+    navigate(paymentPath as never);
+  };
   return (
     <React.Fragment>
       <Layout
         useTopBar
         isSearchBar={false}
-        label="Booking Lapangan Tennis Puri Indah"
-        backHref={venuePath}
+        label={courtDetail?.courtName}
+        backHref={venueDetailPath}
       >
         <Image
-          src="https://liga.tennis/public/cache/images/2/7/6/2/3/fd22b57f2195a328230ec31388a9552e_1920_5760.jpg"
+          useBaseUrl
+          src={`${courtDetail?.pathName}/${courtDetail?.imageName}`}
           style={[HomeStyle.banner, { height: 182 }]}
         />
         <Text
@@ -109,7 +159,7 @@ const Booking = () => {
             { marginBottom: 15, color: colorPrimary.default },
           ]}
         >
-          Lapangan #1
+          {courtDetail?.courtName}
         </Text>
         <View style={[Global.justifyBetween]}>
           <View
@@ -138,7 +188,7 @@ const Booking = () => {
                 fontWeight: "600",
               }}
             >
-              Rp 50.000,-
+              Rp {IDRFormat(courtDetail?.min)},-
             </Text>
           </View>
         </View>
@@ -151,11 +201,12 @@ const Booking = () => {
             marginBottom: 8,
           }}
         >
-          Lapangan Tennis Puri Indah is a standard outdoor sports arena that is
-          located at Jl. Kembang Indah III. There are 5 private tennis court is
-          already using international standard.
+          {courtDetail?.description}
         </Text>
-        <CardFacilityType titile="Tennis" icon={IconTennisBall} />
+        <CardFacilityType
+          titile={courtDetail?.facility}
+          icon={IconTennisBall}
+        />
         <View
           style={[
             Global.justifyEnd,
@@ -200,6 +251,25 @@ const Booking = () => {
             ]}
           />
         </View>
+        {watch("repeatType") === "weekly" && (
+          <InputSelect
+            placeholder="Select Day"
+            style={{ marginBottom: 15 }}
+            label="Every"
+            control={control}
+            name="every"
+            errorMessage={errors.every?.message}
+            options={[
+              "SENIN",
+              "SELASA",
+              "RABU",
+              "KAMIS",
+              "JUM`AT",
+              "SABTU",
+              "MINGGU",
+            ]}
+          />
+        )}
         <InputDate
           label="Until"
           placeholder="DD-MMM-YYYY"
@@ -220,119 +290,150 @@ const Booking = () => {
           ]}
         >
           <Text style={{ fontWeight: "bold" }}>Search: </Text>
-          <Text>{"Booking Lapangan > One Time > 16 October 2022"}</Text>
+          <Text>
+            {watch("bookingType") && (
+              <Text>{`${watch("bookingType")} > `}</Text>
+            )}
+            {watch("repeatType") && (
+              <Text>{`${watch("repeatType").toUpperCase()} > `}</Text>
+            )}
+            {watch("untilDate") && (
+              <Text>{`${moment(watch("untilDate")).format(
+                "DD MMM YYYY"
+              )}`}</Text>
+            )}
+          </Text>
         </Text>
-        <SafeAreaView
-          style={{
-            flex: 1,
-            justifyContent: "center",
-          }}
-        >
-          <FlatList
-            data={dataSource}
-            renderItem={({ item, index }) => (
-              <TouchableOpacity
-                onPress={() =>
-                  (item.statusBook === "AVAILABLE" ||
-                    item.statusBook === "SELECTED") &&
-                  onChooseCard(item.id)
-                }
-                style={[
-                  BookingStyle[
-                    item.statusBook === "AVAILABLE"
-                      ? "cardAvailable"
-                      : item.statusBook === "SELECTED"
-                      ? "cardSelected"
-                      : item.statusBook === "WAITING_FOR_PAYMENT"
-                      ? "cardWaitingPayment"
-                      : item.statusBook === "APPROVED" ||
-                        item.statusBook === "WAITING_FOR_APPROVED"
-                      ? "cardReserved"
-                      : ""
-                  ],
-                  {
-                    flex: 1,
-                    flexDirection: "column",
-                    margin: 4,
-                    width: 100,
-                    height: 92,
-                    position: "relative",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    padding: 10,
-                  },
-                ]}
-                key={index}
-              >
-                <View
+        {dataSource?.length ? (
+          <SafeAreaView
+            style={{
+              flex: 1,
+              justifyContent: "center",
+            }}
+          >
+            <FlatList
+              data={dataSource}
+              renderItem={({ item, index }) => (
+                <TouchableOpacity
+                  onPress={() =>
+                    (item.statusBook === "AVAILABLE" ||
+                      item.statusBook === "SELECTED" ||
+                      item.statusBook === "CART") &&
+                    onChooseCard(item.id)
+                  }
                   style={[
                     BookingStyle[
                       item.statusBook === "AVAILABLE"
-                        ? "bubbleAvailable"
-                        : item.statusBook === "SELECTED"
-                        ? "bubbleSelected"
+                        ? "cardAvailable"
+                        : item.statusBook === "SELECTED" ||
+                          item.statusBook === "CART"
+                        ? "cardSelected"
                         : item.statusBook === "WAITING_FOR_PAYMENT"
-                        ? "bubbleWaitingPayement"
+                        ? "cardWaitingPayment"
                         : item.statusBook === "APPROVED" ||
                           item.statusBook === "WAITING_FOR_APPROVED"
-                        ? "bubbleReserved"
+                        ? "cardReserved"
                         : ""
                     ],
-                    { position: "absolute", right: 6.5, top: 6.5 },
+                    {
+                      flexDirection: "column",
+                      marginVertical: 2,
+                      marginHorizontal: 2,
+                      width: 100,
+                      height: 92,
+                      position: "relative",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      padding: 10,
+                    },
                   ]}
-                />
-                <Text
-                  style={{
-                    fontSize: 10,
-                    color:
-                      item.statusBook === "WAITING_FOR_PAYMENT"
-                        ? "#FBAD60"
-                        : item.statusBook === "APPROVED" ||
-                          item.statusBook === "WAITING_FOR_APPROVED"
-                        ? "#FF8383"
-                        : colorPrimary.default,
-                  }}
+                  key={index}
                 >
-                  {item.startTime} - {item.endTime}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 11,
-                    marginVertical: 2,
-                    fontWeight: "600",
-                    color:
-                      item.statusBook === "WAITING_FOR_PAYMENT"
-                        ? "#FBAD60"
-                        : item.statusBook === "APPROVED" ||
-                          item.statusBook === "WAITING_FOR_APPROVED"
-                        ? "#FF8383"
-                        : colorPrimary.default,
-                  }}
-                >
-                  Rp {IDRFormat(item.price)}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 9,
-                    textAlign: "center",
-                    color:
-                      item.statusBook === "WAITING_FOR_PAYMENT"
-                        ? "#FBAD60"
-                        : item.statusBook === "APPROVED" ||
-                          item.statusBook === "WAITING_FOR_APPROVED"
-                        ? "#FF8383"
-                        : colorPrimary.default,
-                  }}
-                >
-                  {item.statusBook}
-                </Text>
-              </TouchableOpacity>
-            )}
-            numColumns={3}
-          />
-        </SafeAreaView>
+                  <View
+                    style={[
+                      BookingStyle[
+                        item.statusBook === "AVAILABLE"
+                          ? "bubbleAvailable"
+                          : item.statusBook === "SELECTED" ||
+                            item.statusBook === "CART"
+                          ? "bubbleSelected"
+                          : item.statusBook === "WAITING_FOR_PAYMENT"
+                          ? "bubbleWaitingPayement"
+                          : item.statusBook === "APPROVED" ||
+                            item.statusBook === "WAITING_FOR_APPROVED"
+                          ? "bubbleReserved"
+                          : ""
+                      ],
+                      { position: "absolute", right: 6.5, top: 6.5 },
+                    ]}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      color:
+                        item.statusBook === "WAITING_FOR_PAYMENT"
+                          ? "#FBAD60"
+                          : item.statusBook === "APPROVED" ||
+                            item.statusBook === "WAITING_FOR_APPROVED"
+                          ? "#FF8383"
+                          : colorPrimary.default,
+                    }}
+                  >
+                    {item.startTime} - {item.endTime}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      marginVertical: 2,
+                      fontWeight: "600",
+                      color:
+                        item.statusBook === "WAITING_FOR_PAYMENT"
+                          ? "#FBAD60"
+                          : item.statusBook === "APPROVED" ||
+                            item.statusBook === "WAITING_FOR_APPROVED"
+                          ? "#FF8383"
+                          : colorPrimary.default,
+                    }}
+                  >
+                    Rp {IDRFormat(item.price)}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 9,
+                      textAlign: "center",
+                      color:
+                        item.statusBook === "WAITING_FOR_PAYMENT"
+                          ? "#FBAD60"
+                          : item.statusBook === "APPROVED" ||
+                            item.statusBook === "WAITING_FOR_APPROVED"
+                          ? "#FF8383"
+                          : colorPrimary.default,
+                    }}
+                  >
+                    {item.statusBook}
+                  </Text>
+                </TouchableOpacity>
+              )}
+              numColumns={3}
+            />
+          </SafeAreaView>
+        ) : (
+          <Text
+            style={{
+              textAlign: "center",
+              marginTop: 50,
+              fontSize: 12,
+              color: colorDark.default,
+              fontStyle: "italic",
+            }}
+          >
+            -- Data not found --
+          </Text>
+        )}
       </Layout>
-      {dataSource?.filter((e) => e.statusBook === "SELECTED")?.length ? (
+      {dataSource?.filter(
+        (e) => e.statusBook === "SELECTED" || e.statusBook === "CART"
+      )?.length ? (
         <View style={[Global.justifyBetween, BookingStyle.cardTotalHour]}>
           <Text
             style={{
@@ -346,7 +447,9 @@ const Booking = () => {
               {" "}
               •{" "}
               {dataSource
-                ?.filter((e) => e.statusBook === "SELECTED")
+                ?.filter(
+                  (e) => e.statusBook === "SELECTED" || e.statusBook === "CART"
+                )
                 ?.length?.toString()}{" "}
               Hours
             </Text>
@@ -355,7 +458,7 @@ const Booking = () => {
             label="Check Out"
             type="primary"
             btnType="button"
-            onClick={console.log}
+            onClick={onSubmit}
             size="sm"
           />
         </View>

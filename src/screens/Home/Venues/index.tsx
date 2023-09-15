@@ -1,4 +1,5 @@
-import React, { FC, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import React, { FC } from "react";
 import {
   Image,
   SafeAreaView,
@@ -8,12 +9,11 @@ import {
 } from "react-native";
 import Carousel from "react-native-snap-carousel";
 import { IconArrowChevron } from "../../../assets/images";
-import { Global, colorPrimary } from "../../../styles/Global.style";
-import Card from "./Card";
-import { VenuesProps } from "../Home.type";
-import { VenueType } from "../../../types/venue.type";
-import { useNavigation } from "@react-navigation/native";
 import { venuePath } from "../../../constants";
+import { Global, colorPrimary } from "../../../styles/Global.style";
+import { VenueType } from "../../../types/venue.type";
+import { VenuesProps } from "../Home.type";
+import Card from "./Card";
 
 const Venues: FC<VenuesProps> = ({ data }) => {
   /* Router */

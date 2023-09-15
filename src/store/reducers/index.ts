@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { combineReducers } from "redux";
+import bookingReducer from "./booking.reducer";
 import dashboardReducer from "./dashboard.reducer";
 import myBookingReducer from "./mybooking.reducer";
 import userReducer from "./user.reducer";
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   dashboard: dashboardReducer,
   myBooking: myBookingReducer,
+  booking: bookingReducer,
 });
 
 export default rootReducer;

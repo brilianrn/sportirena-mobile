@@ -5,6 +5,7 @@ export interface BookingType {
     | "APPROVED"
     | "WAITING_FOR_PAYMENT"
     | "SELECTED"
+    | "CART"
     | "AVAILABLE";
   id: string;
   idRelation: string;
@@ -15,4 +16,25 @@ export interface BookingType {
   startTimeOri: string;
   status: boolean;
   price: number;
+  venueId?: string;
+  courtId?: string;
+  openHoursId?: string;
+  date?: string;
+  customerId?: string;
+  isOldCard?: boolean;
+  isChecked?: boolean;
+}
+
+export interface CourtDetail {
+  id: string;
+  idVenue: string;
+  courtName: string;
+  facilityId: string;
+  facility: string;
+  description: string;
+  min: number;
+  max: number;
+  linkUrl: string;
+  pathName: string;
+  imageName: string;
 }

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colorBlue, colorGray, fontFamily } from "../../styles/Global.style";
+import { colorBlue, colorGray } from "../../styles/Global.style";
 
 const LoginStyle = StyleSheet.create({
   container: {
@@ -11,14 +11,14 @@ const LoginStyle = StyleSheet.create({
     paddingTop: 30,
   },
   greeting: {
-    fontFamily,
+    // fontFamily,
     fontSize: 14,
     fontWeight: "600",
     color: "#1E1E1E",
   },
   title: {
     color: colorGray[500],
-    fontFamily,
+    // fontFamily,
     fontSize: 12,
     fontWeight: "400",
     marginTop: 6,
