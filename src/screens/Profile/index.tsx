@@ -1,16 +1,23 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Text, View, Image as ImageRN, TouchableOpacity } from "react-native";
 import Button from "../../components/Button";
 import Image from "../../components/Image";
 import Layout from "../../components/Layout";
 import { loginPath } from "../../constants";
-import { Global } from "../../styles/Global.style";
+import { Global, colorPrimary } from "../../styles/Global.style";
 import {
   removeLocalStorageItem,
   retrieveLocalStorageItem,
 } from "../../utils/localStorage";
 import { UserDetailType } from "../../types/common.type";
+import {
+  IconProfileChangePassword,
+  IconProfileHelp,
+  IconProfilePrivacy,
+  IconProfileRateUs,
+  IconProfileTnc,
+} from "../../assets/images";
 
 const Profile = () => {
   /* Local State */
@@ -53,6 +60,7 @@ const Profile = () => {
               padding: 34,
               gap: 28,
               alignItems: "center",
+              marginBottom: 40,
             },
           ]}
         >
@@ -76,11 +84,85 @@ const Profile = () => {
             />
           </View>
         </View>
+        <TouchableOpacity
+          style={[Global.justifyStart, { gap: 19, marginBottom: 40 }]}
+        >
+          <ImageRN source={IconProfileChangePassword} />
+          <Text
+            style={{
+              fontSize: 14,
+              color: colorPrimary.default,
+              fontWeight: "500",
+              marginTop: 3,
+            }}
+          >
+            Ubah Password
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[Global.justifyStart, { gap: 19, marginBottom: 40 }]}
+        >
+          <ImageRN source={IconProfileHelp} />
+          <Text
+            style={{
+              fontSize: 14,
+              color: colorPrimary.default,
+              fontWeight: "500",
+              marginTop: 3,
+            }}
+          >
+            Bantuan
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[Global.justifyStart, { gap: 19, marginBottom: 40 }]}
+        >
+          <ImageRN source={IconProfileTnc} />
+          <Text
+            style={{
+              fontSize: 14,
+              color: colorPrimary.default,
+              fontWeight: "500",
+              marginTop: 3,
+            }}
+          >
+            Terms and Conditions
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[Global.justifyStart, { gap: 19, marginBottom: 40 }]}
+        >
+          <ImageRN source={IconProfilePrivacy} />
+          <Text
+            style={{
+              fontSize: 14,
+              color: colorPrimary.default,
+              fontWeight: "500",
+              marginTop: 3,
+            }}
+          >
+            Privacy Policy
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[Global.justifyStart, { gap: 19, marginBottom: 40 }]}
+        >
+          <ImageRN source={IconProfileRateUs} />
+          <Text
+            style={{
+              fontSize: 14,
+              color: colorPrimary.default,
+              fontWeight: "500",
+              marginTop: 3,
+            }}
+          >
+            Rate Us
+          </Text>
+        </TouchableOpacity>
         <Button
           label="Logout"
           btnType="button"
           type="primary"
-          style={{ marginTop: 47 }}
           onClick={logout}
         />
       </Layout>

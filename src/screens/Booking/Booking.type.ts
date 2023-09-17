@@ -20,6 +20,7 @@ export interface BookingType {
   courtId?: string;
   openHoursId?: string;
   date?: string;
+  bookDate?: string;
   customerId?: string;
   isOldCard?: boolean;
   isChecked?: boolean;

@@ -3,6 +3,9 @@ import api from "./api";
 import { ResponseREST } from "./response";
 
 export interface BodyCreateBooking {
+  toBankName?: string;
+  toBankAccountHolder?: string;
+  toBankAccountNumber?: string;
   data: BookingType[];
 }
 

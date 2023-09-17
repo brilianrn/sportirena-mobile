@@ -4,21 +4,17 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Image as ImageRN, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import { IconArrowChevron, IconTrashRed } from "../../assets/images";
+import Button from "../../components/Button";
 import Image from "../../components/Image";
 import { InputCheckbox } from "../../components/Input";
 import Layout from "../../components/Layout";
 import { bookingName } from "../../constants";
 import { IRootState } from "../../store/reducers";
-import {
-  Global,
-  colorDark,
-  colorGray,
-  colorPrimary,
-} from "../../styles/Global.style";
-import { BookingType } from "../Booking/Booking.type";
-import BookingStyle from "../Booking/Booking.style";
-import Button from "../../components/Button";
+import { Global, colorGray, colorPrimary } from "../../styles/Global.style";
 import { IDRFormat } from "../../utils/formattor";
+import BookingStyle from "../Booking/Booking.style";
+import { BookingType } from "../Booking/Booking.type";
+import { useBooking } from "../../hooks/useBooking";
 
 const Payment = () => {
   /* Local State */
@@ -32,8 +28,14 @@ const Payment = () => {
   /* Router */
   const { navigate } = useNavigation();
 
+  /* Hooks */
+  const { createBooking, isLoading } = useBooking();
+
   useEffect(() => {
-    if (cart) setDataSource(cart);
+    if (cart)
+      setDataSource(
+        cart.map((e: BookingType) => ({ ...e, bookDate: e?.date }))
+      );
     else navigate(bookingName as never);
   }, [cart, setDataSource]);
 
@@ -149,7 +151,16 @@ const Payment = () => {
             </View>
           ))
         ) : (
-          <Text style={{ textAlign: "center" }}>-- Data not found --</Text>
+          <Text
+            style={{
+              textAlign: "center",
+              marginTop: 20,
+              fontStyle: "italic",
+              fontSize: 12,
+            }}
+          >
+            -- Data not found --
+          </Text>
         )}
         <View
           style={{
@@ -211,8 +222,9 @@ const Payment = () => {
             label="Payment"
             type="primary"
             btnType="button"
-            onClick={console.log}
+            onClick={() => createBooking({ data: dataSource })}
             size="sm"
+            isSubmit={isLoading}
           />
         </View>
       ) : null}
