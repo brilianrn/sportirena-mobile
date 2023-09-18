@@ -1,11 +1,6 @@
 import React, { FC } from "react";
-import {
-  Image,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
+import SafeAreaView from "react-native-safe-area-view";
 import CarouselCourt from "react-native-snap-carousel";
 import { IconArrowChevron } from "../../../assets/images";
 import { Global, colorPrimary } from "../../../styles/Global.style";

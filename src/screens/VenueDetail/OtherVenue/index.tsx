@@ -1,18 +1,13 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  SafeAreaView,
-  Image,
-} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import React, { FC } from "react";
-import { Global, colorPrimary } from "../../../styles/Global.style";
+import { Image, Text, TouchableOpacity, View } from "react-native";
+import SafeAreaView from "react-native-safe-area-view";
 import CarouselCourt from "react-native-snap-carousel";
 import { IconArrowChevron } from "../../../assets/images";
-import OtherVenueCard from "./Card";
-import { VenueType } from "../../../types/venue.type";
-import { useNavigation } from "@react-navigation/native";
 import { venuePath } from "../../../constants";
+import { Global, colorPrimary } from "../../../styles/Global.style";
+import { VenueType } from "../../../types/venue.type";
+import OtherVenueCard from "./Card";
 
 const OtherVenue: FC<{ data: VenueType[] }> = ({ data }) => {
   /* Router */

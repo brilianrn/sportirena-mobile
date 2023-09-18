@@ -6,11 +6,11 @@ import { useForm } from "react-hook-form";
 import {
   FlatList,
   Image as ImageRN,
-  SafeAreaView,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import SafeAreaView from "react-native-safe-area-view";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import {

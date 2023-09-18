@@ -1,12 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { FC } from "react";
-import {
-  Image,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
+import SafeAreaView from "react-native-safe-area-view";
 import Carousel from "react-native-snap-carousel";
 import { IconArrowChevron } from "../../../assets/images";
 import { venuePath } from "../../../constants";
