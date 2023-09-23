@@ -134,7 +134,7 @@ const Register = ({ navigation }: any) => {
             name="password"
             placeholder="Insert password"
             label="Password"
-            type="visible-password"
+            type="default"
             secureTextEntry={!showPassword}
             errorMessage={errors?.password?.message?.toString()}
             icon={!showPassword ? IconEye : IconEyeOff}
@@ -147,7 +147,7 @@ const Register = ({ navigation }: any) => {
             name="confirmPassword"
             placeholder="Retype your password"
             label="Confirm Password"
-            type="visible-password"
+            type="default"
             secureTextEntry={!showConfirmPassword}
             errorMessage={errors?.confirmPassword?.message?.toString()}
             icon={!showConfirmPassword ? IconEye : IconEyeOff}

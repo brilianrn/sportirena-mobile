@@ -1,12 +1,11 @@
 import React, { FC } from "react";
-import { Text, View } from "react-native";
+import { ScrollView, Text } from "react-native";
 import {
   IconBasketBall,
   IconPool,
   IconSoccer,
   IconTennisBall,
 } from "../../../assets/images";
-import { Global } from "../../../styles/Global.style";
 import { FacilityTypeName } from "../../../types/common.type";
 import HomeStyle from "../Home.style";
 import { FacilityTypeProps } from "../Home.type";
@@ -34,7 +33,7 @@ const FacilityType: FC<FacilityTypeProps> = ({ data }) => {
           <Text style={[HomeStyle.titleHome, { marginBottom: 15 }]}>
             Facility Type
           </Text>
-          <View style={[Global.justifyStart, { gap: 15 }]}>
+          <ScrollView horizontal style={{ gap: 100, display: "flex" }}>
             {data.map((e) => (
               <CardFacilityType
                 titile={e.typeName}
@@ -42,7 +41,7 @@ const FacilityType: FC<FacilityTypeProps> = ({ data }) => {
                 key={e.id}
               />
             ))}
-          </View>
+          </ScrollView>
         </>
       ) : null}
     </React.Fragment>

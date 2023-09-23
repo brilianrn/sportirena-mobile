@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colorGray, colorPrimary } from "../../styles/Global.style";
+import { colorGray } from "../../styles/Global.style";
 
 const HomeStyle = StyleSheet.create({
   titleHome: {
@@ -15,6 +15,7 @@ const HomeStyle = StyleSheet.create({
   },
   cardOuterFacilityType: {
     width: 65,
+    margin: 5,
   },
   cardInnerFacilityType: {
     borderRadius: 10,

@@ -39,19 +39,19 @@ const Home = () => {
   return (
     <Layout useBottomBar isSearchBar={false}>
       <View>
-        {userDetail && (
-          <View style={Global.justifyBetween}>
-            <View>
-              <Text style={HomeStyle.titleHome}>
-                Selamat Datang di Sportirena,
-              </Text>
+        <View style={Global.justifyBetween}>
+          <View>
+            <Text style={HomeStyle.titleHome}>
+              Selamat Datang di Sportirena{userDetail && ","}
+            </Text>
+            {userDetail && (
               <Text style={[HomeStyle.titleHome, { marginTop: 5 }]}>
                 {userDetail?.name}
               </Text>
-            </View>
-            <Image source={IconNotification} alt="notif" />
+            )}
           </View>
-        )}
+          <Image source={IconNotification} alt="notif" />
+        </View>
         <Image
           source={{
             uri: "https://liga.tennis/public/cache/images/2/7/6/2/3/fd22b57f2195a328230ec31388a9552e_1920_5760.jpg",

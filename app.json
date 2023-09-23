@@ -11,23 +11,26 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.brilianrn.customermobile"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.brilianrn11.customermobile"
+      "package": "com.brilianrn.customermobile"
     },
     "web": {
       "favicon": "./src/assets/images/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "a276bc12-b97d-4e9a-86c3-ddc0d516957b"
+        "projectId": "c95801f2-6273-40f8-95c5-442833cb6101"
       }
     }
   }

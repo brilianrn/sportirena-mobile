@@ -62,6 +62,7 @@ const InputText: FC<InputTextProps> = ({
                 keyboardType={type}
                 placeholder={placeholder}
                 secureTextEntry={secureTextEntry}
+                autoCapitalize="none"
               />
             )}
             name={name as string}
@@ -75,6 +76,7 @@ const InputText: FC<InputTextProps> = ({
             keyboardType={type}
             placeholder={placeholder}
             secureTextEntry={secureTextEntry}
+            autoCapitalize="none"
           />
         )}
         {icon &&
