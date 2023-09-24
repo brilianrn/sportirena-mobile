@@ -27,12 +27,12 @@ const Home = () => {
 
   useEffect(() => {
     (async () => {
-      await Promise.all([
+      const [dataUser] = await Promise.all([
+        retrieveLocalStorageItem("userInfo"),
         fetchFalicityType(),
         fetchVenues({ page: 1, pageSize: 10 }),
       ]);
-      const data = await retrieveLocalStorageItem("userInfo");
-      const dataParse = JSON.parse(data as string);
+      const dataParse = JSON.parse(dataUser as string);
       setUserDetail(dataParse);
     })();
   }, [retrieveLocalStorageItem]);

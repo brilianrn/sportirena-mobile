@@ -1,16 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Text, View, Image as ImageRN, TouchableOpacity } from "react-native";
-import Button from "../../components/Button";
-import Image from "../../components/Image";
-import Layout from "../../components/Layout";
-import { loginPath } from "../../constants";
-import { Global, colorPrimary } from "../../styles/Global.style";
-import {
-  removeLocalStorageItem,
-  retrieveLocalStorageItem,
-} from "../../utils/localStorage";
-import { UserDetailType } from "../../types/common.type";
+import { Image as ImageRN, Text, TouchableOpacity, View } from "react-native";
 import {
   IconProfileChangePassword,
   IconProfileHelp,
@@ -18,13 +7,20 @@ import {
   IconProfileRateUs,
   IconProfileTnc,
 } from "../../assets/images";
+import Button from "../../components/Button";
+import Image from "../../components/Image";
+import Layout from "../../components/Layout";
+import { loginPath } from "../../constants";
+import { Global, colorPrimary } from "../../styles/Global.style";
+import { UserDetailType } from "../../types/common.type";
+import {
+  removeLocalStorageItem,
+  retrieveLocalStorageItem,
+} from "../../utils/localStorage";
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
   /* Local State */
   const [userDetail, setUserDetail] = useState<UserDetailType>();
-
-  /* Router */
-  const { navigate } = useNavigation();
 
   useEffect(() => {
     (async () => {
@@ -34,7 +30,7 @@ const Profile = () => {
       ]);
       setUserDetail(user ? JSON.parse(user as string) : undefined);
       if (!token || !user) {
-        navigate(loginPath as never);
+        navigation.replace(loginPath);
       }
     })();
   }, [retrieveLocalStorageItem]);
@@ -45,7 +41,7 @@ const Profile = () => {
       removeLocalStorageItem("userInfo"),
     ]);
     setUserDetail(undefined);
-    navigate(loginPath as never);
+    navigation.replace(loginPath);
   };
   return (
     <React.Fragment>

@@ -5,10 +5,12 @@ import { BookingStatus, OptionType } from "../../../App.type";
 import { IconMyBookingEmpty } from "../../assets/images";
 import Layout from "../../components/Layout";
 import ShowMore from "../../components/ShowMore";
+import { loginPath } from "../../constants";
 import { useMyBooking } from "../../hooks/useMyBooking";
 import { IRootState } from "../../store/reducers";
 import { colorPrimary } from "../../styles/Global.style";
 import { QueryParamMyBooking } from "../../types/common.type";
+import { retrieveLocalStorageItem } from "../../utils/localStorage";
 import CardMyBooking from "./Card";
 import { MyBookingType } from "./MyBooking.type";
 
@@ -27,7 +29,7 @@ const tabs = [
   },
 ];
 
-const MyBooking = () => {
+const MyBooking = ({ navigation }) => {
   /* Local State */
   const [activeTab, setActiveTab] = useState<OptionType>(tabs[0]);
   const [paramWP, setParamWP] = useState<QueryParamMyBooking>({
@@ -50,6 +52,18 @@ const MyBooking = () => {
 
   /* Hooks */
   const { fetchDone, fetchReserved, fetchWaitingPayment } = useMyBooking();
+
+  useEffect(() => {
+    (async () => {
+      const [token, user] = await Promise.all([
+        retrieveLocalStorageItem("accessToken"),
+        retrieveLocalStorageItem("userInfo"),
+      ]);
+      if (!token || !user) {
+        navigation.replace(loginPath);
+      }
+    })();
+  }, [retrieveLocalStorageItem]);
 
   useEffect(() => {
     switch (activeTab.value) {

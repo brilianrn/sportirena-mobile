@@ -116,7 +116,6 @@ export const useBooking = () => {
     setIsLoading(true);
     try {
       const { message, result } = await getCart(idCustomer);
-      console.log(message, result, " ---", idCustomer);
       setIsLoading(false);
       if (!result) {
         setMessage(message);

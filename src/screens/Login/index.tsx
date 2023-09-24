@@ -15,6 +15,11 @@ import {
   removeLocalStorageItem,
   retrieveLocalStorageItem,
 } from "../../utils/localStorage";
+import {
+  isIncludeCapital,
+  isIncludeNumber,
+  isIncludeSpecialChar,
+} from "../../utils/validator";
 import LoginStyle from "./Login.style";
 
 const Login = () => {
@@ -32,7 +37,16 @@ const Login = () => {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Wrong format email").required("Email required"),
-    password: Yup.string().required("Password required"),
+    password: Yup.string()
+      .required("Password required")
+      .test("password-check", "Wrong format password", (value) => {
+        return (
+          value?.length >= 8 &&
+          isIncludeNumber(value) &&
+          isIncludeCapital(value) &&
+          isIncludeSpecialChar(value)
+        );
+      }),
   });
 
   const {
@@ -112,7 +126,7 @@ const Login = () => {
             name="password"
             placeholder="Insert password"
             label="Password"
-            type="visible-password"
+            type="default"
             secureTextEntry={!showPassword}
             errorMessage={errors?.password?.message?.toString()}
             icon={!showPassword ? IconEye : IconEyeOff}

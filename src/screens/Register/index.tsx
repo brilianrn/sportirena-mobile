@@ -39,10 +39,9 @@ const Register = ({ navigation }: any) => {
       }),
     password: Yup.string()
       .required("Password required")
-      .test("password-check", "", (value) => {
+      .test("password-check", "Wrong format password", (value) => {
         return (
           value?.length >= 8 &&
-          value?.length <= 15 &&
           isIncludeNumber(value) &&
           isIncludeCapital(value) &&
           isIncludeSpecialChar(value)
@@ -52,15 +51,18 @@ const Register = ({ navigation }: any) => {
     confirmPassword: Yup.string()
       .required("Confirm password required")
       .oneOf([Yup.ref("password")], "Invalid password")
-      .test("password-check", "", (value) => {
-        return (
-          value?.length >= 8 &&
-          value?.length <= 15 &&
-          isIncludeNumber(value) &&
-          isIncludeCapital(value) &&
-          isIncludeSpecialChar(value)
-        );
-      }),
+      .test(
+        "confirm-password-check",
+        "Wrong format confirm password",
+        (value) => {
+          return (
+            value?.length >= 8 &&
+            isIncludeNumber(value) &&
+            isIncludeCapital(value) &&
+            isIncludeSpecialChar(value)
+          );
+        }
+      ),
   });
 
   const {
