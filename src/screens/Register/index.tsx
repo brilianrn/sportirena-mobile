@@ -28,7 +28,7 @@ const Register = ({ navigation }: any) => {
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .required("Name required")
-      .test("name-check", "", (value) => {
+      .test("name-check", "Name must be more than 6 character", (value) => {
         return value?.length >= 6;
       }),
     email: Yup.string().email("Wrong format email").required("Email required"),
@@ -37,32 +37,11 @@ const Register = ({ navigation }: any) => {
       .test("isPhone", "Invalid phone number", (value) => {
         return !isPhone(value) ? false : true;
       }),
-    password: Yup.string()
-      .required("Password required")
-      .test("password-check", "Wrong format password", (value) => {
-        return (
-          value?.length >= 8 &&
-          isIncludeNumber(value) &&
-          isIncludeCapital(value) &&
-          isIncludeSpecialChar(value)
-        );
-      }),
+    password: Yup.string().required("Password required"),
     gender: Yup.string().required("Gender required").default("Male"),
     confirmPassword: Yup.string()
       .required("Confirm password required")
-      .oneOf([Yup.ref("password")], "Invalid password")
-      .test(
-        "confirm-password-check",
-        "Wrong format confirm password",
-        (value) => {
-          return (
-            value?.length >= 8 &&
-            isIncludeNumber(value) &&
-            isIncludeCapital(value) &&
-            isIncludeSpecialChar(value)
-          );
-        }
-      ),
+      .oneOf([Yup.ref("password")], "Invalid password"),
   });
 
   const {

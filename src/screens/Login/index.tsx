@@ -37,16 +37,7 @@ const Login = () => {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Wrong format email").required("Email required"),
-    password: Yup.string()
-      .required("Password required")
-      .test("password-check", "Wrong format password", (value) => {
-        return (
-          value?.length >= 8 &&
-          isIncludeNumber(value) &&
-          isIncludeCapital(value) &&
-          isIncludeSpecialChar(value)
-        );
-      }),
+    password: Yup.string().required("Password required"),
   });
 
   const {

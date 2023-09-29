@@ -18,6 +18,7 @@ export interface FacilityType {
 
 export interface FacilityTypeProps extends PageComponent {
   data?: FacilityType[];
+  useTitle?: boolean;
 }
 
 export interface VenuesProps extends PageComponent {
