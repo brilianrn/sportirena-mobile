@@ -17,6 +17,7 @@ export interface TopBarProps {
   placeholderSearch?: string;
   search?: string;
   setSearch?: (value: string) => void;
+  onClickSetting?: () => void;
   label?: string;
   backHref?: string;
 }

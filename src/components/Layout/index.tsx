@@ -20,6 +20,7 @@ const Layout: FC<LayoutProps> = ({
   setActiveTab,
   tabs,
   isFixedTopBar,
+  onClickSetting,
 }) => {
   return (
     <View style={{ flex: 1 }}>
@@ -56,6 +57,7 @@ const Layout: FC<LayoutProps> = ({
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             tabs={tabs}
+            onClickSetting={onClickSetting}
           />
         )}
         <View style={[LoginStyle.container, { minHeight: 900 }]}>

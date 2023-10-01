@@ -12,7 +12,9 @@ import HomeStyle from "../Home.style";
 const HowItWork = () => {
   return (
     <React.Fragment>
-      <Text style={[HomeStyle.titleHome, { marginTop: 30 }]}>How it work?</Text>
+      <Text style={[HomeStyle.titleHome, { marginTop: 30 }]}>
+        Bagaimana caranya?
+      </Text>
       <View
         style={[
           HomeStyle.howItWorkCard,
@@ -22,7 +24,8 @@ const HowItWork = () => {
       >
         <Image source={IconBasketFieldActive} style={{ marginTop: 2 }} />
         <Text style={HomeStyle.howItWorkText}>
-          Search the right sport venue and courts for your sport activity.
+          Cari tempat olahraga dan lapangan yang tepat untuk aktivitas olahraga
+          Anda.
         </Text>
       </View>
       <View
@@ -34,8 +37,8 @@ const HowItWork = () => {
       >
         <Image source={IconCalendarTimeActive} style={{ marginTop: 2 }} />
         <Text style={HomeStyle.howItWorkText}>
-          Pick date and time that is match with your sport schedule and then
-          book.
+          Pilih tanggal dan waktu yang sesuai dengan jadwal olahraga Anda, lalu
+          pesan.
         </Text>
       </View>
       <View
@@ -47,7 +50,8 @@ const HowItWork = () => {
       >
         <Image source={IconAtmCardActive} style={{ marginTop: 2 }} />
         <Text style={HomeStyle.howItWorkText}>
-          Pay for your booking only with one click with your device.
+          Bayar pemesanan Anda hanya dengan satu klik saja melalui perangkat
+          yang Anda miliki.
         </Text>
       </View>
       <View
@@ -59,7 +63,8 @@ const HowItWork = () => {
       >
         <Image source={IconManRunActive} style={{ marginTop: 2 }} />
         <Text style={HomeStyle.howItWorkText}>
-          Show up on time and have a wonderful sport journey with us!
+          Datang dan nikmatilah perjalanan olahraga yang luar biasa bersama
+          kami!
         </Text>
       </View>
     </React.Fragment>

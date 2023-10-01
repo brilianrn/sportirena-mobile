@@ -1,13 +1,18 @@
+import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { useDispatch } from "react-redux";
 import { ToastPosition, ToastType } from "../../App.type";
-import { useNavigation } from "@react-navigation/native";
 import { venueDetailPath } from "../constants";
-import { setVenueCourt, setVenueDetail } from "../store/actions/venue.action";
-import { QueryParamVenueCourt, VenueType } from "../types/venue.type";
-import { FacilityType } from "../screens/Home/Home.type";
+import { getProvinces } from "../core/GET_Provinces";
 import { getVenueCourts } from "../core/GET_VenueCourts";
+import { FacilityType } from "../screens/Home/Home.type";
+import {
+  setProvinces,
+  setVenueCourt,
+  setVenueDetail,
+} from "../store/actions/venue.action";
+import { QueryParamVenueCourt, VenueType } from "../types/venue.type";
 
 export const useVenue = () => {
   /* Local State */
@@ -87,5 +92,33 @@ export const useVenue = () => {
       return err;
     }
   };
-  return { isError, message, isLoading, fetchVenueDetail, fetchVenueCourt };
+
+  /* Provinces */
+  const fetchProvinces = async () => {
+    setIsLoading(true);
+    try {
+      const { message, result } = await getProvinces();
+      setIsLoading(false);
+      if (!result?.length) {
+        setMessage(message);
+        showToast({
+          message: "Provinces not found",
+          type: "danger",
+          placement: "bottom",
+        });
+        return setIsError(true);
+      }
+      return dispatch(setProvinces(result));
+    } catch (err) {
+      return err;
+    }
+  };
+  return {
+    isError,
+    message,
+    isLoading,
+    fetchVenueDetail,
+    fetchVenueCourt,
+    fetchProvinces,
+  };
 };

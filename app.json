@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "customer-mobile",
-    "slug": "customer-mobile",
+    "name": "Sportirena",
+    "slug": "Sportirena",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.brilianrn.customermobile"

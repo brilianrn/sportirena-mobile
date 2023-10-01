@@ -37,6 +37,7 @@ export { default as IconSearch } from "./IconSearch.png";
 export { default as IconSetting } from "./IconSetting.png";
 export { default as IconShare } from "./IconShare.png";
 export { default as IconSoccer } from "./IconSoccer.png";
+export { default as IconSportirena } from "./IconSportirena.png";
 export { default as IconTennisBall } from "./IconTennisBall.png";
 export { default as IconToilet } from "./IconToilet.png";
 export { default as IconTrashRed } from "./IconTrashRed.png";

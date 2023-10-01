@@ -36,7 +36,7 @@ const Modal: FC<ModalProps> = ({
               />
             </TouchableOpacity>
           )}
-          <Text style={ModalStyle.titleModal}>{title}</Text>
+          {title && <Text style={ModalStyle.titleModal}>{title}</Text>}
           {description && (
             <Text style={ModalStyle.descriptionModal}>{description}</Text>
           )}

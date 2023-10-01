@@ -5,7 +5,7 @@ export interface ModalProps {
   show: boolean;
   setShow: (value: boolean) => void;
   children: ReactNode;
-  title: string;
+  title?: string;
   description?: string;
   useCloseButton?: boolean;
   style?: StyleProp<ViewStyle>;

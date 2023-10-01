@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  SET_PROVINCES,
   SET_VENUE_COURT,
   SET_VENUE_DETAIL,
   SET_VENUE_LIST,
@@ -10,6 +11,7 @@ const initialState: VenueInitalState = {
   venues: null,
   venueDetail: null,
   venueCourt: null,
+  provinces: null,
 };
 
 const venueReducer = (
@@ -28,6 +30,8 @@ const venueReducer = (
       return { ...state, venueDetail: payload };
     case SET_VENUE_COURT:
       return { ...state, venueCourt: payload };
+    case SET_PROVINCES:
+      return { ...state, provinces: payload };
     default:
       return state;
   }

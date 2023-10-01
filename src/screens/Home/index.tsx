@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Image, Text, View } from "react-native";
 import { useSelector } from "react-redux";
-import { IconNotification } from "../../assets/images";
+import { IconSportirena } from "../../assets/images";
 import Layout from "../../components/Layout";
 import { useDashboard } from "../../hooks/useDashboard";
 import { IRootState } from "../../store/reducers";
@@ -38,6 +38,7 @@ const Home = () => {
   }, [retrieveLocalStorageItem]);
   return (
     <Layout useBottomBar isSearchBar={false}>
+      <Image source={IconSportirena} style={{ marginBottom: 15 }} />
       <View>
         <View style={Global.justifyBetween}>
           <View>
@@ -50,7 +51,6 @@ const Home = () => {
               </Text>
             )}
           </View>
-          <Image source={IconNotification} alt="notif" />
         </View>
         <Image
           source={{

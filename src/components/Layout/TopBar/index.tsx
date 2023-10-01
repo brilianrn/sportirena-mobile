@@ -21,6 +21,7 @@ const TopBar: FC<TopBarProps> = ({
   activeTab,
   setActiveTab,
   tabs,
+  onClickSetting,
 }) => {
   /* Navigate */
   const { navigate } = useNavigation();
@@ -46,7 +47,10 @@ const TopBar: FC<TopBarProps> = ({
               setValue={setSearch}
             />
           </View>
-          <TouchableOpacity style={{ justifyContent: "center" }}>
+          <TouchableOpacity
+            style={{ justifyContent: "center" }}
+            onPress={onClickSetting}
+          >
             <Image source={IconSetting} />
           </TouchableOpacity>
         </View>

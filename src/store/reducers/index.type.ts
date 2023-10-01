@@ -1,3 +1,4 @@
+import { OptionType } from "../../../App.type";
 import { BookingType, CourtDetail } from "../../screens/Booking/Booking.type";
 import { FacilityType } from "../../screens/Home/Home.type";
 import { MyBookingType } from "../../screens/MyBooking/MyBooking.type";
@@ -15,6 +16,7 @@ export interface VenueInitalState {
   venues: VenueType[] | null;
   venueDetail: VenueType | null;
   venueCourt: VenueCourt[] | null;
+  provinces: OptionType[] | null;
 }
 
 export interface UserInitialState {

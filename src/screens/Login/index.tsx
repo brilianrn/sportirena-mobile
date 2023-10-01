@@ -2,9 +2,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import * as Yup from "yup";
-import { IconEye, IconEyeOff, IconLogin } from "../../assets/images";
+import {
+  IconEye,
+  IconEyeOff,
+  IconLogin,
+  IconSportirena,
+} from "../../assets/images";
 import Button from "../../components/Button";
 import { InputCheckbox, InputText } from "../../components/Input";
 import Modal from "../../components/Modal";
@@ -15,11 +20,6 @@ import {
   removeLocalStorageItem,
   retrieveLocalStorageItem,
 } from "../../utils/localStorage";
-import {
-  isIncludeCapital,
-  isIncludeNumber,
-  isIncludeSpecialChar,
-} from "../../utils/validator";
 import LoginStyle from "./Login.style";
 
 const Login = () => {
@@ -100,8 +100,15 @@ const Login = () => {
               isDisable={!emailForgot}
             />
           </Modal>
-          <Text style={LoginStyle.greeting}>Welcome back!</Text>
-          <Text style={LoginStyle.title}>Login to continue.</Text>
+          <View style={Global.justifyBetween}>
+            <View>
+              <Text style={LoginStyle.greeting}>Welcome back!</Text>
+              <Text style={LoginStyle.title}>Login to continue.</Text>
+            </View>
+            <TouchableOpacity onPress={() => navigate(homePath as never)}>
+              <Image source={IconSportirena} />
+            </TouchableOpacity>
+          </View>
           <Image source={IconLogin} style={LoginStyle.iconLogin} />
           <InputText
             control={control}

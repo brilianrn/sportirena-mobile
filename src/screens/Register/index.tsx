@@ -1,26 +1,26 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import * as Yup from "yup";
-import { IconEye, IconEyeOff } from "../../assets/images";
+import { IconEye, IconEyeOff, IconSportirena } from "../../assets/images";
 import Button from "../../components/Button";
 import { InputRadio, InputText } from "../../components/Input";
+import { homePath, loginPath } from "../../constants";
 import { useAuth } from "../../hooks/useAuth";
 import { Global } from "../../styles/Global.style";
-import {
-  isIncludeCapital,
-  isIncludeNumber,
-  isIncludeSpecialChar,
-  isPhone,
-} from "../../utils/validator";
+import { isPhone } from "../../utils/validator";
 import LoginStyle from "../Login/Login.style";
 
-const Register = ({ navigation }: any) => {
+const Register = () => {
   /* Local State */
   const [showPassword, setShowpassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
+
+  /* Navigate */
+  const { navigate } = useNavigation();
 
   /* Hooks */
   const { signUp, loading } = useAuth();
@@ -62,10 +62,17 @@ const Register = ({ navigation }: any) => {
       />
       <ScrollView>
         <View style={[LoginStyle.container, { paddingTop: 60 }]}>
-          <Text style={LoginStyle.greeting}>Registration</Text>
-          <Text style={[LoginStyle.title, { marginBottom: 27 }]}>
-            Registration for customer only.
-          </Text>
+          <View style={Global.justifyBetween}>
+            <View>
+              <Text style={LoginStyle.greeting}>Registration</Text>
+              <Text style={[LoginStyle.title, { marginBottom: 27 }]}>
+                Registration for customer only.
+              </Text>
+            </View>
+            <TouchableOpacity onPress={() => navigate(homePath as never)}>
+              <Image source={IconSportirena} />
+            </TouchableOpacity>
+          </View>
           <InputText
             control={control}
             name="name"
@@ -160,7 +167,7 @@ const Register = ({ navigation }: any) => {
             </Text>
             <Button.Link
               label="Login"
-              onClick={() => navigation.push("Login")}
+              onClick={() => navigate(loginPath as never)}
             />
           </View>
         </View>

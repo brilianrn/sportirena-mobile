@@ -3,8 +3,12 @@ import React from "react";
 import HomeStyle from "../Home.style";
 import { Global } from "../../../styles/Global.style";
 import { IconArrowChevronBlack } from "../../../assets/images";
+import { useNavigation } from "@react-navigation/native";
+import { venuePath } from "../../../constants";
 
 const CustomerBookingSchedule = () => {
+  /* Navigate */
+  const { navigate } = useNavigation();
   return (
     <React.Fragment>
       <View style={{ position: "relative" }}>
@@ -24,7 +28,7 @@ const CustomerBookingSchedule = () => {
         />
         <View style={HomeStyle.cardCustomerBooking}>
           <Text style={{ fontSize: 14, fontWeight: "600" }}>
-            Customer Booking Portal
+            Portal Pemesanan Lapangan
           </Text>
           <Text
             style={{
@@ -35,15 +39,15 @@ const CustomerBookingSchedule = () => {
               marginTop: 11,
             }}
           >
-            Don’t let your sport planning only stuck on your list. Sportirena
-            allow you to book online 24/7 via our booking portal whenever and
-            wherever.
+            Sportirena memungkinkan Anda untuk melakukan pemesanan online 24/7
+            melalui portal pemesanan kami kapan saja dan di mana saja.
           </Text>
           <TouchableOpacity
+            onPress={() => navigate(venuePath as never)}
             style={[Global.justifyStart, { gap: 4, marginTop: 25 }]}
           >
             <Text style={{ fontSize: 10, fontWeight: "600" }}>
-              Start your journey
+              Mulai pemesanan
             </Text>
             <Image source={IconArrowChevronBlack} style={{ marginTop: 2 }} />
           </TouchableOpacity>
@@ -66,7 +70,7 @@ const CustomerBookingSchedule = () => {
         />
         <View style={[HomeStyle.cardBookingFacility]}>
           <Text style={{ fontSize: 14, fontWeight: "600", textAlign: "right" }}>
-            Booking & Facility Scheduling
+            Pemesanan dan Penjadwalan Fasilitas
           </Text>
           <Text
             style={{
@@ -78,15 +82,16 @@ const CustomerBookingSchedule = () => {
               textAlign: "right",
             }}
           >
-            Your schedules are never match with the venue’s? Sportirena let you
-            know availability in resource specific calendar views. Manage your
-            facilities bookings in just a few clicks.
+            Jadwal Anda tidak pernah sesuai dengan jadwal lapangan yang Anda
+            inginkan? Sportirena dapat memberikan informasi terkait ketersediaan
+            jadwal lapangan dari beberapa penyedia sarana olahraga.
           </Text>
           <TouchableOpacity
+            onPress={() => navigate(venuePath as never)}
             style={[Global.justifyEnd, { gap: 4, marginTop: 25 }]}
           >
             <Text style={{ fontSize: 10, fontWeight: "600" }}>
-              Start your journey
+              Mulai pemesanan
             </Text>
             <Image source={IconArrowChevronBlack} style={{ marginTop: 2 }} />
           </TouchableOpacity>

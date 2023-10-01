@@ -26,7 +26,6 @@ import {
 import { subStringLongText } from "../../utils/formattor";
 import FacilityType from "../Home/FacilityType";
 import AvailableCourt from "./AvailableCourt";
-import VenueLocation from "./Location";
 import OtherVenue from "./OtherVenue";
 import VenueDetailStyle from "./VenueDetail.style";
 
@@ -170,10 +169,10 @@ const VenueDetail = () => {
           </Text>
         </View>
         <AvailableCourt data={venueCourt} />
-        <VenueLocation
+        {/* <VenueLocation
           lat={+venueDetail.latitude}
           lng={+venueDetail.longitude}
-        />
+        /> */}
         <OtherVenue data={venues} />
       </Layout>
     </React.Fragment>
