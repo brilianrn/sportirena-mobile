@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { Controller } from "react-hook-form";
 import { Image, Text, View } from "react-native";
+import { SelectList } from "react-native-dropdown-select-list";
 import SelectDropdown from "react-native-select-dropdown";
 import { IconArrowChevronBlack } from "../../../assets/images";
 import {
@@ -11,7 +12,7 @@ import {
 } from "../../../styles/Global.style";
 import TextStyle from "../Text/Text.style";
 import SelectOptionStyle from "./SelectOption.style";
-import { SelectOptionProps } from "./SelectOption.type";
+import { OptionType, SelectOptionProps } from "./SelectOption.type";
 
 const SelectOption: FC<SelectOptionProps> = ({
   options,
@@ -24,6 +25,8 @@ const SelectOption: FC<SelectOptionProps> = ({
   setValue,
   style,
   value,
+  isOptObj,
+  obtOptions,
 }) => {
   return (
     <React.Fragment>
@@ -58,7 +61,7 @@ const SelectOption: FC<SelectOptionProps> = ({
                   selectedRowStyle={{ backgroundColor: colorPrimary.default }}
                   selectedRowTextStyle={{ color: "white" }}
                   defaultButtonText={placeholder}
-                  data={options}
+                  data={options as string[]}
                   onBlur={onBlur}
                   defaultValue={valueForm}
                   onSelect={(selectedItem) => onChange(selectedItem)}
@@ -66,6 +69,17 @@ const SelectOption: FC<SelectOptionProps> = ({
                   rowTextForSelection={(item) => item}
                 />
               )}
+            />
+          ) : isOptObj && obtOptions ? (
+            <SelectList
+              dropdownShown={false}
+              placeholder={
+                value && obtOptions?.length
+                  ? obtOptions.filter((e: any) => e.key === value)[0]?.value
+                  : placeholder
+              }
+              setSelected={(el: string) => setValue && setValue(el)}
+              data={obtOptions}
             />
           ) : (
             <SelectDropdown
@@ -84,23 +98,25 @@ const SelectOption: FC<SelectOptionProps> = ({
               selectedRowStyle={{ backgroundColor: colorPrimary.default }}
               selectedRowTextStyle={{ color: "white" }}
               defaultButtonText={placeholder}
-              data={options}
+              data={options as string[]}
               defaultValue={value}
               onSelect={(selectedItem) => setValue && setValue(selectedItem)}
               buttonTextAfterSelection={(selectedItem) => selectedItem}
               rowTextForSelection={(item) => item}
             />
           )}
-          <Image
-            source={IconArrowChevronBlack}
-            style={{
-              position: "absolute",
-              top: "33%",
-              right: "8%",
-              transform: [{ rotate: "90deg" }],
-              height: 15,
-            }}
-          />
+          {!isOptObj && (
+            <Image
+              source={IconArrowChevronBlack}
+              style={{
+                position: "absolute",
+                top: "33%",
+                right: "8%",
+                transform: [{ rotate: "90deg" }],
+                height: 15,
+              }}
+            />
+          )}
         </View>
         {errorMessage && (
           <View style={TextStyle.formErrorMessage}>

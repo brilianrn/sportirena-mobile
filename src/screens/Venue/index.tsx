@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Image, Text, View } from "react-native";
 import { FlatList } from "react-native-bidirectional-infinite-scroll";
 import { useSelector } from "react-redux";
+import { OptionType } from "../../../App.type";
 import { IconVenueNotFound } from "../../assets/images";
 import Button from "../../components/Button";
 import { InputSelect } from "../../components/Input";
@@ -13,7 +14,6 @@ import { IRootState } from "../../store/reducers";
 import { Global, colorPrimary } from "../../styles/Global.style";
 import { FacilityType } from "../Home/Home.type";
 import CardVenue from "./Card";
-import { OptionType } from "../../../App.type";
 
 const Venue = () => {
   /* Local State */
@@ -58,7 +58,6 @@ const Venue = () => {
       });
     }
   };
-  console.log(provinces, " >>> provinces");
   return (
     <React.Fragment>
       <Layout
@@ -82,24 +81,36 @@ const Venue = () => {
             Filter
           </Text>
           <InputSelect
+            isOptObj
             placeholder="Choose facility type"
             label="Facility Type"
-            setValue={setLocation}
-            value={location}
-            options={
+            setValue={setFacility}
+            value={facility}
+            obtOptions={
               facilityTypes?.length
-                ? facilityTypes.map((e: FacilityType) => e.typeName)
+                ? facilityTypes.map((e: FacilityType) => ({
+                    ...e,
+                    value: e.typeName,
+                    key: e.id,
+                  }))
                 : []
             }
           />
           <InputSelect
+            isOptObj
             style={{ marginTop: 12 }}
             placeholder="Choose your location"
             label="Location"
-            setValue={setFacility}
-            value={facility}
-            options={
-              provinces?.length ? provinces.map((e: OptionType) => e.label) : []
+            setValue={setLocation}
+            value={location}
+            obtOptions={
+              provinces?.length
+                ? provinces.map((e: OptionType) => ({
+                    ...e,
+                    key: e.value,
+                    value: e.label,
+                  }))
+                : []
             }
           />
           <View
@@ -118,7 +129,16 @@ const Venue = () => {
               style={{ width: "45%" }}
               type="primary"
               btnType="button"
-              onClick={console.log}
+              onClick={() => {
+                fetchVenues({
+                  page: 1,
+                  pageSize: 10,
+                  search,
+                  location,
+                  facility,
+                });
+                setShowSetting(false);
+              }}
               size="sm"
             />
           </View>
