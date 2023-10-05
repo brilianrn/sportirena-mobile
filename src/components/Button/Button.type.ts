@@ -1,4 +1,9 @@
-import { ImageSourcePropType, StyleProp, ViewStyle } from "react-native";
+import {
+  ImageSourcePropType,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from "react-native";
 
 export interface ButtonProps {
   label: string;
@@ -28,4 +33,5 @@ export interface ButtonLinkProps {
   label: string;
   onClick?: () => void;
   href?: string;
+  style?: StyleProp<TextStyle>;
 }

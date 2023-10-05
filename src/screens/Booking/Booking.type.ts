@@ -39,3 +39,8 @@ export interface CourtDetail {
   pathName: string;
   imageName: string;
 }
+
+export interface BookingHeaderProps {
+  courtDetail: CourtDetail;
+  venueName: string;
+}

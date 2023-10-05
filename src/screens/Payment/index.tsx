@@ -1,24 +1,37 @@
 import { useNavigation } from "@react-navigation/native";
-import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
-import { Image as ImageRN, Text, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  Image as ImageRN,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useSelector } from "react-redux";
-import { IconArrowChevron, IconTrashRed } from "../../assets/images";
+import { IconArrowChevron, IconInformationGray } from "../../assets/images";
 import Button from "../../components/Button";
-import Image from "../../components/Image";
-import { InputCheckbox } from "../../components/Input";
+import { InputRadio } from "../../components/Input";
 import Layout from "../../components/Layout";
-import { bookingName } from "../../constants";
+import Modal from "../../components/Modal";
+import { bookingName, transferBankPath } from "../../constants";
+import { useBooking } from "../../hooks/useBooking";
 import { IRootState } from "../../store/reducers";
 import { Global, colorGray, colorPrimary } from "../../styles/Global.style";
 import { IDRFormat } from "../../utils/formattor";
-import BookingStyle from "../Booking/Booking.style";
 import { BookingType } from "../Booking/Booking.type";
-import { useBooking } from "../../hooks/useBooking";
+import CardBooking from "./CardBooking";
+import CardOffer from "./CardOffer";
 
 const Payment = () => {
   /* Local State */
   const [dataSource, setDataSource] = useState<BookingType[]>();
+  const [coupon, setCoupon] = useState<string>();
+  const [paymentMethod, setPaymentMethod] = useState<
+    "va" | "transfer" | string
+  >("va");
+  const [isCheckPrivacyPolice, setIsCheckPrivacyPolice] =
+    useState<boolean>(false);
+  const [isInformation, setIsInformation] = useState<boolean>(false);
 
   /* Redux */
   const { cart, courtDetail } = useSelector(
@@ -50,8 +63,40 @@ const Payment = () => {
     }
     return 0;
   }, [dataSource]);
+
+  const onContinuePayment = async () => {
+    if (paymentMethod === "va") {
+      return await createBooking({ data: dataSource as BookingType[] });
+    }
+    return navigate(transferBankPath as never);
+  };
   return (
     <React.Fragment>
+      <Modal show={isInformation} setShow={setIsInformation}>
+        <FlatList
+          data={[
+            {
+              key: "1. Metode pembayaran virtual account melalui pihak ketiga dengan menggunakan virtual account",
+            },
+            {
+              key: "2. Metode pembayaran Bank Account langsung ke bank account pemilik venue",
+            },
+          ]}
+          renderItem={({ item }) => (
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: "300",
+                color: colorGray[500],
+                textAlign: "justify",
+                lineHeight: 18,
+              }}
+            >
+              {item.key}
+            </Text>
+          )}
+        />
+      </Modal>
       <Layout
         useTopBar
         isSearchBar={false}
@@ -79,76 +124,23 @@ const Payment = () => {
           </TouchableOpacity>
         </View>
         {dataSource?.length ? (
-          dataSource?.map((e: BookingType) => (
-            <View
-              key={e.id}
-              style={[
-                {
-                  borderRadius: 10,
-                  borderWidth: 1,
-                  borderColor: colorGray[300],
-                  marginTop: 10,
-                  padding: 18,
-                },
-              ]}
-            >
-              <View style={[Global.justifyBetween]}>
-                <View style={[Global.justifyStart, { gap: 13 }]}>
-                  <InputCheckbox
-                    checked={e.isChecked}
-                    setChecked={(value) => {
-                      setDataSource(
-                        dataSource.map((el) => ({
-                          ...el,
-                          isChecked: el.id === e.id ? value : el.isChecked,
-                        }))
-                      );
-                    }}
-                  />
-                  <Image
-                    useBaseUrl
-                    src={`${courtDetail?.pathName}/${courtDetail?.imageName}`}
-                    width={70}
-                    height={90}
-                    style={{ borderRadius: 8 }}
-                  />
-                  <View>
-                    <Text
-                      style={{
-                        fontSize: 10,
-                        color: colorPrimary.default,
-                        fontWeight: "600",
-                      }}
-                    >
-                      {courtDetail?.courtName}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 10,
-                        marginVertical: 3,
-                      }}
-                    >
-                      {moment(e.date).format("DD MMMM yyyy")}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 10,
-                        fontWeight: "600",
-                      }}
-                    >
-                      {e.startTime} - {e.endTime}
-                    </Text>
-                  </View>
-                </View>
-                <TouchableOpacity
-                  onPress={() =>
-                    setDataSource(dataSource.filter((el) => e.id !== el.id))
-                  }
-                >
-                  <ImageRN source={IconTrashRed} />
-                </TouchableOpacity>
-              </View>
-            </View>
+          dataSource?.map((e: BookingType, i: number) => (
+            <CardBooking
+              courtDetail={courtDetail}
+              item={e}
+              key={i}
+              onDetaleBooking={() =>
+                setDataSource(dataSource.filter((el) => e.id !== el.id))
+              }
+              setChooseBooking={(value) => {
+                setDataSource(
+                  dataSource.map((el) => ({
+                    ...el,
+                    isChecked: el.id === e.id ? value : el.isChecked,
+                  }))
+                );
+              }}
+            />
           ))
         ) : (
           <Text
@@ -162,72 +154,67 @@ const Payment = () => {
             -- Data not found --
           </Text>
         )}
+        <CardOffer
+          normalPrice={normalPrice as number}
+          coupon={coupon}
+          setCoupon={setCoupon}
+          totalHours={dataSource?.filter((e) => e.isChecked)?.length as number}
+          isCheckPrivacyPolice={isCheckPrivacyPolice}
+          setIsCheckPrivacyPolice={setIsCheckPrivacyPolice}
+        />
         <View
-          style={{
-            backgroundColor: colorPrimary[100],
-            padding: 18,
-            borderRadius: 10,
-            marginTop: 25,
-          }}
+          style={[
+            Global.justifyStart,
+            { gap: 8, marginTop: 14, marginBottom: 7 },
+          ]}
         >
-          <View style={[Global.justifyBetween]}>
-            <View>
-              <Text style={{ fontSize: 10 }}>Normal Price</Text>
-              <Text style={{ fontSize: 10, marginVertical: 10 }}>
-                Discount (0%)
-              </Text>
-              <Text style={{ fontSize: 10 }}>Total Price</Text>
-            </View>
-            <View>
-              <Text style={{ fontSize: 10, fontWeight: "600" }}>
-                Rp {normalPrice},-
-              </Text>
-              <Text
-                style={{ fontSize: 10, fontWeight: "600", marginVertical: 10 }}
-              >
-                Rp {0},-
-              </Text>
-              <Text style={{ fontSize: 10, fontWeight: "600" }}>
-                Rp {normalPrice},-
-              </Text>
-            </View>
-          </View>
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: "700",
+              color: colorPrimary.default,
+            }}
+          >
+            Metode Pembayaran
+          </Text>
+          <TouchableOpacity
+            onPress={() => setIsInformation(true)}
+            style={{ paddingTop: "1%" }}
+          >
+            <ImageRN source={IconInformationGray} />
+          </TouchableOpacity>
         </View>
-      </Layout>
-      {dataSource?.filter((e) => e.isChecked)?.length ? (
-        <View style={[Global.justifyBetween, BookingStyle.cardTotalHour]}>
-          <View>
-            <Text
-              style={{
-                fontSize: 12,
-                fontWeight: "500",
-              }}
-            >
-              Grand Total (
-              {dataSource?.filter((e) => e.isChecked)?.length?.toString()}{" "}
-              Hours)
-            </Text>
-            <Text
-              style={{
-                fontSize: 12,
-                fontWeight: "600",
-                color: colorPrimary.default,
-                marginTop: 3,
-              }}
-            >
-              Rp {normalPrice},-
-            </Text>
-          </View>
-          <Button
-            label="Payment"
-            type="primary"
-            btnType="button"
-            onClick={() => createBooking({ data: dataSource })}
-            size="sm"
-            isSubmit={isLoading}
+        <View style={{ height: "5%" }}>
+          <InputRadio
+            type="row"
+            value={paymentMethod}
+            setValue={setPaymentMethod}
+            options={[
+              {
+                label: "Virtual Account",
+                value: "va",
+              },
+              {
+                label: "Bank Account",
+                value: "transfer",
+              },
+            ]}
           />
         </View>
-      ) : null}
+        <Button
+          label="Continue Payment"
+          type="primary"
+          btnType="button"
+          onClick={onContinuePayment}
+          size="sm"
+          isDisable={
+            !dataSource?.filter((e) => e.isChecked)?.length ||
+            !isCheckPrivacyPolice
+          }
+          isSubmit={isLoading}
+          style={{ marginTop: 19 }}
+        />
+      </Layout>
     </React.Fragment>
   );
 };

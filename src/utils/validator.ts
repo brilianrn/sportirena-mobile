@@ -17,3 +17,8 @@ export const isIncludeSpecialChar = (str: string) => {
   const regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/; // eslint-disable-line
   return regex.test(str);
 };
+
+export const isNumber = (str: string) => {
+  const regex = /^\d+$/;
+  return regex.test(str);
+};

@@ -7,7 +7,10 @@ import { Global, colorPrimary } from "../../../styles/Global.style";
 import { VenueCourt } from "../../../types/venue.type";
 import AvailableCourtCard from "./Card";
 
-const AvailableCourt: FC<{ data: VenueCourt[] }> = ({ data }) => {
+const AvailableCourt: FC<{ data: VenueCourt[]; title?: string }> = ({
+  data,
+  title,
+}) => {
   return (
     <React.Fragment>
       <View style={[Global.justifyBetween, { width: "100%" }]}>
@@ -19,7 +22,7 @@ const AvailableCourt: FC<{ data: VenueCourt[] }> = ({ data }) => {
             color: colorPrimary.default,
           }}
         >
-          Available Courts
+          {title || "Available Courts"}
         </Text>
         <TouchableOpacity style={[Global.justifyEnd, { gap: 3, marginTop: 4 }]}>
           <Text

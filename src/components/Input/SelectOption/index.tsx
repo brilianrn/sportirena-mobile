@@ -12,7 +12,7 @@ import {
 } from "../../../styles/Global.style";
 import TextStyle from "../Text/Text.style";
 import SelectOptionStyle from "./SelectOption.style";
-import { OptionType, SelectOptionProps } from "./SelectOption.type";
+import { SelectOptionProps } from "./SelectOption.type";
 
 const SelectOption: FC<SelectOptionProps> = ({
   options,
@@ -40,37 +40,60 @@ const SelectOption: FC<SelectOptionProps> = ({
               control={control}
               name={name as string}
               rules={{ required }}
-              render={({ field: { onChange, onBlur, value: valueForm } }) => (
-                <SelectDropdown
-                  buttonStyle={[
-                    SelectOptionStyle.selectOption,
-                    {
+              render={({ field: { onChange, onBlur, value: valueForm } }) =>
+                isOptObj && obtOptions?.length ? (
+                  <SelectList
+                    boxStyles={{
+                      ...SelectOptionStyle.selectOption,
                       borderColor: errorMessage
                         ? colorDanger.default
                         : "#F0F1F7",
-                    },
-                  ]}
-                  buttonTextStyle={{
-                    fontSize: 15,
-                    fontWeight: "400",
-                    textAlign: "left",
-                    color: !valueForm ? colorGray[400] : "black",
-                  }}
-                  dropdownStyle={{ backgroundColor: "white", borderRadius: 8 }}
-                  rowTextStyle={{ textAlign: "left", paddingHorizontal: 10 }}
-                  selectedRowStyle={{ backgroundColor: colorPrimary.default }}
-                  selectedRowTextStyle={{ color: "white" }}
-                  defaultButtonText={placeholder}
-                  data={options as string[]}
-                  onBlur={onBlur}
-                  defaultValue={valueForm}
-                  onSelect={(selectedItem) => onChange(selectedItem)}
-                  buttonTextAfterSelection={(selectedItem) => selectedItem}
-                  rowTextForSelection={(item) => item}
-                />
-              )}
+                    }}
+                    dropdownShown={false}
+                    placeholder={
+                      valueForm && obtOptions?.length
+                        ? obtOptions.filter((e: any) => e.key === valueForm)[0]
+                            ?.value
+                        : placeholder
+                    }
+                    setSelected={(el: string) => onChange(el)}
+                    data={obtOptions}
+                  />
+                ) : (
+                  <SelectDropdown
+                    buttonStyle={[
+                      SelectOptionStyle.selectOption,
+                      {
+                        borderColor: errorMessage
+                          ? colorDanger.default
+                          : "#F0F1F7",
+                      },
+                    ]}
+                    buttonTextStyle={{
+                      fontSize: 15,
+                      fontWeight: "400",
+                      textAlign: "left",
+                      color: !valueForm ? colorGray[400] : "black",
+                    }}
+                    dropdownStyle={{
+                      backgroundColor: "white",
+                      borderRadius: 8,
+                    }}
+                    rowTextStyle={{ textAlign: "left", paddingHorizontal: 10 }}
+                    selectedRowStyle={{ backgroundColor: colorPrimary.default }}
+                    selectedRowTextStyle={{ color: "white" }}
+                    defaultButtonText={placeholder}
+                    data={options as string[]}
+                    onBlur={onBlur}
+                    defaultValue={valueForm}
+                    onSelect={(selectedItem) => onChange(selectedItem)}
+                    buttonTextAfterSelection={(selectedItem) => selectedItem}
+                    rowTextForSelection={(item) => item}
+                  />
+                )
+              }
             />
-          ) : isOptObj && obtOptions ? (
+          ) : isOptObj && obtOptions?.length ? (
             <SelectList
               dropdownShown={false}
               placeholder={

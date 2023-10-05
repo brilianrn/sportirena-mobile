@@ -1,10 +1,11 @@
-import { ImageSourcePropType } from "react-native";
+import { ImageSourcePropType, StyleProp, TextStyle } from "react-native";
 import { FacilityTypeName, PageComponent } from "../../types/common.type";
 import { VenueType } from "../../types/venue.type";
 
 export interface CardFacilityTypeProps {
-  titile: string;
-  icon: ImageSourcePropType;
+  title?: FacilityTypeName | string;
+  titleStyle?: StyleProp<TextStyle>;
+  icon?: ImageSourcePropType;
   iconHeight?: number;
   iconWidth?: number;
 }

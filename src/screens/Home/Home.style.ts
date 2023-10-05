@@ -14,7 +14,6 @@ const HomeStyle = StyleSheet.create({
     marginBottom: 28,
   },
   cardOuterFacilityType: {
-    width: 65,
     margin: 5,
   },
   cardInnerFacilityType: {
@@ -31,7 +30,6 @@ const HomeStyle = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     elevation: 4,
-    height: 65,
     width: "100%",
   },
   cardTitle: {

@@ -34,55 +34,100 @@ const InputRadio: FC<InputRadioProps> = ({
     <React.Fragment>
       {label && <Text style={Global.label}>{label}</Text>}
       <View style={defaultSyle}>
-        {options.map((e) => (
-          <Controller
-            control={control}
-            render={({ field: { onChange, value: valueForm } }) => (
-              <View
-                style={
-                  type === "list"
-                    ? RadioStyle.radioButtonContainerList
-                    : [
-                        RadioStyle.radioButtonContainerRow,
-                        {
-                          backgroundColor:
-                            valueForm === e.value ? "#EEF3F1" : "white",
-                        },
-                      ]
-                }
-                key={e.value}
-                onTouchStart={() => type === "row" && onChange(e.value)}
-              >
-                <TouchableOpacity
-                  onPress={() => onChange(e.value)}
-                  style={RadioStyle.radioButton}
+        {options.map((e) =>
+          control && !setValue ? (
+            <Controller
+              control={control}
+              render={({ field: { onChange, value: valueForm } }) => (
+                <View
+                  style={
+                    type === "list"
+                      ? RadioStyle.radioButtonContainerList
+                      : [
+                          RadioStyle.radioButtonContainerRow,
+                          {
+                            backgroundColor:
+                              valueForm === e.value ? "#EEF3F1" : "white",
+                          },
+                        ]
+                  }
+                  key={e.value}
+                  onTouchStart={() => type === "row" && onChange(e.value)}
                 >
-                  {valueForm === e.value ? (
-                    <View style={RadioStyle.radioButtonIcon} />
-                  ) : null}
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => onChange(e.value)}>
-                  <Text
-                    style={[
-                      RadioStyle.radioButtonText,
-                      {
-                        color:
-                          e.value === valueForm
-                            ? colorPrimary.default
-                            : colorGray[500],
-                        fontWeight: e.value === valueForm ? "bold" : "normal",
-                      },
-                    ]}
+                  <TouchableOpacity
+                    onPress={() => onChange(e.value)}
+                    style={RadioStyle.radioButton}
                   >
-                    {e.label}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
-            name={name as string}
-            rules={{ required }}
-          />
-        ))}
+                    {valueForm === e.value ? (
+                      <View style={RadioStyle.radioButtonIcon} />
+                    ) : null}
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => onChange(e.value)}>
+                    <Text
+                      style={[
+                        RadioStyle.radioButtonText,
+                        {
+                          color:
+                            e.value === valueForm
+                              ? colorPrimary.default
+                              : colorGray[500],
+                          fontWeight: e.value === valueForm ? "bold" : "normal",
+                        },
+                      ]}
+                    >
+                      {e.label}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+              name={name as string}
+              rules={{ required }}
+            />
+          ) : (
+            <View
+              style={
+                type === "list"
+                  ? RadioStyle.radioButtonContainerList
+                  : [
+                      RadioStyle.radioButtonContainerRow,
+                      {
+                        backgroundColor:
+                          value === e.value ? "#EEF3F1" : "white",
+                      },
+                    ]
+              }
+              key={e.value}
+              onTouchStart={() =>
+                type === "row" && setValue && setValue(e.value)
+              }
+            >
+              <TouchableOpacity
+                onPress={() => setValue && setValue(e.value)}
+                style={RadioStyle.radioButton}
+              >
+                {value === e.value ? (
+                  <View style={RadioStyle.radioButtonIcon} />
+                ) : null}
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setValue && setValue(e.value)}>
+                <Text
+                  style={[
+                    RadioStyle.radioButtonText,
+                    {
+                      color:
+                        e.value === value
+                          ? colorPrimary.default
+                          : colorGray[500],
+                      fontWeight: e.value === value ? "bold" : "normal",
+                    },
+                  ]}
+                >
+                  {e.label}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )
+        )}
       </View>
     </React.Fragment>
   );

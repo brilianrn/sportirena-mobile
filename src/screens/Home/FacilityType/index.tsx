@@ -44,7 +44,7 @@ const FacilityType: FC<FacilityTypeProps> = ({ data, useTitle = true }) => {
           <ScrollView horizontal style={{ gap: 100, display: "flex" }}>
             {data.map((e) => (
               <CardFacilityType
-                titile={e.typeName}
+                title={e.typeName}
                 icon={iconType(e.typeName || e.facilityTypeName)}
                 key={e.id}
               />

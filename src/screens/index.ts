@@ -4,6 +4,8 @@ export { default as LoginScreen } from "./Login";
 export { default as MyBookingScreen } from "./MyBooking";
 export { default as GuestScreen } from "./MyBooking/Guest";
 export { default as PaymentScreen } from "./Payment";
+export { default as PrivacyPoliceScreen } from "./Payment/PrivacyPolice";
+export { default as TransferBankScreen } from "./Payment/TransferBank";
 export { default as ProfileScreen } from "./Profile";
 export { default as RegisterScreen } from "./Register";
 export { default as ResetPasswordScreen } from "./ResetPassword";
