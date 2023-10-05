@@ -19,4 +19,5 @@ export interface SelectOptionProps {
   placeholder: string;
   label?: string;
   errorMessage?: string;
+  isDisabled?: boolean;
 }

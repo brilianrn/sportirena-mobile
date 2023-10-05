@@ -12,10 +12,12 @@ import { postCart } from "../core/POST_Cart";
 import { BodyCreateBooking, postBooking } from "../core/POST_CreateBooking";
 import { BookingType } from "../screens/Booking/Booking.type";
 import {
+  setBankNames,
   setCart,
   setCourtDetail,
   setScheduleTime,
 } from "../store/actions/booking.action";
+import { getBankNames } from "../core/GET_BankNames";
 
 export const useBooking = () => {
   /* Local State */
@@ -155,6 +157,28 @@ export const useBooking = () => {
     }
   };
 
+  /* Fetch Bank */
+  const fetchBankNames = async (venueId: string) => {
+    setIsLoading(true);
+    try {
+      const { message, success, result } = await getBankNames(venueId);
+      setIsLoading(false);
+      if (!success) {
+        setMessage(message);
+        showToast({
+          message: message || "Get bank names failed",
+          type: "danger",
+          placement: "bottom",
+        });
+        return setIsError(true);
+      }
+      setIsError(false);
+      return dispatch(setBankNames(result));
+    } catch (err) {
+      return err;
+    }
+  };
+
   /* Create Booking */
   const createBooking = async (payload: BodyCreateBooking) => {
     setIsLoading(true);
@@ -185,5 +209,6 @@ export const useBooking = () => {
     createBooking,
     addToCart,
     fetchCart,
+    fetchBankNames,
   };
 };

@@ -10,7 +10,6 @@ import { colorPrimary } from "../../styles/Global.style";
 const PrivacyPolice = () => {
   /* Redux */
   const { venueDetail } = useSelector((state: IRootState) => state.venue);
-  console.log(venueDetail);
   return (
     <React.Fragment>
       <Layout

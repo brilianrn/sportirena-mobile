@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IconArrowChevron, IconInformationGray } from "../../assets/images";
 import Button from "../../components/Button";
 import { InputRadio } from "../../components/Input";
@@ -21,6 +21,7 @@ import { IDRFormat } from "../../utils/formattor";
 import { BookingType } from "../Booking/Booking.type";
 import CardBooking from "./CardBooking";
 import CardOffer from "./CardOffer";
+import { setPaymentBookingHour } from "../../store/actions/booking.action";
 
 const Payment = () => {
   /* Local State */
@@ -34,6 +35,7 @@ const Payment = () => {
   const [isInformation, setIsInformation] = useState<boolean>(false);
 
   /* Redux */
+  const dispatch = useDispatch();
   const { cart, courtDetail } = useSelector(
     (state: IRootState) => state.booking
   );
@@ -68,6 +70,7 @@ const Payment = () => {
     if (paymentMethod === "va") {
       return await createBooking({ data: dataSource as BookingType[] });
     }
+    dispatch(setPaymentBookingHour(dataSource));
     return navigate(transferBankPath as never);
   };
   return (

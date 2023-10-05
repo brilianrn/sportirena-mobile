@@ -1,5 +1,9 @@
 import { OptionType } from "../../../App.type";
-import { BookingType, CourtDetail } from "../../screens/Booking/Booking.type";
+import {
+  BankType,
+  BookingType,
+  CourtDetail,
+} from "../../screens/Booking/Booking.type";
 import { FacilityType } from "../../screens/Home/Home.type";
 import { MyBookingType } from "../../screens/MyBooking/MyBooking.type";
 import { UserDetailType } from "../../types/common.type";
@@ -38,4 +42,6 @@ export interface BookingInitialState {
   courtDetail: CourtDetail | null;
   scheduleTime: BookingType[] | null;
   cart: BookingType[] | null;
+  paymentBookingHour: BookingType[] | null;
+  bankNames: BankType[] | null;
 }

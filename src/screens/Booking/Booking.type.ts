@@ -44,3 +44,9 @@ export interface BookingHeaderProps {
   courtDetail: CourtDetail;
   venueName: string;
 }
+
+export type BankType = {
+  bankName: string;
+  bankAccountHolder: string;
+  bankAccountNumber: string;
+};

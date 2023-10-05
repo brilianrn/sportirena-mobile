@@ -15,3 +15,5 @@ export const SET_DONE = "SET_DONE";
 export const SET_COURT_DETAIL = "SET_COURT_DETAIL";
 export const SET_SCHEDULE_TIME = "SET_SCHEDULE_TIME";
 export const SET_CART = "SET_CART";
+export const SET_PAYMENT_BOOKING_HOUR = "SET_PAYMENT_BOOKING_HOUR";
+export const SET_BANK_NAMES = "SET_BANK_NAMES";

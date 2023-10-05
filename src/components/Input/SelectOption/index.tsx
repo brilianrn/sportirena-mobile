@@ -95,6 +95,10 @@ const SelectOption: FC<SelectOptionProps> = ({
             />
           ) : isOptObj && obtOptions?.length ? (
             <SelectList
+              boxStyles={{
+                ...SelectOptionStyle.selectOption,
+                borderColor: errorMessage ? colorDanger.default : "#F0F1F7",
+              }}
               dropdownShown={false}
               placeholder={
                 value && obtOptions?.length

@@ -1,20 +1,33 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import * as Yup from "yup";
+import Button from "../../components/Button";
 import { InputSelect, InputText } from "../../components/Input";
 import Layout from "../../components/Layout";
 import { paymentPath } from "../../constants";
+import { BankTransferType } from "../../core/POST_CreateBooking";
+import { useBooking } from "../../hooks/useBooking";
+import { IRootState } from "../../store/reducers";
 import { isNumber } from "../../utils/validator";
-import { Text } from "react-native";
-import { colorDanger } from "../../styles/Global.style";
-import Button from "../../components/Button";
+import { BankType } from "../Booking/Booking.type";
 
 const TransferBank = () => {
+  /* Local State */
+  const [bankChoosen, setBankChoosen] = useState<BankType>();
+  /* Redux */
+  const { paymentBookingHour, bankNames } = useSelector(
+    (state: IRootState) => state.booking
+  );
+
+  /* Hooks */
+  const { fetchBankNames, createBooking, isLoading } = useBooking();
+
   const validationSchema = Yup.object().shape({
-    bankName: Yup.string().required("Bank name required"),
-    accountHolderName: Yup.string().required("Account holder name required"),
-    accountNumber: Yup.string()
+    toBankName: Yup.string().required("Bank name required"),
+    toBankAccountHolder: Yup.string().required("Account holder name required"),
+    toBankAccountNumber: Yup.string()
       .required("Account number required")
       .test("isAccountNumber", "Invalid account number", (value) => {
         return !isNumber(value) ? false : true;
@@ -24,11 +37,39 @@ const TransferBank = () => {
   const {
     control,
     handleSubmit,
+    getValues,
+    setValue,
     formState: { errors, isSubmitting, isValid },
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(validationSchema),
   });
+
+  useEffect(() => {
+    fetchBankNames(paymentBookingHour[0].venueId as string);
+  }, [paymentBookingHour]);
+
+  const onBankChoosen = (toBank: string) => {
+    if (toBank) {
+      const bank: BankType = bankNames.filter(
+        (e: BankType) => e.bankAccountNumber === toBank
+      )[0];
+      setBankChoosen(bank);
+      setValue("toBankAccountHolder", bank.bankAccountHolder, {
+        shouldValidate: true,
+      });
+      setValue("toBankAccountNumber", bank.bankAccountNumber, {
+        shouldValidate: true,
+      });
+      setValue("toBankName", bank.bankName, {
+        shouldValidate: true,
+      });
+    }
+  };
+
+  const onSubmit = (payload: BankTransferType) => {
+    createBooking({ ...payload, data: paymentBookingHour });
+  };
   return (
     <React.Fragment>
       <Layout
@@ -39,50 +80,40 @@ const TransferBank = () => {
       >
         <InputSelect
           isOptObj
-          control={control}
-          name="bankName"
+          setValue={onBankChoosen}
+          value={bankChoosen?.bankAccountNumber}
           placeholder="Please select one"
-          obtOptions={[
-            {
-              key: "bank",
-              value: "BCAA",
-            },
-            {
-              key: "bank2",
-              value: "BCAA",
-            },
-            {
-              key: "bank3",
-              value: "BCAA",
-            },
-            {
-              key: "bank4",
-              value: "BCAA",
-            },
-          ]}
+          obtOptions={
+            bankNames?.length
+              ? bankNames.map((e: BankType) => ({
+                  ...e,
+                  key: e.bankAccountNumber,
+                  value: e.bankName,
+                }))
+              : []
+          }
           label="Bank Name"
           style={{ marginBottom: 13 }}
-          errorMessage={errors?.bankName?.message?.toString()}
         />
         <InputText
           control={control}
-          name="accountHolderName"
+          name="toBankAccountHolder"
           placeholder="Input account holder name"
           label="Account Holder Name"
           type="default"
           style={{ marginBottom: 13 }}
-          errorMessage={errors?.accountHolderName?.message?.toString()}
+          errorMessage={errors?.toBankAccountHolder?.message?.toString()}
         />
         <InputText
           control={control}
-          name="accountNumber"
+          name="toBankAccountNumber"
           placeholder="Input account number"
           label="Account Number"
           type="number-pad"
           style={{ marginBottom: 13 }}
-          errorMessage={errors?.accountNumber?.message?.toString()}
+          errorMessage={errors?.toBankAccountNumber?.message?.toString()}
         />
-        <Text
+        {/* <Text
           style={{
             marginTop: 10,
             marginBottom: 14,
@@ -92,14 +123,14 @@ const TransferBank = () => {
           }}
         >
           Bayar sebelum 28 Agustus 2023 14:05 WIB
-        </Text>
+        </Text> */}
         <Button
           label="Send"
-          onClick={console.log}
+          onClick={handleSubmit(onSubmit)}
           type="primary"
           btnType="submit"
           isDisable={!isValid || isSubmitting}
-          isSubmit={isSubmitting && isValid}
+          isSubmit={(isSubmitting && isValid) || isLoading}
         />
       </Layout>
     </React.Fragment>
