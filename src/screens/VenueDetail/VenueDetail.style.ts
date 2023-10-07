@@ -8,7 +8,6 @@ const VenueDetailStyle = StyleSheet.create({
     borderColor: colorGray[300],
     borderWidth: 1,
     padding: 12,
-    marginTop: 25,
     marginBottom: 17,
   },
 });

@@ -4,10 +4,10 @@ import { Image, Text, View } from "react-native";
 import { Carousel } from "react-native-auto-carousel";
 import { useSelector } from "react-redux";
 import {
-  IconCalendarTimeActive,
-  IconHeart,
+  IconClock,
   IconMap,
   IconShare,
+  IconTelephone,
 } from "../../assets/images";
 import Button from "../../components/Button";
 import Layout from "../../components/Layout";
@@ -23,8 +23,9 @@ import {
   colorPrimary,
   deviceWidth,
 } from "../../styles/Global.style";
-import { subStringLongText } from "../../utils/formattor";
-import FacilityType from "../Home/FacilityType";
+import { iconTypeFormatter, subStringLongText } from "../../utils/formattor";
+import CardFacilityType from "../Home/FacilityType/Card";
+import { FacilityType } from "../Home/Home.type";
 import AvailableCourt from "./AvailableCourt";
 import OtherVenue from "./OtherVenue";
 import VenueDetailStyle from "./VenueDetail.style";
@@ -107,45 +108,17 @@ const VenueDetail = () => {
             )}
           />
         </View>
-        <View style={[Global.justifyBetween, { marginTop: 23 }]}>
+        <View style={[Global.justifyBetween, { marginTop: 17 }]}>
           <Text
             style={{
               color: colorPrimary.default,
               fontSize: 14,
               fontWeight: "bold",
-              marginTop: 4,
+              marginTop: 7,
             }}
           >
-            {subStringLongText(venueDetail.venueName, 42)}
+            {subStringLongText(venueDetail.venueName, 32)}
           </Text>
-          <Image source={IconCalendarTimeActive} />
-        </View>
-        <View>
-          <Text
-            style={{
-              fontSize: 10,
-              color: colorDark[600],
-              textAlign: "justify",
-              marginTop: 10,
-            }}
-          >
-            {venueDetail.description}
-          </Text>
-        </View>
-        <View
-          style={[
-            Global.justifyStart,
-            { gap: 5, marginTop: 10, marginBottom: 19 },
-          ]}
-        >
-          <Button
-            btnType="button"
-            label="Favorite"
-            onClick={console.log}
-            type="outline-secondary"
-            size="sm"
-            icon={IconHeart}
-          />
           <Button
             btnType="button"
             label="Share"
@@ -155,7 +128,70 @@ const VenueDetail = () => {
             icon={IconShare}
           />
         </View>
-        <FacilityType isLoading={!venueDetail} data={venueDetail.facilities} />
+        <View>
+          <Text
+            style={{
+              fontSize: 10,
+              color: colorDark[600],
+              textAlign: "justify",
+              marginTop: 10,
+              marginBottom: 15,
+            }}
+          >
+            {venueDetail.description}
+          </Text>
+        </View>
+        <View style={[Global.justifyStart, { gap: 5, marginBottom: 16 }]}>
+          {venueDetail.facilities.map((e: FacilityType) => (
+            <CardFacilityType
+              title={e.typeName}
+              icon={iconTypeFormatter(e.typeName || e.facilityTypeName)}
+              iconHeight={25}
+              iconWidth={25}
+              key={e.id}
+            />
+          ))}
+        </View>
+        <View style={[Global.justifyBetween, { marginBottom: 16 }]}>
+          <View
+            style={[
+              Global.justifyStart,
+              {
+                gap: 5,
+                width: "45%",
+                borderWidth: 1,
+                borderColor: "#EEE4E4",
+                borderRadius: 8,
+                paddingVertical: 12,
+                paddingHorizontal: 17,
+              },
+            ]}
+          >
+            <Image source={IconClock} style={{ marginTop: 2 }} />
+            <Text>
+              {venueDetail.openTime}
+              {"  "}-
+            </Text>
+            <Text>{venueDetail.closeTime}</Text>
+          </View>
+          <View
+            style={[
+              Global.justifyStart,
+              {
+                gap: 5,
+                width: "45%",
+                borderWidth: 1,
+                borderColor: "#EEE4E4",
+                borderRadius: 8,
+                paddingVertical: 12,
+                paddingHorizontal: 17,
+              },
+            ]}
+          >
+            <Image source={IconTelephone} style={{ marginTop: 2 }} />
+            <Text>{venueDetail.telephone}</Text>
+          </View>
+        </View>
         <View
           style={[
             Global.justifyStart,
@@ -173,7 +209,6 @@ const VenueDetail = () => {
           lat={+venueDetail.latitude}
           lng={+venueDetail.longitude}
         /> */}
-        <OtherVenue data={venues} />
       </Layout>
     </React.Fragment>
   );

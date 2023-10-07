@@ -1,3 +1,13 @@
+import {
+  IconBadminton,
+  IconBasketBall,
+  IconFutsal,
+  IconPool,
+  IconSoccer,
+  IconTennisBall,
+} from "../assets/images";
+import { FacilityTypeName } from "../types/common.type";
+
 export const subStringLongText = (text: string, limit: number) => {
   return text.length > limit ? text.substring(0, limit - 3) + "..." : text;
 };
@@ -47,4 +57,23 @@ export const deserializeParam = (str: string): Record<string, any> => {
   });
 
   return obj;
+};
+
+export const iconTypeFormatter = (facilityType: FacilityTypeName) => {
+  switch (facilityType) {
+    case "Football":
+      return IconSoccer;
+    case "Swimming Pool":
+      return IconPool;
+    case "Tennis":
+      return IconTennisBall;
+    case "Basketball":
+      return IconBasketBall;
+    case "Fustal":
+      return IconFutsal;
+    case "Badminton":
+      return IconBadminton;
+    default:
+      return IconTennisBall;
+  }
 };

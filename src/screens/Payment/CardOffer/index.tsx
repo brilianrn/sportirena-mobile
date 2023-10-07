@@ -7,6 +7,7 @@ import { InputCheckbox } from "../../../components/Input";
 import { privacyPolicePath } from "../../../constants";
 import { Global, colorGray, colorPrimary } from "../../../styles/Global.style";
 import { CardOfferProps } from "../Payment.type";
+import { IDRFormat } from "../../../utils/formattor";
 
 const CardOffer: FC<CardOfferProps> = ({
   normalPrice,
@@ -15,6 +16,7 @@ const CardOffer: FC<CardOfferProps> = ({
   totalHours,
   isCheckPrivacyPolice,
   setIsCheckPrivacyPolice,
+  priceWithServiceFee,
 }) => {
   /* Router */
   const { navigate } = useNavigation();
@@ -73,6 +75,7 @@ const CardOffer: FC<CardOfferProps> = ({
           <View>
             <Text style={{ fontSize: 10 }}>Total Hours</Text>
             <Text style={{ fontSize: 10, marginVertical: 10 }}>Item Price</Text>
+            <Text style={{ fontSize: 10, marginBottom: 10 }}>Service Fee</Text>
             <Text style={{ fontSize: 10 }}>Subtotal</Text>
             <Text
               style={{
@@ -91,15 +94,19 @@ const CardOffer: FC<CardOfferProps> = ({
             <Text
               style={{ fontSize: 10, fontWeight: "600", marginVertical: 10 }}
             >
-              Rp {normalPrice},-
+              IDR {IDRFormat(normalPrice)},-
+            </Text>
+            <Text style={{ fontSize: 10, fontWeight: "600", marginBottom: 10 }}>
+              IDR{" "}
+              {IDRFormat(Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1000))},-
             </Text>
             <Text style={{ fontSize: 10, fontWeight: "600" }}>
-              Rp {normalPrice},-
+              IDR {IDRFormat(priceWithServiceFee)},-
             </Text>
             <Text
               style={{ fontSize: 12, fontWeight: "600", marginVertical: 10 }}
             >
-              Rp {normalPrice},-
+              IDR {IDRFormat(priceWithServiceFee)},-
             </Text>
           </View>
         </View>

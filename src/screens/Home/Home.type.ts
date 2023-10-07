@@ -20,6 +20,8 @@ export interface FacilityType {
 export interface FacilityTypeProps extends PageComponent {
   data?: FacilityType[];
   useTitle?: boolean;
+  iconHeight?: number;
+  iconWidth?: number;
 }
 
 export interface VenuesProps extends PageComponent {

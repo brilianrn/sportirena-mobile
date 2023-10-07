@@ -6,6 +6,7 @@ export type BankTransferType = {
   toBankName?: string;
   toBankAccountHolder?: string;
   toBankAccountNumber?: string;
+  serviceFee: number;
 };
 
 export interface BodyCreateBooking extends BankTransferType {

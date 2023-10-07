@@ -27,6 +27,7 @@ const TransferBank = () => {
   const validationSchema = Yup.object().shape({
     toBankName: Yup.string().required("Bank name required"),
     toBankAccountHolder: Yup.string().required("Account holder name required"),
+    serviceFee: Yup.number().required("Service fee required"),
     toBankAccountNumber: Yup.string()
       .required("Account number required")
       .test("isAccountNumber", "Invalid account number", (value) => {
@@ -64,6 +65,13 @@ const TransferBank = () => {
       setValue("toBankName", bank.bankName, {
         shouldValidate: true,
       });
+      setValue(
+        "serviceFee",
+        Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1000),
+        {
+          shouldValidate: true,
+        }
+      );
     }
   };
 

@@ -9,6 +9,7 @@ export interface CardBookingProps {
 
 export interface CardOfferProps {
   normalPrice: number;
+  priceWithServiceFee: number;
   coupon?: string;
   setCoupon?: (value: string) => void;
   totalHours: number;

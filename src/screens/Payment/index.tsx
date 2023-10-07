@@ -61,14 +61,26 @@ const Payment = () => {
       for (let i = 0; i < tempArr?.length; i++) {
         price += tempArr[i];
       }
-      return IDRFormat(price);
+      return price;
     }
     return 0;
   }, [dataSource]);
 
+  const priceWithServiceFee = useMemo(
+    () =>
+      normalPrice
+        ? Number(normalPrice) +
+          Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1000)
+        : 0,
+    [normalPrice]
+  );
+
   const onContinuePayment = async () => {
     if (paymentMethod === "va") {
-      return await createBooking({ data: dataSource as BookingType[] });
+      return await createBooking({
+        data: dataSource as BookingType[],
+        serviceFee: Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1000),
+      });
     }
     dispatch(setPaymentBookingHour(dataSource));
     return navigate(transferBankPath as never);
@@ -158,7 +170,8 @@ const Payment = () => {
           </Text>
         )}
         <CardOffer
-          normalPrice={normalPrice as number}
+          normalPrice={normalPrice}
+          priceWithServiceFee={priceWithServiceFee}
           coupon={coupon}
           setCoupon={setCoupon}
           totalHours={dataSource?.filter((e) => e.isChecked)?.length as number}

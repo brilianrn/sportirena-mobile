@@ -14,7 +14,7 @@ const HomeStyle = StyleSheet.create({
     marginBottom: 28,
   },
   cardOuterFacilityType: {
-    margin: 5,
+    marginHorizontal: 5,
   },
   cardInnerFacilityType: {
     borderRadius: 10,
