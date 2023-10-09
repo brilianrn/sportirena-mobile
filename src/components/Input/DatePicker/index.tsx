@@ -1,5 +1,5 @@
 import moment from "moment";
-import React, { FC, useState } from "react";
+import React, { FC, useMemo, useState } from "react";
 import { Controller } from "react-hook-form";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import ReactNativeDatePicker from "react-native-modal-datetime-picker";
@@ -19,8 +19,20 @@ const DatePicker: FC<DatePickerProps> = ({
   setValue,
   style,
   value,
+  maxDate,
+  minDate,
 }) => {
+  /* Local State */
   const [open, setOpen] = useState<boolean>(false);
+
+  const formatMaxDate = useMemo(() => {
+    let date = new Date();
+    date.setDate(date.getDate() + (maxDate || 30));
+    const dd = date.getDate();
+    const mm = date.getMonth() + 1;
+    const yyyy = date.getFullYear();
+    return new Date(`${yyyy}-${mm}-${dd}`);
+  }, [maxDate, new Date()]);
   return (
     <React.Fragment>
       <View style={style}>
@@ -57,6 +69,8 @@ const DatePicker: FC<DatePickerProps> = ({
                   <Image source={IconCalendar} />
                 </TouchableOpacity>
                 <ReactNativeDatePicker
+                  minimumDate={minDate}
+                  maximumDate={formatMaxDate}
                   isVisible={open}
                   date={valueForm}
                   onConfirm={(date) => {
@@ -93,6 +107,8 @@ const DatePicker: FC<DatePickerProps> = ({
               <Image source={IconCalendar} />
             </TouchableOpacity>
             <ReactNativeDatePicker
+              minimumDate={minDate}
+              maximumDate={formatMaxDate}
               isVisible={open}
               date={value}
               onConfirm={(date) => {

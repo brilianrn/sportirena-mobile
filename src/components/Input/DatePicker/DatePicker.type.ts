@@ -11,4 +11,6 @@ export interface DatePickerProps {
   placeholder: string;
   label?: string;
   errorMessage?: string;
+  minDate?: Date;
+  maxDate?: number;
 }

@@ -23,6 +23,7 @@ import {
   setCourtDetail,
   setScheduleTime,
 } from "../store/actions/booking.action";
+import { deleteCart } from "../core/DELETE_Cart";
 
 export const useBooking = () => {
   /* Local State */
@@ -163,6 +164,17 @@ export const useBooking = () => {
     }
   };
 
+  /* Delete Cart */
+  const removeCart = async (id: string) => {
+    setIsLoading(true);
+    try {
+      await deleteCart(id);
+      return setIsLoading(false);
+    } catch (err) {
+      return err;
+    }
+  };
+
   /* Fetch Bank */
   const fetchBankNames = async (venueId: string) => {
     setIsLoading(true);
@@ -217,5 +229,6 @@ export const useBooking = () => {
     fetchCart,
     fetchBankNames,
     showToast,
+    removeCart,
   };
 };

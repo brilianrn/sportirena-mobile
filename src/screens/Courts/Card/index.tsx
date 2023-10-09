@@ -54,7 +54,7 @@ const CardVenueCourt: FC<{ item: CourtDetail }> = ({ item }) => {
               type="primary"
               size="sm"
               onClick={() => fetchCourtDetail(item.id)}
-              style={{ marginTop: 5, width: 220 }}
+              style={{ marginTop: 5, width: 150 }}
             />
           </View>
         </View>

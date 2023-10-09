@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -12,6 +12,9 @@ import { useBooking } from "../../hooks/useBooking";
 import { IRootState } from "../../store/reducers";
 import { isNumber } from "../../utils/validator";
 import { BankType } from "../Booking/Booking.type";
+import { Text } from "react-native";
+import { colorDanger } from "../../styles/Global.style";
+import moment from "moment";
 
 const TransferBank = () => {
   /* Local State */
@@ -78,6 +81,19 @@ const TransferBank = () => {
   const onSubmit = (payload: BankTransferType) => {
     createBooking({ ...payload, data: paymentBookingHour });
   };
+
+  const formatMaxDate = useMemo(() => {
+    let date = new Date();
+    date.setDate(date.getDate() + 1);
+    const dd = date.getDate();
+    const MM = date.getMonth() + 1;
+    const yyyy = date.getFullYear();
+    const hh = date.getHours();
+    const mm = date.getMinutes();
+    return moment(new Date(`${yyyy}-${MM}-${dd} ${hh}:${mm}`)).format(
+      "DD MMMM yyyy hh:mm"
+    );
+  }, [new Date()]);
   return (
     <React.Fragment>
       <Layout
@@ -121,7 +137,7 @@ const TransferBank = () => {
           style={{ marginBottom: 13 }}
           errorMessage={errors?.toBankAccountNumber?.message?.toString()}
         />
-        {/* <Text
+        <Text
           style={{
             marginTop: 10,
             marginBottom: 14,
@@ -130,8 +146,8 @@ const TransferBank = () => {
             fontWeight: "500",
           }}
         >
-          Bayar sebelum 28 Agustus 2023 14:05 WIB
-        </Text> */}
+          Bayar sebelum {formatMaxDate} WIB
+        </Text>
         <Button
           label="Send"
           onClick={handleSubmit(onSubmit)}
