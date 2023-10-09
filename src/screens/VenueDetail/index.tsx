@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Image, Text, View } from "react-native";
+import { Image, Share, Text, View } from "react-native";
 import { Carousel } from "react-native-auto-carousel";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   IconClock,
   IconMap,
@@ -27,15 +27,16 @@ import { iconTypeFormatter, subStringLongText } from "../../utils/formattor";
 import CardFacilityType from "../Home/FacilityType/Card";
 import { FacilityType } from "../Home/Home.type";
 import AvailableCourt from "./AvailableCourt";
-import OtherVenue from "./OtherVenue";
 import VenueDetailStyle from "./VenueDetail.style";
+import { setCourtDetail } from "../../store/actions/booking.action";
 
 const VenueDetail = () => {
   /* Local State */
   const [isShare, setIsShare] = useState<boolean>(false);
 
   /* Redux */
-  const { venueDetail, venueCourt, venues } = useSelector(
+  const dispatch = useDispatch();
+  const { venueDetail, venueCourt } = useSelector(
     (state: IRootState) => state.venue
   );
 
@@ -43,17 +44,35 @@ const VenueDetail = () => {
   const { goBack } = useNavigation();
 
   /* Hooks */
-  const { fetchVenueCourt } = useVenue();
+  const { fetchVenueCourt, showToast } = useVenue();
   const { fetchVenues } = useDashboard();
 
   useEffect(() => {
     fetchVenues({ page: 1, pageSize: 10 });
+    dispatch(setCourtDetail(undefined));
     if (!venueDetail) {
       goBack();
     } else {
       fetchVenueCourt(venueDetail.id, { page: 1, pageSize: 10 });
     }
   }, [venueDetail]);
+
+  const onShare = async () => {
+    try {
+      await Share.share({
+        message: `${process.env.EXPO_PUBLIC_WEB_URL}/venue/${venueDetail.linkUrl}`,
+        url: `${process.env.EXPO_PUBLIC_WEB_URL}/venue/${venueDetail.linkUrl}`,
+        title: `${process.env.EXPO_PUBLIC_WEB_URL}/venue/${venueDetail.linkUrl}`,
+      });
+    } catch (error: any) {
+      showToast({
+        message: "Copy link failed",
+        type: "danger",
+        placement: "bottom",
+      });
+    }
+    setIsShare(false);
+  };
   return (
     <React.Fragment>
       <Modal
@@ -64,7 +83,7 @@ const VenueDetail = () => {
       >
         <Button
           label="Copy Link"
-          onClick={() => setIsShare(false)}
+          onClick={onShare}
           style={{ marginTop: 16 }}
           type="primary"
           btnType="button"

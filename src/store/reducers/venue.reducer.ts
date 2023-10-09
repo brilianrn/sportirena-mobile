@@ -11,7 +11,7 @@ const initialState: VenueInitalState = {
   venues: null,
   venueDetail: null,
   venueCourt: null,
-  provinces: null,
+  regencies: null,
 };
 
 const venueReducer = (
@@ -31,7 +31,7 @@ const venueReducer = (
     case SET_VENUE_COURT:
       return { ...state, venueCourt: payload };
     case SET_PROVINCES:
-      return { ...state, provinces: payload };
+      return { ...state, regencies: payload };
     default:
       return state;
   }

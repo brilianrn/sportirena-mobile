@@ -98,9 +98,11 @@ export const useAuth = () => {
             type: "success",
             placement: "bottom",
           });
-          setError(false);
-          navigate(homePath as never);
-          setLoading(false);
+          setTimeout(() => {
+            setError(false);
+            setLoading(false);
+            navigate(homePath as never);
+          }, 500);
           return setMessageData(message);
         }
       }

@@ -11,3 +11,4 @@ export const bookingName = "Booking";
 export const paymentPath = "Payment";
 export const privacyPolicePath = "PrivacyPolice";
 export const transferBankPath = "TransferBank";
+export const courtPath = "Courts";

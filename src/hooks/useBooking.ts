@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { useDispatch } from "react-redux";
 import { ToastPosition, ToastType } from "../../App.type";
-import { loginPath, myBookingPath, paymentPath } from "../constants";
+import {
+  bookingName,
+  loginPath,
+  myBookingPath,
+  paymentPath,
+} from "../constants";
+import { getBankNames } from "../core/GET_BankNames";
 import { getCart } from "../core/GET_Cart";
 import { getCourtDetail } from "../core/GET_CourtDetail";
 import { getScheduleTime } from "../core/GET_ScheduleTime";
@@ -17,7 +23,6 @@ import {
   setCourtDetail,
   setScheduleTime,
 } from "../store/actions/booking.action";
-import { getBankNames } from "../core/GET_BankNames";
 
 export const useBooking = () => {
   /* Local State */
@@ -80,7 +85,8 @@ export const useBooking = () => {
         return setIsError(true);
       }
       setIsError(false);
-      return dispatch(setCourtDetail(result));
+      dispatch(setCourtDetail(result));
+      return navigate(bookingName as never);
     } catch (err) {
       return err;
     }
@@ -210,5 +216,6 @@ export const useBooking = () => {
     addToCart,
     fetchCart,
     fetchBankNames,
+    showToast,
   };
 };

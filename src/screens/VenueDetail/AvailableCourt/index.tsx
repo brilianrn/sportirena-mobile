@@ -6,11 +6,15 @@ import { IconArrowChevron } from "../../../assets/images";
 import { Global, colorPrimary } from "../../../styles/Global.style";
 import { VenueCourt } from "../../../types/venue.type";
 import AvailableCourtCard from "./Card";
+import { useNavigation } from "@react-navigation/native";
+import { courtPath } from "../../../constants";
 
 const AvailableCourt: FC<{ data: VenueCourt[]; title?: string }> = ({
   data,
   title,
 }) => {
+  /* Router */
+  const { navigate } = useNavigation();
   return (
     <React.Fragment>
       <View style={[Global.justifyBetween, { width: "100%" }]}>
@@ -24,7 +28,10 @@ const AvailableCourt: FC<{ data: VenueCourt[]; title?: string }> = ({
         >
           {title || "Available Courts"}
         </Text>
-        <TouchableOpacity style={[Global.justifyEnd, { gap: 3, marginTop: 4 }]}>
+        <TouchableOpacity
+          onPress={() => navigate(courtPath as never)}
+          style={[Global.justifyEnd, { gap: 3, marginTop: 4 }]}
+        >
           <Text
             style={{
               fontWeight: "bold",

@@ -6,6 +6,7 @@ import { ToastProvider } from "react-native-toast-notifications";
 import { Provider } from "react-redux";
 import {
   bookingName,
+  courtPath,
   homePath,
   loginPath,
   myBookingGuestName,
@@ -21,6 +22,7 @@ import {
 } from "./src/constants";
 import {
   BookingScreen,
+  CourtScreen,
   GuestScreen,
   HomeScreen,
   LoginScreen,
@@ -74,6 +76,7 @@ const App = () => {
                 />
                 <Stack.Screen name={profileName} component={ProfileScreen} />
                 <Stack.Screen name={paymentPath} component={PaymentScreen} />
+                <Stack.Screen name={courtPath} component={CourtScreen} />
                 <Stack.Screen
                   name={transferBankPath}
                   component={TransferBankScreen}

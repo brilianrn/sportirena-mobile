@@ -4,7 +4,7 @@ import { useToast } from "react-native-toast-notifications";
 import { useDispatch } from "react-redux";
 import { ToastPosition, ToastType } from "../../App.type";
 import { venueDetailPath } from "../constants";
-import { getProvinces } from "../core/GET_Provinces";
+import { getRegencies } from "../core/GET_Provinces";
 import { getVenueCourts } from "../core/GET_VenueCourts";
 import { FacilityType } from "../screens/Home/Home.type";
 import {
@@ -85,7 +85,8 @@ export const useVenue = () => {
           type: "danger",
           placement: "bottom",
         });
-        return setIsError(true);
+        setIsError(true);
+        return dispatch(setVenueCourt(undefined));
       }
       return dispatch(setVenueCourt(result));
     } catch (err) {
@@ -94,10 +95,10 @@ export const useVenue = () => {
   };
 
   /* Provinces */
-  const fetchProvinces = async () => {
+  const fetchRegencies = async () => {
     setIsLoading(true);
     try {
-      const { message, result } = await getProvinces();
+      const { message, result } = await getRegencies();
       setIsLoading(false);
       if (!result?.length) {
         setMessage(message);
@@ -106,7 +107,8 @@ export const useVenue = () => {
           type: "danger",
           placement: "bottom",
         });
-        return setIsError(true);
+        setIsError(true);
+        return dispatch(setProvinces(undefined));
       }
       return dispatch(setProvinces(result));
     } catch (err) {
@@ -119,6 +121,7 @@ export const useVenue = () => {
     isLoading,
     fetchVenueDetail,
     fetchVenueCourt,
-    fetchProvinces,
+    fetchRegencies,
+    showToast,
   };
 };

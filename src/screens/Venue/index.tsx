@@ -24,12 +24,12 @@ const Venue = () => {
   const [showSetting, setShowSetting] = useState<boolean>(false);
 
   /* Redux */
-  const { venues, provinces } = useSelector((state: IRootState) => state.venue);
+  const { venues, regencies } = useSelector((state: IRootState) => state.venue);
   const { facilityTypes } = useSelector((state: IRootState) => state.dashboard);
 
   /* Hooks */
   const { fetchVenues, fetchFalicityType } = useDashboard();
-  const { fetchProvinces } = useVenue();
+  const { fetchRegencies } = useVenue();
 
   useEffect(() => {
     fetchVenues({
@@ -43,7 +43,7 @@ const Venue = () => {
   useEffect(() => {
     if (showSetting) {
       fetchFalicityType();
-      fetchProvinces();
+      fetchRegencies();
     }
   }, [showSetting]);
 
@@ -104,8 +104,8 @@ const Venue = () => {
             setValue={setLocation}
             value={location}
             obtOptions={
-              provinces?.length
-                ? provinces.map((e: OptionType) => ({
+              regencies?.length
+                ? regencies.map((e: OptionType) => ({
                     ...e,
                     key: e.value,
                     value: e.label,

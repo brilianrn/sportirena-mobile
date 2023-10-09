@@ -15,13 +15,12 @@ import Layout from "../../components/Layout";
 import Modal from "../../components/Modal";
 import { bookingName, transferBankPath } from "../../constants";
 import { useBooking } from "../../hooks/useBooking";
+import { setPaymentBookingHour } from "../../store/actions/booking.action";
 import { IRootState } from "../../store/reducers";
 import { Global, colorGray, colorPrimary } from "../../styles/Global.style";
-import { IDRFormat } from "../../utils/formattor";
 import { BookingType } from "../Booking/Booking.type";
 import CardBooking from "./CardBooking";
 import CardOffer from "./CardOffer";
-import { setPaymentBookingHour } from "../../store/actions/booking.action";
 
 const Payment = () => {
   /* Local State */

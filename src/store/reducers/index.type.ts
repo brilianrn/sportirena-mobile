@@ -20,7 +20,7 @@ export interface VenueInitalState {
   venues: VenueType[] | null;
   venueDetail: VenueType | null;
   venueCourt: VenueCourt[] | null;
-  provinces: OptionType[] | null;
+  regencies: OptionType[] | null;
 }
 
 export interface UserInitialState {

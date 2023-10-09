@@ -1,4 +1,5 @@
 export { default as BookingScreen } from "./Booking";
+export { default as CourtScreen } from "./Courts";
 export { default as HomeScreen } from "./Home";
 export { default as LoginScreen } from "./Login";
 export { default as MyBookingScreen } from "./MyBooking";

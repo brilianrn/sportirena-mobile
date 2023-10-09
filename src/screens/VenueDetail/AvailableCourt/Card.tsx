@@ -1,27 +1,18 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import { Image as ImageRN, Text, TouchableOpacity, View } from "react-native";
-import Button from "../../../components/Button";
-import { Global, colorBrown, colorPrimary } from "../../../styles/Global.style";
-import HomeStyle from "../../Home/Home.style";
 import { IconTennisBall } from "../../../assets/images";
-import { useNavigation } from "@react-navigation/native";
-import { bookingName } from "../../../constants";
+import Button from "../../../components/Button";
+import Image from "../../../components/Image";
+import { BASE_URL_PREVIEW_IMG } from "../../../constants/host";
+import { useBooking } from "../../../hooks/useBooking";
+import { Global, colorBrown, colorPrimary } from "../../../styles/Global.style";
 import { VenueCourt } from "../../../types/venue.type";
 import { IDRFormat } from "../../../utils/formattor";
-import { BASE_URL_PREVIEW_IMG } from "../../../constants/host";
-import Image from "../../../components/Image";
-import { useBooking } from "../../../hooks/useBooking";
+import HomeStyle from "../../Home/Home.style";
 
 const AvailableCourtCard: FC<{ item: VenueCourt }> = ({ item }) => {
-  /* Navigate */
-  const { navigate } = useNavigation();
-
   /* Hooks */
-  const { fetchCourtDetail, isLoading, isError } = useBooking();
-
-  useEffect(() => {
-    if (!isLoading && !isError) navigate(bookingName as never);
-  }, [isLoading, isError]);
+  const { fetchCourtDetail } = useBooking();
   return (
     <TouchableOpacity
       style={[HomeStyle.cardVenue, { height: "auto", width: 211 }]}
