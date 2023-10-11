@@ -10,6 +10,7 @@ export { default as IconBasketFieldActive } from "./IconBasketFieldActive.png";
 export { default as IconCalendar } from "./IconCalendar.png";
 export { default as IconCalendarTime } from "./IconCalendarTime.png";
 export { default as IconCalendarTimeActive } from "./IconCalendarTimeActive.png";
+export { default as IconCameraWhite } from "./IconCameraWhite.png";
 export { default as IconCart } from "./IconCart.png";
 export { default as IconCartRoller } from "./IconCartRoller.png";
 export { default as IconClock } from "./IconClock.png";

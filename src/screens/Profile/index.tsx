@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Image as ImageRN, Text, TouchableOpacity, View } from "react-native";
 import {
@@ -10,7 +11,12 @@ import {
 import Button from "../../components/Button";
 import Image from "../../components/Image";
 import Layout from "../../components/Layout";
-import { loginPath } from "../../constants";
+import {
+  loginPath,
+  privacyPoliceProfilePath,
+  tncPath,
+  updateProfilePath,
+} from "../../constants";
 import { Global, colorPrimary } from "../../styles/Global.style";
 import { UserDetailType } from "../../types/common.type";
 import {
@@ -21,6 +27,9 @@ import {
 const Profile = ({ navigation }) => {
   /* Local State */
   const [userDetail, setUserDetail] = useState<UserDetailType>();
+
+  /* Router */
+  const { navigate } = useNavigation();
 
   useEffect(() => {
     (async () => {
@@ -61,8 +70,9 @@ const Profile = ({ navigation }) => {
           ]}
         >
           <Image
-            src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png"
-            style={{ height: 100, width: 100 }}
+            useBaseUrl
+            src={`${userDetail?.pathName}/${userDetail?.imageName}`}
+            style={{ height: 100, width: 100, borderRadius: 100 / 2 }}
           />
           <View>
             <Text style={{ fontSize: 12, fontWeight: "bold" }}>
@@ -74,7 +84,7 @@ const Profile = ({ navigation }) => {
             <Button
               label="Edit Profile"
               btnType="button"
-              onClick={console.log}
+              onClick={() => navigate(updateProfilePath as never)}
               type="outline-primary"
               size="sm"
             />
@@ -111,6 +121,7 @@ const Profile = ({ navigation }) => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => navigate(tncPath as never)}
           style={[Global.justifyStart, { gap: 19, marginBottom: 40 }]}
         >
           <ImageRN source={IconProfileTnc} />
@@ -126,6 +137,7 @@ const Profile = ({ navigation }) => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => navigate(privacyPoliceProfilePath as never)}
           style={[Global.justifyStart, { gap: 19, marginBottom: 40 }]}
         >
           <ImageRN source={IconProfilePrivacy} />

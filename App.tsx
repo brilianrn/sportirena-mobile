@@ -13,10 +13,13 @@ import {
   myBookingPath,
   paymentPath,
   privacyPolicePath,
+  privacyPoliceProfilePath,
   profileName,
   registerName,
   resetPasswordName,
+  tncPath,
   transferBankPath,
+  updateProfilePath,
   venueDetailPath,
   venuePath,
 } from "./src/constants";
@@ -28,11 +31,14 @@ import {
   LoginScreen,
   MyBookingScreen,
   PaymentScreen,
+  PrivacyPoliceProfileScreen,
   PrivacyPoliceScreen,
   ProfileScreen,
   RegisterScreen,
   ResetPasswordScreen,
+  TncScreen,
   TransferBankScreen,
+  UpdateProfileScreen,
   VenueDetailScreen,
   VenueScreen,
 } from "./src/screens";
@@ -77,6 +83,15 @@ const App = () => {
                 <Stack.Screen name={profileName} component={ProfileScreen} />
                 <Stack.Screen name={paymentPath} component={PaymentScreen} />
                 <Stack.Screen name={courtPath} component={CourtScreen} />
+                <Stack.Screen name={tncPath} component={TncScreen} />
+                <Stack.Screen
+                  name={updateProfilePath}
+                  component={UpdateProfileScreen}
+                />
+                <Stack.Screen
+                  name={privacyPoliceProfilePath}
+                  component={PrivacyPoliceProfileScreen}
+                />
                 <Stack.Screen
                   name={transferBankPath}
                   component={TransferBankScreen}
