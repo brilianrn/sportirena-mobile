@@ -19,6 +19,7 @@ import {
   resetPasswordName,
   tncPath,
   transferBankPath,
+  updatePasswordPath,
   updateProfilePath,
   venueDetailPath,
   venuePath,
@@ -38,6 +39,7 @@ import {
   ResetPasswordScreen,
   TncScreen,
   TransferBankScreen,
+  UpdatePasswordScreen,
   UpdateProfileScreen,
   VenueDetailScreen,
   VenueScreen,
@@ -84,6 +86,10 @@ const App = () => {
                 <Stack.Screen name={paymentPath} component={PaymentScreen} />
                 <Stack.Screen name={courtPath} component={CourtScreen} />
                 <Stack.Screen name={tncPath} component={TncScreen} />
+                <Stack.Screen
+                  name={updatePasswordPath}
+                  component={UpdatePasswordScreen}
+                />
                 <Stack.Screen
                   name={updateProfilePath}
                   component={UpdateProfileScreen}

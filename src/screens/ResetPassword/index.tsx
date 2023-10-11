@@ -1,25 +1,25 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Image, ScrollView, Text, View } from "react-native";
+import { useSelector } from "react-redux";
 import * as Yup from "yup";
-import LoginStyle from "../Login/Login.style";
 import {
   IconArrowBlue,
   IconEye,
   IconEyeOff,
   IconLogin,
 } from "../../assets/images";
-import { InputText } from "../../components/Input";
 import Button from "../../components/Button";
-import { Global } from "../../styles/Global.style";
-import { useNavigation } from "@react-navigation/native";
+import { InputText } from "../../components/Input";
 import { loginPath } from "../../constants";
-import { useSelector } from "react-redux";
-import { IRootState } from "../../store/reducers";
 import { useAuth } from "../../hooks/useAuth";
+import { IRootState } from "../../store/reducers";
+import { Global } from "../../styles/Global.style";
+import LoginStyle from "../Login/Login.style";
 
-const ResetPassowrd = ({ navigation }: any) => {
+const ResetPassowrd = () => {
   /* Local State */
   const [showPassword, setShowpassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =

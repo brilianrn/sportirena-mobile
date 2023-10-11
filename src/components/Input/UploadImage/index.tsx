@@ -1,9 +1,9 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { Image as ImageRN, TouchableOpacity } from "react-native";
+import { useToast } from "react-native-toast-notifications";
 import { IconCameraWhite } from "../../../assets/images";
 import { colorGray } from "../../../styles/Global.style";
 import Image from "../../Image";
-// import * as ImagePicker from "react-native-image-picker";
 
 const ImagePicker = require("react-native-image-picker");
 
@@ -13,9 +13,11 @@ const UploadImage: FC<{
   /* Local State */
   // const [photo, setPhoto] = useState<ImagePicker.ImagePickerResponse>();
 
+  /* Toast */
+  const toast = useToast();
+
   const handleChoosePhoto = async () => {
     try {
-      console.log("MASOK sini");
       const img = await ImagePicker.launchImageLibrary({ mediaType: "photo" });
       console.log(img);
       // await ImagePicker.launchImageLibrary(
@@ -30,6 +32,10 @@ const UploadImage: FC<{
       //   }
       // );
     } catch (error) {
+      toast.show("Open gallery failed!", {
+        type: "danger",
+        animationType: "slide-in",
+      });
       console.log(error);
     }
     // await launchImageLibrary({ mediaType: "photo" }, (response) => {

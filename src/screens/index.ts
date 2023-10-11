@@ -11,6 +11,7 @@ export { default as ProfileScreen } from "./Profile";
 export { default as PrivacyPoliceProfileScreen } from "./Profile/PrivacyPolice";
 export { default as TncScreen } from "./Profile/Tnc";
 export { default as UpdateProfileScreen } from "./Profile/Update";
+export { default as UpdatePasswordScreen } from "./Profile/UpdatePassword";
 export { default as RegisterScreen } from "./Register";
 export { default as ResetPasswordScreen } from "./ResetPassword";
 export { default as VenueScreen } from "./Venue";

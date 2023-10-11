@@ -10,8 +10,12 @@ import { loginPath, profileName } from "../../constants";
 import { UserDetailType } from "../../types/common.type";
 import { retrieveLocalStorageItem } from "../../utils/localStorage";
 import { isPhone } from "../../utils/validator";
+import { useProfile } from "../../hooks/useProfile";
 
 const UpdateProfile = ({ navigation }) => {
+  /* Hooks */
+  const { updateProfile } = useProfile();
+
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .required("Name required")
@@ -123,7 +127,7 @@ const UpdateProfile = ({ navigation }) => {
         </View>
         <Button
           label="Save"
-          onClick={handleSubmit(console.log)}
+          onClick={handleSubmit(updateProfile)}
           style={{ marginBottom: 10, marginTop: 15 }}
           type="primary"
           btnType="submit"

@@ -15,3 +15,4 @@ export const transferBankPath = "TransferBank";
 export const courtPath = "Courts";
 export const tncPath = "Terms&Conditions";
 export const updateProfilePath = "UpdateProfile";
+export const updatePasswordPath = "UpdatePassword";

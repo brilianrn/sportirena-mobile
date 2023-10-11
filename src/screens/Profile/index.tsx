@@ -3,9 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Image as ImageRN, Text, TouchableOpacity, View } from "react-native";
 import {
   IconProfileChangePassword,
-  IconProfileHelp,
   IconProfilePrivacy,
-  IconProfileRateUs,
   IconProfileTnc,
 } from "../../assets/images";
 import Button from "../../components/Button";
@@ -15,6 +13,7 @@ import {
   loginPath,
   privacyPoliceProfilePath,
   tncPath,
+  updatePasswordPath,
   updateProfilePath,
 } from "../../constants";
 import { Global, colorPrimary } from "../../styles/Global.style";
@@ -91,6 +90,7 @@ const Profile = ({ navigation }) => {
           </View>
         </View>
         <TouchableOpacity
+          onPress={() => navigate(updatePasswordPath as never)}
           style={[Global.justifyStart, { gap: 19, marginBottom: 40 }]}
         >
           <ImageRN source={IconProfileChangePassword} />
@@ -103,21 +103,6 @@ const Profile = ({ navigation }) => {
             }}
           >
             Ubah Password
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[Global.justifyStart, { gap: 19, marginBottom: 40 }]}
-        >
-          <ImageRN source={IconProfileHelp} />
-          <Text
-            style={{
-              fontSize: 14,
-              color: colorPrimary.default,
-              fontWeight: "500",
-              marginTop: 3,
-            }}
-          >
-            Bantuan
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -150,21 +135,6 @@ const Profile = ({ navigation }) => {
             }}
           >
             Privacy Policy
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[Global.justifyStart, { gap: 19, marginBottom: 40 }]}
-        >
-          <ImageRN source={IconProfileRateUs} />
-          <Text
-            style={{
-              fontSize: 14,
-              color: colorPrimary.default,
-              fontWeight: "500",
-              marginTop: 3,
-            }}
-          >
-            Rate Us
           </Text>
         </TouchableOpacity>
         <Button
