@@ -34,8 +34,12 @@ export interface DashboardInitialState {
 
 export interface MyBookingInitialState {
   waitingPayment: MyBookingType[] | null;
+  waitingApproval: MyBookingType[] | null;
+  waitingApprovalDetail: MyBookingType | null;
+  reservedDetail: MyBookingType | null;
   reserved: MyBookingType[] | null;
   done: MyBookingType[] | null;
+  waitingPaymentDetail: MyBookingType | null;
 }
 
 export interface BookingInitialState {

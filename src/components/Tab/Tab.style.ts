@@ -11,7 +11,7 @@ const TabStyle = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     flex: 1,
-    width: "100%",
+    width: 500,
   },
   shadowProp: {
     shadowColor: "#171717",

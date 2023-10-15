@@ -9,8 +9,9 @@ import {
   courtPath,
   homePath,
   loginPath,
-  myBookingGuestName,
+  myBookingDetailPath,
   myBookingPath,
+  myBookingPaymentPath,
   paymentPath,
   privacyPolicePath,
   privacyPoliceProfilePath,
@@ -27,9 +28,10 @@ import {
 import {
   BookingScreen,
   CourtScreen,
-  GuestScreen,
   HomeScreen,
   LoginScreen,
+  MyBookingDetailScreen,
+  MyBookingPaymentScreen,
   MyBookingScreen,
   PaymentScreen,
   PrivacyPoliceProfileScreen,
@@ -79,13 +81,17 @@ const App = () => {
                   component={MyBookingScreen}
                 />
                 <Stack.Screen
-                  name={myBookingGuestName}
-                  component={GuestScreen}
+                  name={myBookingDetailPath}
+                  component={MyBookingDetailScreen}
                 />
                 <Stack.Screen name={profileName} component={ProfileScreen} />
                 <Stack.Screen name={paymentPath} component={PaymentScreen} />
                 <Stack.Screen name={courtPath} component={CourtScreen} />
                 <Stack.Screen name={tncPath} component={TncScreen} />
+                <Stack.Screen
+                  name={myBookingPaymentPath}
+                  component={MyBookingPaymentScreen}
+                />
                 <Stack.Screen
                   name={updatePasswordPath}
                   component={UpdatePasswordScreen}

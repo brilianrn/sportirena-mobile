@@ -1,12 +1,12 @@
 import React, { FC } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import TabStyle from "./Tab.style";
 import { TabProps } from "./Tab.type";
 
 const Tabs: FC<TabProps> = ({ activeTab, setActiveTab, tabs, style }) => {
   return (
     <React.Fragment>
-      <View style={style}>
+      <ScrollView horizontal style={[style]}>
         <View style={[TabStyle.card, TabStyle.shadowProp]}>
           {tabs.map((e) => (
             <TouchableOpacity
@@ -28,7 +28,7 @@ const Tabs: FC<TabProps> = ({ activeTab, setActiveTab, tabs, style }) => {
             </TouchableOpacity>
           ))}
         </View>
-      </View>
+      </ScrollView>
     </React.Fragment>
   );
 };

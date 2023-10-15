@@ -21,6 +21,7 @@ const DatePicker: FC<DatePickerProps> = ({
   value,
   maxDate,
   minDate,
+  mode = "date",
 }) => {
   /* Local State */
   const [open, setOpen] = useState<boolean>(false);
@@ -63,12 +64,17 @@ const DatePicker: FC<DatePickerProps> = ({
                     style={{ color: !valueForm ? colorGray[400] : "black" }}
                   >
                     {valueForm
-                      ? moment(valueForm?.toString()).format("DD MMMM YYYY")
+                      ? moment(valueForm?.toString()).format(
+                          mode === "date"
+                            ? "DD MMMM YYYY"
+                            : "MMMM DD, YYYY HH:mm"
+                        )
                       : placeholder}
                   </Text>
                   <Image source={IconCalendar} />
                 </TouchableOpacity>
                 <ReactNativeDatePicker
+                  mode={mode}
                   minimumDate={minDate}
                   maximumDate={formatMaxDate}
                   isVisible={open}
@@ -101,12 +107,15 @@ const DatePicker: FC<DatePickerProps> = ({
             >
               <Text style={{ color: !value ? colorGray[400] : "black" }}>
                 {value
-                  ? moment(value?.toString()).format("DD MMMM YYYY")
+                  ? moment(value?.toString()).format(
+                      mode === "date" ? "DD MMMM YYYY" : "MMMM DD, YYYY HH:mm"
+                    )
                   : placeholder}
               </Text>
               <Image source={IconCalendar} />
             </TouchableOpacity>
             <ReactNativeDatePicker
+              mode={mode}
               minimumDate={minDate}
               maximumDate={formatMaxDate}
               isVisible={open}

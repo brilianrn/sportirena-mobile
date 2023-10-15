@@ -5,7 +5,23 @@ import {
 } from "../../../App.type";
 import { ResultDataList } from "../../core/response";
 
+export type BookingSchedule = {
+  id: string;
+  bookingId: string;
+  detailBookingId: string;
+  courtId: string;
+  courtName: string;
+  openHoursId: string;
+  bookDate: string;
+  startTime: string;
+  endTime: string;
+  startEndTime: string;
+  price: number;
+  status: string;
+  statusBook: string;
+};
 export interface DetailBooking {
+  venueName?: string;
   id: string;
   bookingId: string;
   customerId: string;
@@ -13,6 +29,7 @@ export interface DetailBooking {
   venuePath: string;
   customerName: string;
   customerEmail: string;
+  bookingschedules?: BookingSchedule[];
 }
 
 export interface MyBookingType {

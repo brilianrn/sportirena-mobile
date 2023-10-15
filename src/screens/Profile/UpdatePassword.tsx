@@ -47,7 +47,7 @@ const UpdatePassword = ({ navigation }) => {
           control={control}
           name="oldPassword"
           placeholder="Insert old password"
-          label="Password"
+          label="Old Password"
           type="visible-password"
           secureTextEntry={!showOldPassword}
           errorMessage={errors?.oldPassword?.message?.toString()}
@@ -60,7 +60,7 @@ const UpdatePassword = ({ navigation }) => {
           control={control}
           name="password"
           placeholder="Insert password"
-          label="Password"
+          label="New Password"
           type="visible-password"
           secureTextEntry={!showPassword}
           errorMessage={errors?.password?.message?.toString()}

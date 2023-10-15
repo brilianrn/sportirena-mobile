@@ -11,4 +11,8 @@ export type StatusActiveType = "ACTIVE" | "NON_ACTIVE";
 
 export type PaymentType = "PAYMENT_GATEWAY" | "CASH";
 
-export type BookingStatus = "WAITING_FOR_PAYMENT" | "APPROVED" | "DONE";
+export type BookingStatus =
+  | "WAITING_FOR_PAYMENT"
+  | "WAITING_FOR_APPROVED"
+  | "APPROVED"
+  | "DONE";

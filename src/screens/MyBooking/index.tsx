@@ -20,6 +20,10 @@ const tabs = [
     value: "WAITING_FOR_PAYMENT",
   },
   {
+    label: "Waiting Approval",
+    value: "WAITING_FOR_APPROVED",
+  },
+  {
     label: "Reserved",
     value: "APPROVED",
   },
@@ -36,6 +40,10 @@ const MyBooking = ({ navigation }) => {
     page: 1,
     pageSize: 10,
   });
+  const [paramWA, setParamWA] = useState<QueryParamMyBooking>({
+    page: 1,
+    pageSize: 10,
+  });
   const [paramR, setParamR] = useState<QueryParamMyBooking>({
     page: 1,
     pageSize: 10,
@@ -46,12 +54,17 @@ const MyBooking = ({ navigation }) => {
   });
 
   /* Redux */
-  const { waitingPayment, reserved, done } = useSelector(
+  const { waitingPayment, waitingApproval, reserved, done } = useSelector(
     (state: IRootState) => state.myBooking
   );
 
   /* Hooks */
-  const { fetchDone, fetchReserved, fetchWaitingPayment } = useMyBooking();
+  const {
+    fetchDone,
+    fetchReserved,
+    fetchWaitingPayment,
+    fetchWaitingApproval,
+  } = useMyBooking();
 
   useEffect(() => {
     (async () => {
@@ -70,6 +83,9 @@ const MyBooking = ({ navigation }) => {
       case "WAITING_FOR_PAYMENT":
         fetchWaitingPayment(paramWP);
         break;
+      case "WAITING_FOR_APPROVED":
+        fetchWaitingApproval(paramWA);
+        break;
       case "APPROVED":
         fetchReserved(paramR);
         break;
@@ -83,12 +99,14 @@ const MyBooking = ({ navigation }) => {
     switch (activeTab.value) {
       case "WAITING_FOR_PAYMENT":
         return waitingPayment;
+      case "WAITING_FOR_APPROVED":
+        return waitingApproval;
       case "APPROVED":
         return reserved;
       case "DONE":
         return done;
     }
-  }, [activeTab, waitingPayment, reserved, done]);
+  }, [activeTab, waitingPayment, waitingApproval, reserved, done]);
 
   const onShowMore = () => {
     switch (activeTab.value) {
@@ -96,6 +114,12 @@ const MyBooking = ({ navigation }) => {
         return setParamWP({
           ...paramWP,
           page: paramWP.page + 1,
+          isCount: true,
+        });
+      case "WAITING_FOR_APPROVED":
+        return setParamWA({
+          ...paramWA,
+          page: paramWA.page + 1,
           isCount: true,
         });
       case "APPROVED":

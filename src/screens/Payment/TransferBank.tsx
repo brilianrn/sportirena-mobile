@@ -1,6 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Text } from "react-native";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 import Button from "../../components/Button";
@@ -10,11 +12,9 @@ import { paymentPath } from "../../constants";
 import { BankTransferType } from "../../core/POST_CreateBooking";
 import { useBooking } from "../../hooks/useBooking";
 import { IRootState } from "../../store/reducers";
+import { colorDanger } from "../../styles/Global.style";
 import { isNumber } from "../../utils/validator";
 import { BankType } from "../Booking/Booking.type";
-import { Text } from "react-native";
-import { colorDanger } from "../../styles/Global.style";
-import moment from "moment";
 
 const TransferBank = () => {
   /* Local State */
@@ -41,7 +41,6 @@ const TransferBank = () => {
   const {
     control,
     handleSubmit,
-    getValues,
     setValue,
     formState: { errors, isSubmitting, isValid },
   } = useForm({

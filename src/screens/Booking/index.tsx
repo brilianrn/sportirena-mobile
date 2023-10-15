@@ -30,6 +30,7 @@ import { IDRFormat } from "../../utils/formattor";
 import BookingStyle from "./Booking.style";
 import { BookingType } from "./Booking.type";
 import BookingHeader from "./Header";
+import { MyBookingType } from "../MyBooking/MyBooking.type";
 
 const Booking = () => {
   /* Local State */
@@ -47,7 +48,8 @@ const Booking = () => {
   const { venueDetail } = useSelector((state: IRootState) => state.venue);
 
   /* Hooks */
-  const { fetchScheduleTime, addToCart, isLoading, removeCart } = useBooking();
+  const { fetchScheduleTime, addToCart, isLoading, removeCart, fetchCart } =
+    useBooking();
 
   useEffect(() => {
     if (!courtDetail) navigate(venueDetailPath as never);
@@ -86,23 +88,37 @@ const Booking = () => {
     );
   };
 
-  const onSubmit = () => {
-    dispatch(
-      setCart(
-        dataSource
-          ?.filter(
-            (e) => e.statusBook === "SELECTED" || e.statusBook === "CART"
-          )
-          .map((e) => ({
-            ...e,
-            date: moment(dateChoosen).format("yyyy-MM-DD"),
-            openHoursId: e.id,
-            courtId: courtDetail?.id,
-            venueId: courtDetail?.idVenue,
-          }))
-      )
-    );
-    navigate(paymentPath as never);
+  const onSubmit = async () => {
+    await addToCart(
+      dataSource
+        ?.filter((e) => e.statusBook === "SELECTED" || e.statusBook === "CART")
+        .map((e) => ({
+          ...e,
+          date: moment(dateChoosen).format("yyyy-MM-DD"),
+          openHoursId: e.id,
+          courtId: courtDetail?.id,
+          venueId: courtDetail?.idVenue,
+        }))!
+    ).then(async (_) => {
+      await fetchCart(dataSource?.[0]?.customerId as string).then((_) =>
+        navigate(paymentPath as never)
+      );
+    });
+    // dispatch(
+    //   setCart(
+    //     dataSource
+    //       ?.filter(
+    //         (e) => e.statusBook === "SELECTED" || e.statusBook === "CART"
+    //       )
+    //       .map((e) => ({
+    //         ...e,
+    //         date: moment(dateChoosen).format("yyyy-MM-DD"),
+    //         openHoursId: e.id,
+    //         courtId: courtDetail?.id,
+    //         venueId: courtDetail?.idVenue,
+    //       }))
+    //   )
+    // );
   };
   return (
     <React.Fragment>

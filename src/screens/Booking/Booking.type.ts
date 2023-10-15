@@ -18,6 +18,7 @@ export interface BookingType {
   price: number;
   venueId?: string;
   courtId?: string;
+  cartId?: string;
   openHoursId?: string;
   date?: string;
   bookDate?: string;

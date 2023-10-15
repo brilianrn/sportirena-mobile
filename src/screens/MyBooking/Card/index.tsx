@@ -1,39 +1,46 @@
-import {
-  View,
-  Text,
-  Image as ImageRN,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-import React, { FC } from "react";
-import { Global, colorDark, colorGray } from "../../../styles/Global.style";
-import MyBookingStyle from "../MyBooking.style";
-import TabStyle from "../../../components/Tab/Tab.style";
-import { IconArrowChevronBlack, IconMoney } from "../../../assets/images";
-import { MyBookingCard } from "../MyBooking.type";
-import { IDRFormat } from "../../../utils/formattor";
-import Image from "../../../components/Image";
-import Button from "../../../components/Button";
 import moment from "moment";
-import { useNavigation } from "@react-navigation/native";
-import { myBookingGuestName } from "../../../constants";
+import React, { FC } from "react";
+import {
+  Image as ImageRN,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { IconArrowChevronBlack, IconMoney } from "../../../assets/images";
+import Button from "../../../components/Button";
+import Image from "../../../components/Image";
+import TabStyle from "../../../components/Tab/Tab.style";
+import { useMyBooking } from "../../../hooks/useMyBooking";
+import { Global, colorDark, colorGray } from "../../../styles/Global.style";
+import { IDRFormat } from "../../../utils/formattor";
+import MyBookingStyle from "../MyBooking.style";
+import { MyBookingCard } from "../MyBooking.type";
 
 const CardMyBooking: FC<MyBookingCard> = ({ data, status }) => {
-  /* Navigate */
-  const { navigate } = useNavigation();
+  /* Hooks */
+  const {
+    getWaitingPaymentDetail,
+    fetchWaitingApprovalDetail,
+    fetchReservedDetail,
+  } = useMyBooking();
   return (
     <React.Fragment>
-      <View style={[MyBookingStyle.card, TabStyle.shadowProp]}>
+      <TouchableOpacity
+        onPress={() => fetchWaitingApprovalDetail(data.id)}
+        style={[MyBookingStyle.card, TabStyle.shadowProp]}
+      >
         <View style={[Global.justifyBetween]}>
           <View>
             <Text style={[MyBookingStyle.cardInv]}>
               #
-              {status === "WAITING_FOR_PAYMENT"
+              {status === "WAITING_FOR_PAYMENT" ||
+              status === "WAITING_FOR_APPROVED"
                 ? data?.invoiceCode
                 : data?.booking?.invoiceCode}
             </Text>
             <Text style={[MyBookingStyle.cardTitle]}>
-              {data.detailbooking?.venuePath}
+              {data.detailbooking?.venueName}
             </Text>
           </View>
           <Text style={[MyBookingStyle.cardInv]}>
@@ -46,6 +53,18 @@ const CardMyBooking: FC<MyBookingCard> = ({ data, status }) => {
             style={{ height: 80, width: 80, borderRadius: 8 }}
           />
           <View style={{ position: "relative" }}>
+            <Text
+              style={[
+                MyBookingStyle.cardInv,
+                {
+                  color: colorDark.default,
+                  fontWeight: "400",
+                  marginBottom: 5,
+                },
+              ]}
+            >
+              {data?.courtName}
+            </Text>
             <View
               style={[
                 Global.justifyStart,
@@ -100,9 +119,7 @@ const CardMyBooking: FC<MyBookingCard> = ({ data, status }) => {
             <View
               style={[
                 {
-                  position: "absolute",
-                  bottom: 0,
-                  right: -70,
+                  marginTop: 12,
                   gap: 5,
                   alignItems: "center",
                 },
@@ -123,20 +140,26 @@ const CardMyBooking: FC<MyBookingCard> = ({ data, status }) => {
         </View>
         {data.statusBook !== "DONE" && (
           <>
-            <View
-              style={{
-                borderBottomColor: "gray",
-                borderBottomWidth: StyleSheet.hairlineWidth,
-                marginVertical: 11,
-              }}
-            />
+            {(data.statusBook === "WAITING_FOR_APPROVED" ||
+              data.statusBook === "WAITING_FOR_PAYMENT") && (
+              <View
+                style={{
+                  borderBottomColor: "gray",
+                  borderBottomWidth: StyleSheet.hairlineWidth,
+                  marginVertical: 11,
+                }}
+              />
+            )}
             <View
               style={[
                 Global.justifyBetween,
                 {
                   alignItems: "center",
                   alignSelf:
-                    data.statusBook === "APPROVED" ? "flex-end" : "auto",
+                    data.statusBook === "WAITING_FOR_APPROVED" ||
+                    data.statusBook === "APPROVED"
+                      ? "flex-end"
+                      : "auto",
                 },
               ]}
             >
@@ -167,16 +190,20 @@ const CardMyBooking: FC<MyBookingCard> = ({ data, status }) => {
                   label="Payment"
                   btnType="button"
                   type="primary"
-                  onClick={console.log}
+                  onClick={() => getWaitingPaymentDetail(data)}
                   size="sm"
                 />
-              ) : data.statusBook === "APPROVED" ? (
-                <View style={{}}>
+              ) : data.statusBook === "WAITING_FOR_APPROVED" ? (
+                <View style={{ width: 100 }}>
                   <Button
-                    label="Guest"
+                    label="Detail"
                     btnType="button"
-                    type="primary"
-                    onClick={() => navigate(myBookingGuestName as never)}
+                    type="outline-primary"
+                    onClick={() =>
+                      data.statusBook === "WAITING_FOR_APPROVED"
+                        ? fetchWaitingApprovalDetail(data.id)
+                        : fetchReservedDetail(data.id)
+                    }
                     size="sm"
                   />
                 </View>
@@ -184,7 +211,7 @@ const CardMyBooking: FC<MyBookingCard> = ({ data, status }) => {
             </View>
           </>
         )}
-      </View>
+      </TouchableOpacity>
     </React.Fragment>
   );
 };
