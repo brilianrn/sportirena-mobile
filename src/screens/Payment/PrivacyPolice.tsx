@@ -7,7 +7,7 @@ import { paymentPath } from "../../constants";
 import { IRootState } from "../../store/reducers";
 import { colorPrimary } from "../../styles/Global.style";
 
-const PrivacyPolice = () => {
+const PrivacyPolice = ({ navigation }) => {
   /* Redux */
   const { venueDetail } = useSelector((state: IRootState) => state.venue);
   return (
@@ -17,6 +17,7 @@ const PrivacyPolice = () => {
         isSearchBar={false}
         label="Privacy Police"
         backHref={paymentPath}
+        navigation={navigation}
       >
         <Text
           style={{

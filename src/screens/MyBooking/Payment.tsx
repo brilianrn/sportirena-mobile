@@ -14,7 +14,7 @@ import { IRootState } from "../../store/reducers";
 import { Global, colorDanger, colorGray } from "../../styles/Global.style";
 import { isNumber } from "../../utils/validator";
 
-const Payment = () => {
+const Payment = ({ navigation }) => {
   /* Local State */
   const [evidence, setEvidence] = useState<string>("bukti_transfer.pdf");
 
@@ -62,6 +62,7 @@ const Payment = () => {
         isSearchBar={false}
         label="Transfer Bank Account"
         backHref={myBookingPath}
+        navigation={navigation}
       >
         <Text style={{ fontSize: 12 }}>
           Selesaikan payment booking anda dengan melakukan transfer ke{" "}

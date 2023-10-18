@@ -16,7 +16,7 @@ import { colorDanger } from "../../styles/Global.style";
 import { isNumber } from "../../utils/validator";
 import { BankType } from "../Booking/Booking.type";
 
-const TransferBank = () => {
+const TransferBank = ({ navigation }) => {
   /* Local State */
   const [bankChoosen, setBankChoosen] = useState<BankType>();
   /* Redux */
@@ -100,6 +100,7 @@ const TransferBank = () => {
         isSearchBar={false}
         label="Transfer Bank Account"
         backHref={paymentPath}
+        navigation={navigation}
       >
         <InputSelect
           isOptObj

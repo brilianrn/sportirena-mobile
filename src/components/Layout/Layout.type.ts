@@ -6,6 +6,7 @@ export interface LayoutProps extends TopBarProps {
   useBottomBar?: boolean;
   useTopBar?: boolean;
   isFixedTopBar?: boolean;
+  navigation?: any;
 }
 
 export interface TopBarProps {

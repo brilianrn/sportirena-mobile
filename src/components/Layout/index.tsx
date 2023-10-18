@@ -21,6 +21,7 @@ const Layout: FC<LayoutProps> = ({
   tabs,
   isFixedTopBar,
   onClickSetting,
+  navigation,
 }) => {
   return (
     <View style={{ flex: 1 }}>
@@ -64,7 +65,7 @@ const Layout: FC<LayoutProps> = ({
           {children}
         </View>
       </ScrollView>
-      {useBottomBar && <BottomBar />}
+      {useBottomBar && <BottomBar navigation={navigation} />}
     </View>
   );
 };

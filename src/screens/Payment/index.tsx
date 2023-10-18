@@ -22,7 +22,7 @@ import { BookingType } from "../Booking/Booking.type";
 import CardBooking from "./CardBooking";
 import CardOffer from "./CardOffer";
 
-const Payment = () => {
+const Payment = ({ navigation }) => {
   /* Local State */
   const [dataSource, setDataSource] = useState<BookingType[]>();
   const [coupon, setCoupon] = useState<string>();
@@ -116,6 +116,7 @@ const Payment = () => {
         isSearchBar={false}
         label="Payment"
         backHref={bookingName}
+        navigation={navigation}
       >
         <View style={[Global.justifyBetween]}>
           <Text style={{ fontSize: 12, fontWeight: "500" }}>

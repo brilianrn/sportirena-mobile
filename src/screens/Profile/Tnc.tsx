@@ -4,10 +4,15 @@ import Layout from "../../components/Layout";
 import { colorGray } from "../../styles/Global.style";
 import TncCardList from "./TncCardList";
 
-const Tnc = () => {
+const Tnc = ({ navigation }) => {
   return (
     <React.Fragment>
-      <Layout useTopBar isSearchBar={false} label="Terms and Conditions">
+      <Layout
+        useTopBar
+        isSearchBar={false}
+        label="Terms and Conditions"
+        navigation={navigation}
+      >
         <Text
           style={{
             fontSize: 12,

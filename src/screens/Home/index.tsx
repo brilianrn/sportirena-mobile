@@ -14,7 +14,7 @@ import HomeStyle from "./Home.style";
 import HowItWork from "./HowItWork";
 import Venues from "./Venues";
 
-const Home = () => {
+const Home = ({ navigation }) => {
   /* Local State */
   const [userDetail, setUserDetail] = useState<UserDetailType>();
 
@@ -37,7 +37,7 @@ const Home = () => {
     })();
   }, [retrieveLocalStorageItem]);
   return (
-    <Layout useBottomBar isSearchBar={false}>
+    <Layout useBottomBar isSearchBar={false} navigation={navigation}>
       <Image source={IconSportirena} style={{ marginBottom: 15 }} />
       <View>
         <View style={Global.justifyBetween}>

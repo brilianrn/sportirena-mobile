@@ -1,18 +1,19 @@
-import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { ToastPosition, ToastType } from "../../App.type";
-import { profileName } from "../constants";
-import {
-  BodyUpdateProfile,
-  postUpdateProfile,
-} from "../core/POST_UpdateProfile";
+import { homePath, profileName } from "../constants";
+import { getProfile } from "../core/GET_Profile";
 import {
   BodyUpdatePassword,
   postUpdatePassword,
 } from "../core/POST_UpdatePassword";
+import {
+  BodyUpdateProfile,
+  postUpdateProfile,
+} from "../core/POST_UpdateProfile";
+import { storeLocalStorageItem } from "../utils/localStorage";
 
-export const useProfile = () => {
+export const useProfile = ({ navigation }) => {
   /* Local State */
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -20,9 +21,6 @@ export const useProfile = () => {
 
   /* Toast */
   const toast = useToast();
-
-  /* Router */
-  const { navigate } = useNavigation();
 
   const resetState = () => {
     setIsError(false);
@@ -57,8 +55,7 @@ export const useProfile = () => {
   const updateProfile = async (payload: BodyUpdateProfile) => {
     setIsLoading(true);
     try {
-      const { message, success, statusCode } = await postUpdateProfile(payload);
-      console.log(message, success, statusCode);
+      const { message, success } = await postUpdateProfile(payload);
       setIsLoading(false);
       if (!success) {
         setMessage(message);
@@ -71,8 +68,19 @@ export const useProfile = () => {
         });
         return setIsError(true);
       }
-      setIsError(false);
-      return navigate(profileName as never);
+      const user = await getProfile();
+      if (user.success && user.result) {
+        await storeLocalStorageItem({
+          storageKey: "userInfo",
+          storageValue: JSON.stringify(user.result),
+        });
+        setTimeout(() => {
+          setIsError(false);
+          setIsLoading(false);
+          navigation.push(profileName as never);
+        }, 500);
+        return setMessage(message);
+      }
     } catch (err) {
       return err;
     }
@@ -94,7 +102,7 @@ export const useProfile = () => {
         return setIsError(true);
       }
       setIsError(false);
-      return navigate(profileName as never);
+      return navigation.push(homePath as never);
     } catch (err) {
       return err;
     }

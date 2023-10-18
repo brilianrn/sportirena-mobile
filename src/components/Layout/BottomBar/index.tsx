@@ -19,10 +19,9 @@ import {
 } from "../../../constants";
 import { Global, colorGray, colorPrimary } from "../../../styles/Global.style";
 
-const BottomBar = () => {
+const BottomBar = ({ navigation }) => {
   /* Navigate */
   const { name } = useRoute();
-  const { navigate } = useNavigation();
   return (
     <View
       style={{
@@ -37,7 +36,7 @@ const BottomBar = () => {
       }}
     >
       <View style={[Global.justifyCenter, { width: "100%", gap: 40 }]}>
-        <TouchableOpacity onPress={() => navigate(homePath as never)}>
+        <TouchableOpacity onPress={() => navigation.push(homePath as never)}>
           <View
             style={{
               justifyContent: "center",
@@ -58,7 +57,7 @@ const BottomBar = () => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigate(venuePath as never)}>
+        <TouchableOpacity onPress={() => navigation.push(venuePath as never)}>
           <View
             style={{
               justifyContent: "center",
@@ -83,7 +82,9 @@ const BottomBar = () => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigate(myBookingPath as never)}>
+        <TouchableOpacity
+          onPress={() => navigation.push(myBookingPath as never)}
+        >
           <View
             style={{
               justifyContent: "center",
@@ -110,7 +111,7 @@ const BottomBar = () => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigate(profileName as never)}>
+        <TouchableOpacity onPress={() => navigation.push(profileName as never)}>
           <View
             style={{
               justifyContent: "center",

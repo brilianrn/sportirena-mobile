@@ -4,10 +4,15 @@ import Layout from "../../components/Layout";
 import { colorGray } from "../../styles/Global.style";
 import TncCardList from "./TncCardList";
 
-const PrivacyPolice = () => {
+const PrivacyPolice = ({ navigation }) => {
   return (
     <React.Fragment>
-      <Layout useTopBar isSearchBar={false} label="Privacy Police">
+      <Layout
+        useTopBar
+        isSearchBar={false}
+        label="Privacy Police"
+        navigation={navigation}
+      >
         <Text
           style={{
             fontSize: 12,

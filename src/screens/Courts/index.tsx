@@ -16,7 +16,7 @@ import { FacilityType } from "../Home/Home.type";
 import CardVenueCourt from "./Card";
 import { CourtDetail } from "../Booking/Booking.type";
 
-const Courts = () => {
+const Courts = ({ navigation }) => {
   /* Local State */
   const [date, setDate] = useState<Date>();
   const [showSetting, setShowSetting] = useState<boolean>(false);
@@ -30,7 +30,7 @@ const Courts = () => {
 
   /* Hooks */
   const { fetchFalicityType } = useDashboard();
-  const { fetchVenueCourt, showToast } = useVenue();
+  const { fetchVenueCourt } = useVenue();
 
   useEffect(() => {
     if (showSetting) {
@@ -96,6 +96,7 @@ const Courts = () => {
         isSearchBar={false}
         label={venueDetail.venueName}
         backHref={venueDetailPath}
+        navigation={navigation}
       >
         <View style={[Global.justifyBetween, { gap: 10 }]}>
           <View style={{ width: "90%" }}>

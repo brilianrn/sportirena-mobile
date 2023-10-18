@@ -17,7 +17,7 @@ import { InputDate } from "../../components/Input";
 import Layout from "../../components/Layout";
 import { paymentPath, venueDetailPath } from "../../constants";
 import { useBooking } from "../../hooks/useBooking";
-import { setCart, setScheduleTime } from "../../store/actions/booking.action";
+import { setScheduleTime } from "../../store/actions/booking.action";
 import { IRootState } from "../../store/reducers";
 import {
   Global,
@@ -31,7 +31,7 @@ import BookingStyle from "./Booking.style";
 import { BookingType } from "./Booking.type";
 import BookingHeader from "./Header";
 
-const Booking = () => {
+const Booking = ({ navigation }) => {
   /* Local State */
   const [dataSource, setDataSource] = useState<BookingType[]>();
   const [dateChoosen, setDateChoosen] = useState<Date>();
@@ -120,6 +120,7 @@ const Booking = () => {
         isSearchBar={false}
         label={courtDetail?.courtName}
         backHref={venueDetailPath}
+        navigation={navigation}
       >
         <BookingHeader
           courtDetail={courtDetail}

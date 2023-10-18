@@ -53,7 +53,7 @@ const Profile = ({ navigation }) => {
   };
   return (
     <React.Fragment>
-      <Layout isSearchBar={false} useBottomBar>
+      <Layout isSearchBar={false} useBottomBar navigation={navigation}>
         <View
           style={[
             Global.justifyStart,

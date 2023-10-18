@@ -17,7 +17,7 @@ const UpdatePassword = ({ navigation }) => {
     useState<boolean>(false);
 
   /* Hooks */
-  const { updatePassword } = useProfile();
+  const { updatePassword } = useProfile({ navigation });
 
   const validationSchema = Yup.object().shape({
     oldPassword: Yup.string().required("Old password required"),
@@ -42,6 +42,7 @@ const UpdatePassword = ({ navigation }) => {
         isSearchBar={false}
         label="Change Password"
         backHref={profileName}
+        navigation={navigation}
       >
         <InputText
           control={control}

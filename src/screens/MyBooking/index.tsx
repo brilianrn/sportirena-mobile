@@ -139,6 +139,7 @@ const MyBooking = ({ navigation }) => {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         tabs={tabs}
+        navigation={navigation}
       >
         {allData?.filter(
           (el: MyBookingType) => el.statusBook === activeTab.value

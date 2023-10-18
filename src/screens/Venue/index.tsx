@@ -15,7 +15,7 @@ import { Global, colorPrimary } from "../../styles/Global.style";
 import { FacilityType } from "../Home/Home.type";
 import CardVenue from "./Card";
 
-const Venue = () => {
+const Venue = ({ navigation }) => {
   /* Local State */
   const [search, setSearch] = useState<string>("");
   const [location, setLocation] = useState<string>("");
@@ -68,6 +68,7 @@ const Venue = () => {
         search={search}
         setSearch={setSearch}
         onClickSetting={() => setShowSetting(true)}
+        navigation={navigation}
       >
         <Modal show={showSetting} setShow={setShowSetting}>
           <Text

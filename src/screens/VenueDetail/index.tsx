@@ -30,7 +30,7 @@ import AvailableCourt from "./AvailableCourt";
 import VenueDetailStyle from "./VenueDetail.style";
 import { setCourtDetail } from "../../store/actions/booking.action";
 
-const VenueDetail = () => {
+const VenueDetail = ({ navigation }) => {
   /* Local State */
   const [isShare, setIsShare] = useState<boolean>(false);
 
@@ -94,6 +94,7 @@ const VenueDetail = () => {
         isSearchBar={false}
         label="Detail Venue"
         backHref={venuePath}
+        navigation={navigation}
       >
         <View
           style={{

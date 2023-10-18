@@ -10,14 +10,14 @@ import { loginPath, profileName } from "../../constants";
 import { useProfile } from "../../hooks/useProfile";
 import { UserDetailType } from "../../types/common.type";
 import { retrieveLocalStorageItem } from "../../utils/localStorage";
-import { isPhone } from "../../utils/validator";
+import { isBase64, isPhone } from "../../utils/validator";
 
 const UpdateProfile = ({ navigation }) => {
   /* Local State */
   const [img, setImg] = useState<string>();
 
   /* Hooks */
-  const { updateProfile, isLoading } = useProfile();
+  const { updateProfile, isLoading } = useProfile({ navigation });
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -66,7 +66,7 @@ const UpdateProfile = ({ navigation }) => {
   }, [retrieveLocalStorageItem]);
 
   const onSubmit = (payload: any) => {
-    updateProfile({ ...payload, base64: img });
+    updateProfile({ ...payload, base64: isBase64(img as string) ? img : "" });
   };
   return (
     <React.Fragment>
@@ -75,6 +75,7 @@ const UpdateProfile = ({ navigation }) => {
         isSearchBar={false}
         label="Edit Profile"
         backHref={profileName}
+        navigation={navigation}
       >
         <View
           style={{

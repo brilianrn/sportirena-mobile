@@ -22,3 +22,9 @@ export const isNumber = (str: string) => {
   const regex = /^\d+$/;
   return regex.test(str);
 };
+
+export const isBase64 = (str: string) => {
+  const regex =
+    /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+  return regex.test(str);
+};

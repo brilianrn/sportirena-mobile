@@ -11,7 +11,7 @@ import { IDRFormat } from "../../utils/formattor";
 import HomeStyle from "../Home/Home.style";
 import { BookingSchedule } from "./MyBooking.type";
 
-const Detail = () => {
+const Detail = ({ navigation }) => {
   /* Redux */
   const { waitingApprovalDetail } = useSelector(
     (state: IRootState) => state.myBooking
@@ -23,6 +23,7 @@ const Detail = () => {
         isSearchBar={false}
         label="Detail Booking"
         backHref={myBookingPath}
+        navigation={navigation}
       >
         <Text
           style={{
