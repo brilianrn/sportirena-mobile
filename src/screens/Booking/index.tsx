@@ -30,7 +30,6 @@ import { IDRFormat } from "../../utils/formattor";
 import BookingStyle from "./Booking.style";
 import { BookingType } from "./Booking.type";
 import BookingHeader from "./Header";
-import { MyBookingType } from "../MyBooking/MyBooking.type";
 
 const Booking = () => {
   /* Local State */
@@ -42,7 +41,7 @@ const Booking = () => {
 
   /* Redux */
   const dispatch = useDispatch();
-  const { courtDetail, scheduleTime } = useSelector(
+  const { cart, courtDetail, scheduleTime } = useSelector(
     (state: IRootState) => state.booking
   );
   const { venueDetail } = useSelector((state: IRootState) => state.venue);
@@ -57,7 +56,9 @@ const Booking = () => {
 
   useEffect(() => {
     if (courtDetail?.id && dateChoosen) {
+      console.log(dateChoosen);
       fetchScheduleTime(courtDetail?.id, dateChoosen?.toString() as string);
+      fetchCart(venueDetail?.id as string);
     } else {
       dispatch(setScheduleTime(undefined));
     }
@@ -65,11 +66,13 @@ const Booking = () => {
 
   useEffect(() => {
     setDataSource(
-      scheduleTime?.map((e: BookingType) => ({
-        ...e,
-        isOldCard: e.statusBook === "CART",
-        isChecked: true,
-      }))
+      scheduleTime?.length
+        ? scheduleTime?.map((e: BookingType) => ({
+            ...e,
+            isOldCard: e.statusBook === "CART",
+            isChecked: true,
+          }))
+        : []
     );
   }, [scheduleTime]);
 
@@ -77,7 +80,8 @@ const Booking = () => {
     setDataSource(
       dataSource?.map((e) => {
         if (e.id === id) {
-          if (e.statusBook !== "AVAILABLE") removeCart(id);
+          if (e.statusBook === "CART")
+            removeCart(id, venueDetail?.id as string);
           return {
             ...e,
             statusBook: e.statusBook === "AVAILABLE" ? "SELECTED" : "AVAILABLE",
@@ -89,36 +93,25 @@ const Booking = () => {
   };
 
   const onSubmit = async () => {
-    await addToCart(
+    navigate(paymentPath as never);
+  };
+
+  const onAddCart = async () => {
+    addToCart(
       dataSource
-        ?.filter((e) => e.statusBook === "SELECTED" || e.statusBook === "CART")
+        ?.filter((e) => e.statusBook === "SELECTED")
         .map((e) => ({
           ...e,
           date: moment(dateChoosen).format("yyyy-MM-DD"),
           openHoursId: e.id,
           courtId: courtDetail?.id,
           venueId: courtDetail?.idVenue,
-        }))!
-    ).then(async (_) => {
-      await fetchCart(dataSource?.[0]?.customerId as string).then((_) =>
-        navigate(paymentPath as never)
-      );
+        }))!,
+      venueDetail?.id as string
+    ).then((_) => {
+      setDateChoosen(undefined);
+      setDataSource(undefined);
     });
-    // dispatch(
-    //   setCart(
-    //     dataSource
-    //       ?.filter(
-    //         (e) => e.statusBook === "SELECTED" || e.statusBook === "CART"
-    //       )
-    //       .map((e) => ({
-    //         ...e,
-    //         date: moment(dateChoosen).format("yyyy-MM-DD"),
-    //         openHoursId: e.id,
-    //         courtId: courtDetail?.id,
-    //         venueId: courtDetail?.idVenue,
-    //       }))
-    //   )
-    // );
   };
   return (
     <React.Fragment>
@@ -175,7 +168,19 @@ const Booking = () => {
             )}
           </Text>
         </Text>
-        {dataSource?.length ? (
+        {isLoading ? (
+          <Text
+            style={{
+              textAlign: "center",
+              marginTop: 50,
+              fontSize: 12,
+              color: colorDark.default,
+              fontStyle: "italic",
+            }}
+          >
+            Loading ...
+          </Text>
+        ) : dataSource?.length ? (
           <SafeAreaView
             style={{
               flex: 1,
@@ -298,7 +303,7 @@ const Booking = () => {
               fontStyle: "italic",
             }}
           >
-            -- Data not found --
+            {isLoading ? "Loading ..." : "-- Data not found --"}
           </Text>
         )}
       </Layout>
@@ -306,7 +311,10 @@ const Booking = () => {
         (e) => e.statusBook === "SELECTED" || e.statusBook === "CART"
       )?.length ? (
         <View style={[Global.justifyBetween, BookingStyle.cardTotalHour]}>
-          <View style={{ marginTop: 10, position: "relative" }}>
+          <TouchableOpacity
+            onPress={onAddCart}
+            style={{ marginTop: 10, position: "relative" }}
+          >
             <View
               style={{
                 backgroundColor: colorDanger.default,
@@ -321,16 +329,11 @@ const Booking = () => {
               <Text
                 style={{ fontSize: 10, color: "white", textAlign: "center" }}
               >
-                {
-                  dataSource?.filter(
-                    (e) =>
-                      e.statusBook === "SELECTED" || e.statusBook === "CART"
-                  )?.length
-                }
+                {dataSource?.filter((e) => e.statusBook === "SELECTED")?.length}
               </Text>
             </View>
             <ImageRN source={IconCartRoller} />
-          </View>
+          </TouchableOpacity>
           <View style={[Global.justifyEnd, { gap: 8 }]}>
             <Button
               label="Check Out"
@@ -339,26 +342,27 @@ const Booking = () => {
               onClick={onSubmit}
               size="sm"
               isSubmit={isLoading}
+              isDisable={!cart?.length}
             />
-            <TouchableOpacity
-              onPress={() =>
-                addToCart(
-                  dataSource
-                    ?.filter(
-                      (e) =>
-                        e.statusBook === "SELECTED" || e.statusBook === "CART"
-                    )
-                    .map((e) => ({
-                      ...e,
-                      date: moment(dateChoosen).format("yyyy-MM-DD"),
-                      openHoursId: e.id,
-                      courtId: courtDetail?.id,
-                      venueId: courtDetail?.idVenue,
-                    }))
-                )
-              }
-            >
-              <ImageRN source={IconCart} style={{ marginTop: 10 }} />
+            <TouchableOpacity style={{ marginTop: 10, position: "relative" }}>
+              <View
+                style={{
+                  backgroundColor: colorDanger.default,
+                  paddingVertical: 3,
+                  paddingHorizontal: 6,
+                  position: "absolute",
+                  top: -10,
+                  right: -10,
+                  borderRadius: 50,
+                }}
+              >
+                <Text
+                  style={{ fontSize: 10, color: "white", textAlign: "center" }}
+                >
+                  {dataSource?.filter((e) => e.statusBook === "CART")?.length}
+                </Text>
+              </View>
+              <ImageRN source={IconCart} />
             </TouchableOpacity>
           </View>
         </View>

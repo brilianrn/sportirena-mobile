@@ -1,18 +1,17 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { FC } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import { OptionType } from "../../../../App.type";
 import { IconArrowBlue, IconSearch, IconSetting } from "../../../assets/images";
-import { homePath } from "../../../constants";
 import { Global } from "../../../styles/Global.style";
 import { InputText } from "../../Input";
 import Tabs from "../../Tab";
 import LayoutStyle from "../Layout.style";
 import { TopBarProps } from "../Layout.type";
-import { OptionType } from "../../../../App.type";
 
 const TopBar: FC<TopBarProps> = ({
   isSearchBar,
-  backHref = homePath,
+  backHref,
   label,
   placeholderSearch,
   search,
@@ -24,7 +23,7 @@ const TopBar: FC<TopBarProps> = ({
   onClickSetting,
 }) => {
   /* Navigate */
-  const { navigate } = useNavigation();
+  const { navigate, goBack } = useNavigation();
   return (
     <React.Fragment>
       {isSearchBar ? (
@@ -65,7 +64,7 @@ const TopBar: FC<TopBarProps> = ({
         </View>
       ) : (
         <TouchableOpacity
-          onPress={() => navigate(backHref as never)}
+          onPress={() => (backHref ? navigate(backHref as never) : goBack())}
           style={[
             Global.justifyStart,
             {

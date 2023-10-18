@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
 import * as Yup from "yup";
@@ -7,14 +7,17 @@ import Button from "../../components/Button";
 import { InputImage, InputRadio, InputText } from "../../components/Input";
 import Layout from "../../components/Layout";
 import { loginPath, profileName } from "../../constants";
+import { useProfile } from "../../hooks/useProfile";
 import { UserDetailType } from "../../types/common.type";
 import { retrieveLocalStorageItem } from "../../utils/localStorage";
 import { isPhone } from "../../utils/validator";
-import { useProfile } from "../../hooks/useProfile";
 
 const UpdateProfile = ({ navigation }) => {
+  /* Local State */
+  const [img, setImg] = useState<string>();
+
   /* Hooks */
-  const { updateProfile } = useProfile();
+  const { updateProfile, isLoading } = useProfile();
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -23,7 +26,6 @@ const UpdateProfile = ({ navigation }) => {
         return value?.length >= 6;
       }),
     email: Yup.string().email("Wrong format email").required("Email required"),
-    photo: Yup.string(),
     phoneNumber: Yup.string()
       .required("Phone number required")
       .test("isPhone", "Invalid phone number", (value) => {
@@ -36,7 +38,6 @@ const UpdateProfile = ({ navigation }) => {
     control,
     handleSubmit,
     setValue,
-    getValues,
     formState: { errors, isSubmitting, isValid },
   } = useForm({
     mode: "onChange",
@@ -59,10 +60,14 @@ const UpdateProfile = ({ navigation }) => {
         setValue("name", dataUser.name);
         setValue("phoneNumber", dataUser.phoneNumber);
         setValue("gender", dataUser.gender);
-        setValue("photo", `${dataUser?.pathName}/${dataUser?.imageName}`);
+        setImg(`${dataUser?.pathName}/${dataUser?.imageName}`);
       }
     })();
   }, [retrieveLocalStorageItem]);
+
+  const onSubmit = (payload: any) => {
+    updateProfile({ ...payload, base64: img });
+  };
   return (
     <React.Fragment>
       <Layout
@@ -77,7 +82,7 @@ const UpdateProfile = ({ navigation }) => {
             marginBottom: 15,
           }}
         >
-          <InputImage image={getValues("photo")} />
+          <InputImage image={img as string} setImage={setImg} />
         </View>
         <InputText
           control={control}
@@ -127,12 +132,12 @@ const UpdateProfile = ({ navigation }) => {
         </View>
         <Button
           label="Save"
-          onClick={handleSubmit(updateProfile)}
+          onClick={handleSubmit(onSubmit)}
           style={{ marginBottom: 10, marginTop: 15 }}
           type="primary"
           btnType="submit"
-          isDisable={!isValid || isSubmitting}
-          isSubmit={isSubmitting && isValid}
+          isDisable={!isValid || (img ? false : true)}
+          isSubmit={(isSubmitting && isValid) || isLoading}
         />
       </Layout>
     </React.Fragment>

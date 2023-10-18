@@ -4,12 +4,8 @@ import { useEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { useDispatch } from "react-redux";
 import { ToastPosition, ToastType } from "../../App.type";
-import {
-  bookingName,
-  loginPath,
-  myBookingPath,
-  paymentPath,
-} from "../constants";
+import { bookingName, loginPath, myBookingPath } from "../constants";
+import { deleteCart } from "../core/DELETE_Cart";
 import { getBankNames } from "../core/GET_BankNames";
 import { getCart } from "../core/GET_Cart";
 import { getCourtDetail } from "../core/GET_CourtDetail";
@@ -23,7 +19,6 @@ import {
   setCourtDetail,
   setScheduleTime,
 } from "../store/actions/booking.action";
-import { deleteCart } from "../core/DELETE_Cart";
 
 export const useBooking = () => {
   /* Local State */
@@ -102,7 +97,6 @@ export const useBooking = () => {
         id,
         formatDate
       );
-      setIsLoading(false);
       if (!result) {
         setMessage(message);
         showToast({
@@ -111,8 +105,10 @@ export const useBooking = () => {
           placement: "bottom",
         });
         if (!success) navigate(loginPath as never);
+        setIsLoading(false);
         return setIsError(true);
       }
+      setIsLoading(false);
       setIsError(false);
       return dispatch(setScheduleTime(result));
     } catch (err) {
@@ -121,10 +117,10 @@ export const useBooking = () => {
   };
 
   /* Cart Booking */
-  const fetchCart = async (idCustomer: string) => {
+  const fetchCart = async (idVenue: string) => {
     setIsLoading(true);
     try {
-      const { message, result } = await getCart(idCustomer);
+      const { message, result } = await getCart(idVenue);
       setIsLoading(false);
       if (!result) {
         setMessage(message);
@@ -136,14 +132,17 @@ export const useBooking = () => {
         return setIsError(true);
       }
       setIsError(false);
-      return dispatch(setCart(result));
+      dispatch(
+        setCart(result.map((e) => ({ ...e, isChecked: true, cartId: e.id })))
+      );
+      return result;
     } catch (err) {
-      return err;
+      return null;
     }
   };
 
   /* Add Booking to Cart */
-  const addToCart = async (payload: BookingType[]) => {
+  const addToCart = async (payload: BookingType[], venueId?: string) => {
     setIsLoading(true);
     try {
       const { message, success } = await postCart(payload);
@@ -157,18 +156,19 @@ export const useBooking = () => {
         });
         return setIsError(true);
       }
-      setIsError(false);
-      return navigate(paymentPath as never);
+      await fetchCart(venueId as string);
+      return setIsError(false);
     } catch (err) {
       return err;
     }
   };
 
   /* Delete Cart */
-  const removeCart = async (id: string) => {
+  const removeCart = async (id: string, venueId?: string) => {
     setIsLoading(true);
     try {
-      await deleteCart(id);
+      const { success } = await deleteCart(id);
+      if (success) await fetchCart(venueId as string);
       return setIsLoading(false);
     } catch (err) {
       return err;
@@ -199,6 +199,7 @@ export const useBooking = () => {
 
   /* Create Booking */
   const createBooking = async (payload: BodyCreateBooking) => {
+    console.log(payload);
     setIsLoading(true);
     try {
       const { message, success } = await postBooking(payload);

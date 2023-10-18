@@ -1,49 +1,24 @@
+import * as ImagePicker from "expo-image-picker";
 import React, { FC } from "react";
 import { Image as ImageRN, TouchableOpacity } from "react-native";
-import { useToast } from "react-native-toast-notifications";
 import { IconCameraWhite } from "../../../assets/images";
 import { colorGray } from "../../../styles/Global.style";
-import Image from "../../Image";
-
-const ImagePicker = require("react-native-image-picker");
 
 const UploadImage: FC<{
-  image?: string;
-}> = ({ image }) => {
-  /* Local State */
-  // const [photo, setPhoto] = useState<ImagePicker.ImagePickerResponse>();
-
-  /* Toast */
-  const toast = useToast();
-
+  image: string;
+  setImage: (value: string) => void;
+}> = ({ image, setImage }) => {
   const handleChoosePhoto = async () => {
-    try {
-      const img = await ImagePicker.launchImageLibrary({ mediaType: "photo" });
-      console.log(img);
-      // await ImagePicker.launchImageLibrary(
-      //   {
-      //     mediaType: "mixed",
-      //   },
-      //   (response) => {
-      //     console.log(response);
-      //     // this.setState({
-      //     //   resourcePath: response
-      //     // });
-      //   }
-      // );
-    } catch (error) {
-      toast.show("Open gallery failed!", {
-        type: "danger",
-        animationType: "slide-in",
-      });
-      console.log(error);
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+      base64: true,
+    });
+    if (!result.canceled) {
+      setImage(`data:image/jpeg;base64,${result.assets[0]?.base64}`);
     }
-    // await launchImageLibrary({ mediaType: "photo" }, (response) => {
-    //   console.log(response);
-    //   if (response) {
-    //     setPhoto(response);
-    //   }
-    // });
   };
   return (
     <React.Fragment>
@@ -69,9 +44,8 @@ const UploadImage: FC<{
           }}
         />
         {image && (
-          <Image
-            useBaseUrl
-            src={image as string}
+          <ImageRN
+            source={{ uri: image }}
             style={{ height: "100%", width: "100%", borderRadius: 50 }}
           />
         )}

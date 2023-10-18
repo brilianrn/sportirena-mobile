@@ -7,7 +7,12 @@ import * as Yup from "yup";
 import { IconEye, IconEyeOff, IconSportirena } from "../../assets/images";
 import Button from "../../components/Button";
 import { InputRadio, InputText } from "../../components/Input";
-import { homePath, loginPath } from "../../constants";
+import {
+  homePath,
+  loginPath,
+  privacyPolicePath,
+  tncPath,
+} from "../../constants";
 import { useAuth } from "../../hooks/useAuth";
 import { Global } from "../../styles/Global.style";
 import { isPhone } from "../../utils/validator";
@@ -149,8 +154,16 @@ const Register = () => {
             ]}
           >
             By Registering, I agree with{" "}
-            <Button.Link label="Term & Conditions" /> and{" "}
-            <Button.Link label="Privacy Policy" /> of Sportirena
+            <Button.Link
+              label="Term & Conditions"
+              onClick={() => navigate(tncPath as never)}
+            />{" "}
+            and{" "}
+            <Button.Link
+              label="Privacy Policy"
+              onClick={() => navigate(privacyPolicePath as never)}
+            />{" "}
+            of Sportirena
           </Text>
           <Button
             label="Register"

@@ -57,12 +57,15 @@ export const useProfile = () => {
   const updateProfile = async (payload: BodyUpdateProfile) => {
     setIsLoading(true);
     try {
-      const { message, success } = await postUpdateProfile(payload);
+      const { message, success, statusCode } = await postUpdateProfile(payload);
+      console.log(message, success, statusCode);
       setIsLoading(false);
       if (!success) {
         setMessage(message);
         showToast({
-          message: message || "Update profile failed",
+          message: message?.includes("413")
+            ? "Max size image 2mb"
+            : "Update profile failed",
           type: "danger",
           placement: "bottom",
         });

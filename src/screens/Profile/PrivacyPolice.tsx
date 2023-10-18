@@ -1,19 +1,13 @@
-import { View, Text, SafeAreaView, FlatList } from "react-native";
 import React from "react";
+import { Text } from "react-native";
 import Layout from "../../components/Layout";
-import { profileName } from "../../constants";
 import { colorGray } from "../../styles/Global.style";
 import TncCardList from "./TncCardList";
 
 const PrivacyPolice = () => {
   return (
     <React.Fragment>
-      <Layout
-        useTopBar
-        isSearchBar={false}
-        label="Privacy Police"
-        backHref={profileName}
-      >
+      <Layout useTopBar isSearchBar={false} label="Privacy Police">
         <Text
           style={{
             fontSize: 12,

@@ -1,19 +1,13 @@
-import { View, Text, SafeAreaView, FlatList } from "react-native";
 import React from "react";
+import { Text } from "react-native";
 import Layout from "../../components/Layout";
-import { profileName } from "../../constants";
 import { colorGray } from "../../styles/Global.style";
 import TncCardList from "./TncCardList";
 
 const Tnc = () => {
   return (
     <React.Fragment>
-      <Layout
-        useTopBar
-        isSearchBar={false}
-        label="Terms and Conditions"
-        backHref={profileName}
-      >
+      <Layout useTopBar isSearchBar={false} label="Terms and Conditions">
         <Text
           style={{
             fontSize: 12,
