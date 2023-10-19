@@ -19,6 +19,7 @@ import { BankType } from "../Booking/Booking.type";
 const TransferBank = ({ navigation }) => {
   /* Local State */
   const [bankChoosen, setBankChoosen] = useState<BankType>();
+
   /* Redux */
   const { paymentBookingHour, bankNames } = useSelector(
     (state: IRootState) => state.booking

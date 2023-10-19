@@ -234,6 +234,7 @@ export const useMyBooking = () => {
 
   /* Confirm Payment */
   const confirmPayment = async (payload: BodyConfirmPayment) => {
+    console.log(payload);
     setIsLoading(true);
     try {
       const { message, success } = await putConfirmPayment(payload);
@@ -241,7 +242,7 @@ export const useMyBooking = () => {
       if (!success) {
         setMessage(message);
         showToast({
-          message: message || "Add to cart failed",
+          message: message?.includes("413") ? "Max size image 2mb" : message,
           type: "danger",
           placement: "bottom",
         });

@@ -2,21 +2,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 import Button from "../../components/Button";
 import { InputDate, InputText } from "../../components/Input";
+import UploadImage from "../../components/Input/UploadImage";
 import Layout from "../../components/Layout";
 import { myBookingPath } from "../../constants";
 import { useMyBooking } from "../../hooks/useMyBooking";
 import { IRootState } from "../../store/reducers";
-import { Global, colorDanger, colorGray } from "../../styles/Global.style";
+import { colorDanger } from "../../styles/Global.style";
 import { isNumber } from "../../utils/validator";
 
 const Payment = ({ navigation }) => {
   /* Local State */
-  const [evidence, setEvidence] = useState<string>("bukti_transfer.pdf");
+  const [evidence, setEvidence] = useState<string>("");
 
   /* Redux */
   const { waitingPaymentDetail } = useSelector(
@@ -54,7 +55,8 @@ const Payment = ({ navigation }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = (payload: any) => confirmPayment(payload);
+  const onSubmit = (payload: any) =>
+    confirmPayment({ ...payload, base64: evidence || "" });
   return (
     <React.Fragment>
       <Layout
@@ -128,27 +130,14 @@ const Payment = ({ navigation }) => {
           placeholder="Input jumlah pembayaran"
           label="Jumlah Pembayaran"
           type="number-pad"
-          style={{ marginBottom: 13 }}
+          style={{ marginBottom: 26 }}
           errorMessage={errors?.transferAmount?.message?.toString()}
         />
-        <View style={[Global.justifyStart, { gap: 15, marginTop: 13 }]}>
-          <Button
-            label="Upload Bukti Transfer"
-            btnType="button"
-            size="sm"
-            onClick={console.log}
-            type="primary"
-          />
-          <Text
-            style={{
-              fontSize: 10,
-              color: colorGray[600],
-              marginTop: "3.5%",
-            }}
-          >
-            {evidence}
-          </Text>
-        </View>
+        <UploadImage
+          label="Upload Bukti Transfer"
+          image={evidence}
+          setImage={setEvidence}
+        />
         <Button
           label="Send"
           btnType="button"

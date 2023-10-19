@@ -202,7 +202,10 @@ export const useBooking = () => {
     console.log(payload);
     setIsLoading(true);
     try {
-      const { message, success } = await postBooking(payload);
+      const { message, success } = await postBooking({
+        ...payload,
+        data: payload?.data?.filter((e) => e?.isChecked),
+      });
       setIsLoading(false);
       if (!success) {
         setMessage(message);
