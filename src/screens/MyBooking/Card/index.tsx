@@ -2,6 +2,7 @@ import moment from "moment";
 import React, { FC } from "react";
 import {
   Image as ImageRN,
+  Linking,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -16,6 +17,7 @@ import { Global, colorDark, colorGray } from "../../../styles/Global.style";
 import { IDRFormat } from "../../../utils/formattor";
 import MyBookingStyle from "../MyBooking.style";
 import { MyBookingCard } from "../MyBooking.type";
+import { useVenue } from "../../../hooks/useVenue";
 
 const CardMyBooking: FC<MyBookingCard> = ({ data, status }) => {
   /* Hooks */
@@ -24,10 +26,41 @@ const CardMyBooking: FC<MyBookingCard> = ({ data, status }) => {
     fetchWaitingApprovalDetail,
     fetchReservedDetail,
   } = useMyBooking();
+  const { fetchVenueDetail, showToast } = useVenue();
+
+  const onPayment = () => {
+    if (data?.paymentType === "PAYMENT_GATEWAY") {
+      Linking.canOpenURL(data?.paymentType)
+        .then(() => {
+          Linking.openURL(data?.paymentType).catch((err) => {
+            console.log(err);
+            showToast({
+              message: "Open browser failed",
+              placement: "bottom",
+              type: "danger",
+            });
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          showToast({
+            message: "Open browser failed",
+            placement: "bottom",
+            type: "danger",
+          });
+        });
+    } else {
+      getWaitingPaymentDetail(data);
+    }
+  };
   return (
     <React.Fragment>
       <TouchableOpacity
-        onPress={() => fetchWaitingApprovalDetail(data.id)}
+        onPress={() =>
+          data.statusBook === "WAITING_FOR_APPROVED"
+            ? fetchWaitingApprovalDetail(data.id)
+            : null
+        }
         style={[MyBookingStyle.card, TabStyle.shadowProp]}
       >
         <View style={[Global.justifyBetween]}>
@@ -105,6 +138,9 @@ const CardMyBooking: FC<MyBookingCard> = ({ data, status }) => {
               )}
             </View>
             <TouchableOpacity
+              onPress={() =>
+                fetchVenueDetail(undefined, data.detailbooking.venueId)
+              }
               style={[
                 Global.justifyStart,
                 { gap: 5, alignItems: "center", marginTop: 6 },
@@ -190,7 +226,7 @@ const CardMyBooking: FC<MyBookingCard> = ({ data, status }) => {
                   label="Payment"
                   btnType="button"
                   type="primary"
-                  onClick={() => getWaitingPaymentDetail(data)}
+                  onClick={onPayment}
                   size="sm"
                 />
               ) : data.statusBook === "WAITING_FOR_APPROVED" ? (

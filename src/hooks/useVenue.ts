@@ -13,6 +13,7 @@ import {
   setVenueDetail,
 } from "../store/actions/venue.action";
 import { QueryParamVenueCourt, VenueType } from "../types/venue.type";
+import { getVenueDetail } from "../core/GET_VenueDetail";
 
 export const useVenue = () => {
   /* Local State */
@@ -60,15 +61,36 @@ export const useVenue = () => {
   };
 
   /* Venue Detail */
-  const fetchVenueDetail = async (params: VenueType) => {
-    const facilities: FacilityType[] = params.facilities.map((e: any) => ({
-      ...e,
-      id: e.facilityTypeId,
-      typeName: e.facilityTypeName,
-    }));
-    setIsLoading(true);
-    dispatch(setVenueDetail({ ...params, facilities }));
-    setIsLoading(false);
+  const fetchVenueDetail = async (params?: VenueType, id?: string) => {
+    if (params && !id) {
+      const facilities: FacilityType[] = params.facilities.map((e: any) => ({
+        ...e,
+        id: e.facilityTypeId,
+        typeName: e.facilityTypeName,
+      }));
+      setIsLoading(true);
+      dispatch(setVenueDetail({ ...params, facilities }));
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+      try {
+        const { message, result } = await getVenueDetail(id as string);
+        setIsLoading(false);
+        if (!result) {
+          setMessage(message);
+          showToast({
+            message: "Venue detail not found",
+            type: "danger",
+            placement: "bottom",
+          });
+          setIsError(true);
+          return dispatch(setVenueCourt(undefined));
+        }
+        dispatch(setVenueDetail(result));
+      } catch (err) {
+        return err;
+      }
+    }
     navigate(venueDetailPath as never);
   };
 
