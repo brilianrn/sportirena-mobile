@@ -10,9 +10,12 @@ import { VenueCourt } from "../../../types/venue.type";
 import { IDRFormat } from "../../../utils/formattor";
 import HomeStyle from "../../Home/Home.style";
 
-const AvailableCourtCard: FC<{ item: VenueCourt }> = ({ item }) => {
+const AvailableCourtCard: FC<{ item: VenueCourt; navigation: any }> = ({
+  item,
+  navigation,
+}) => {
   /* Hooks */
-  const { fetchCourtDetail } = useBooking();
+  const { fetchCourtDetail } = useBooking({ navigation });
   return (
     <TouchableOpacity
       style={[HomeStyle.cardVenue, { height: "auto", width: 211 }]}

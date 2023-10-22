@@ -20,7 +20,7 @@ import {
   setScheduleTime,
 } from "../store/actions/booking.action";
 
-export const useBooking = () => {
+export const useBooking = ({ navigation }) => {
   /* Local State */
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -217,7 +217,7 @@ export const useBooking = () => {
         return setIsError(true);
       }
       setIsError(false);
-      return navigate(myBookingPath as never);
+      return navigation?.push(myBookingPath as never);
     } catch (err) {
       return err;
     }

@@ -25,7 +25,7 @@ const Payment = ({ navigation }) => {
   );
 
   /* Hooks */
-  const { isLoading, confirmPayment } = useMyBooking();
+  const { isLoading, confirmPayment } = useMyBooking({ navigation });
 
   const validationSchema = Yup.object().shape({
     id: Yup.string().required("ID required").default(waitingPaymentDetail?.id),

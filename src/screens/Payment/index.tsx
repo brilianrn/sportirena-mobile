@@ -43,7 +43,7 @@ const Payment = ({ navigation }) => {
   const { navigate } = useNavigation();
 
   /* Hooks */
-  const { createBooking, isLoading } = useBooking();
+  const { createBooking, isLoading } = useBooking({ navigation });
 
   useEffect(() => {
     if (cart)

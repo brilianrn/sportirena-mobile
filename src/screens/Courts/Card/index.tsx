@@ -10,9 +10,12 @@ import { IDRFormat, subStringLongText } from "../../../utils/formattor";
 import { CourtDetail } from "../../Booking/Booking.type";
 import VenueStyle from "../../Venue/Venue.style";
 
-const CardVenueCourt: FC<{ item: CourtDetail }> = ({ item }) => {
+const CardVenueCourt: FC<{ item: CourtDetail; navigation: any }> = ({
+  item,
+  navigation,
+}) => {
   /* Hooks */
-  const { fetchCourtDetail } = useBooking();
+  const { fetchCourtDetail } = useBooking({ navigation });
   return (
     <React.Fragment>
       <TouchableOpacity style={[VenueStyle.cardVenue]}>

@@ -64,7 +64,7 @@ const MyBooking = ({ navigation }) => {
     fetchReserved,
     fetchWaitingPayment,
     fetchWaitingApproval,
-  } = useMyBooking();
+  } = useMyBooking({ navigation });
 
   useEffect(() => {
     (async () => {
@@ -152,6 +152,7 @@ const MyBooking = ({ navigation }) => {
                   key={e.id}
                   data={e}
                   status={activeTab.value as BookingStatus}
+                  navigation={navigation}
                 />
               ))}
             <ShowMore onClick={onShowMore} />

@@ -16,7 +16,6 @@ const PrivacyPolice = ({ navigation }) => {
         useTopBar
         isSearchBar={false}
         label="Privacy Police"
-        backHref={paymentPath}
         navigation={navigation}
       >
         <Text

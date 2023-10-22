@@ -26,7 +26,9 @@ const TransferBank = ({ navigation }) => {
   );
 
   /* Hooks */
-  const { fetchBankNames, createBooking, isLoading } = useBooking();
+  const { fetchBankNames, createBooking, isLoading } = useBooking({
+    navigation,
+  });
 
   const validationSchema = Yup.object().shape({
     toBankName: Yup.string().required("Bank name required"),

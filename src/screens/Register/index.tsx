@@ -1,5 +1,4 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -18,14 +17,11 @@ import { Global } from "../../styles/Global.style";
 import { isPhone } from "../../utils/validator";
 import LoginStyle from "../Login/Login.style";
 
-const Register = () => {
+const Register = ({ navigation }) => {
   /* Local State */
   const [showPassword, setShowpassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
-
-  /* Navigate */
-  const { navigate } = useNavigation();
 
   /* Hooks */
   const { signUp, loading } = useAuth();
@@ -74,7 +70,9 @@ const Register = () => {
                 Registration for customer only.
               </Text>
             </View>
-            <TouchableOpacity onPress={() => navigate(homePath as never)}>
+            <TouchableOpacity
+              onPress={() => navigation?.push(homePath as never)}
+            >
               <Image source={IconSportirena} />
             </TouchableOpacity>
           </View>
@@ -156,12 +154,12 @@ const Register = () => {
             By Registering, I agree with{" "}
             <Button.Link
               label="Term & Conditions"
-              onClick={() => navigate(tncPath as never)}
+              onClick={() => navigation?.push(tncPath as never)}
             />{" "}
             and{" "}
             <Button.Link
               label="Privacy Policy"
-              onClick={() => navigate(privacyPolicePath as never)}
+              onClick={() => navigation?.push(privacyPolicePath as never)}
             />{" "}
             of Sportirena
           </Text>
@@ -180,7 +178,7 @@ const Register = () => {
             </Text>
             <Button.Link
               label="Login"
-              onClick={() => navigate(loginPath as never)}
+              onClick={() => navigation?.push(loginPath as never)}
             />
           </View>
         </View>

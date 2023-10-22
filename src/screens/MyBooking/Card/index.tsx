@@ -1,8 +1,8 @@
 import moment from "moment";
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
 import {
+  Alert,
   Image as ImageRN,
-  Linking,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -18,37 +18,37 @@ import { IDRFormat } from "../../../utils/formattor";
 import MyBookingStyle from "../MyBooking.style";
 import { MyBookingCard } from "../MyBooking.type";
 import { useVenue } from "../../../hooks/useVenue";
+import * as Linking from "expo-linking";
 
-const CardMyBooking: FC<MyBookingCard> = ({ data, status }) => {
+const CardMyBooking: FC<MyBookingCard> = ({ data, status, navigation }) => {
   /* Hooks */
   const {
     getWaitingPaymentDetail,
     fetchWaitingApprovalDetail,
     fetchReservedDetail,
-  } = useMyBooking();
+  } = useMyBooking({ navigation });
   const { fetchVenueDetail, showToast } = useVenue();
 
-  const onPayment = () => {
+  const onPayment = async () => {
     if (data?.paymentType === "PAYMENT_GATEWAY") {
-      Linking.canOpenURL(data?.paymentType)
-        .then(() => {
-          Linking.openURL(data?.paymentType).catch((err) => {
-            console.log(err);
-            showToast({
-              message: "Open browser failed",
-              placement: "bottom",
-              type: "danger",
-            });
-          });
-        })
-        .catch((err) => {
-          console.log(err);
+      const supported = await Linking.canOpenURL(data.invoiceUrl);
+      if (supported) {
+        try {
+          await Linking.openURL(data.invoiceUrl);
+        } catch (error) {
           showToast({
             message: "Open browser failed",
             placement: "bottom",
             type: "danger",
           });
+        }
+      } else {
+        showToast({
+          message: "Open browser failed",
+          placement: "bottom",
+          type: "danger",
         });
+      }
     } else {
       getWaitingPaymentDetail(data);
     }
@@ -61,7 +61,14 @@ const CardMyBooking: FC<MyBookingCard> = ({ data, status }) => {
             ? fetchWaitingApprovalDetail(data.id)
             : null
         }
-        style={[MyBookingStyle.card, TabStyle.shadowProp]}
+        style={[
+          MyBookingStyle.card,
+          TabStyle.shadowProp,
+          {
+            borderWidth: 2,
+            borderColor: colorGray[300],
+          },
+        ]}
       >
         <View style={[Global.justifyBetween]}>
           <View>
@@ -82,7 +89,8 @@ const CardMyBooking: FC<MyBookingCard> = ({ data, status }) => {
         </View>
         <View style={[Global.justifyStart, { gap: 17 }]}>
           <Image
-            src={data.pathName as string}
+            useBaseUrl
+            src={`${data?.pathName}/${data?.imageName}`}
             style={{ height: 80, width: 80, borderRadius: 8 }}
           />
           <View style={{ position: "relative" }}>

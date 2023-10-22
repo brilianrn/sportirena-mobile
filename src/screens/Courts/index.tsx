@@ -130,7 +130,7 @@ const Courts = ({ navigation }) => {
         </Text>
         {venueCourt ? (
           venueCourt?.map((e: CourtDetail, i: number) => (
-            <CardVenueCourt key={i} item={e} />
+            <CardVenueCourt key={i} item={e} navigation={navigation} />
           ))
         ) : (
           <View style={{ marginTop: 79 }}>

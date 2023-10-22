@@ -16,6 +16,7 @@ import { venuePath } from "../../constants";
 import { BASE_URL_PREVIEW_IMG } from "../../constants/host";
 import { useDashboard } from "../../hooks/useDashboard";
 import { useVenue } from "../../hooks/useVenue";
+import { setCourtDetail } from "../../store/actions/booking.action";
 import { IRootState } from "../../store/reducers";
 import {
   Global,
@@ -27,8 +28,8 @@ import { iconTypeFormatter, subStringLongText } from "../../utils/formattor";
 import CardFacilityType from "../Home/FacilityType/Card";
 import { FacilityType } from "../Home/Home.type";
 import AvailableCourt from "./AvailableCourt";
+import VenueLocation from "./Location";
 import VenueDetailStyle from "./VenueDetail.style";
-import { setCourtDetail } from "../../store/actions/booking.action";
 
 const VenueDetail = ({ navigation }) => {
   /* Local State */
@@ -224,11 +225,11 @@ const VenueDetail = ({ navigation }) => {
             {venueDetail.address}
           </Text>
         </View>
-        <AvailableCourt data={venueCourt} />
-        {/* <VenueLocation
+        <AvailableCourt data={venueCourt} navigation={navigation} />
+        <VenueLocation
           lat={+venueDetail.latitude}
           lng={+venueDetail.longitude}
-        /> */}
+        />
       </Layout>
     </React.Fragment>
   );

@@ -30,14 +30,11 @@ import {
 import { IRootState } from "../store/reducers";
 import { QueryParamMyBooking } from "../types/common.type";
 
-export const useMyBooking = () => {
+export const useMyBooking = ({ navigation }) => {
   /* Local State */
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>();
-
-  /* Navigate */
-  const { navigate } = useNavigation();
 
   /* Redux */
   const dispatch = useDispatch();
@@ -88,9 +85,10 @@ export const useMyBooking = () => {
       setIsLoading(false);
       if (!result.rows.length) {
         setMessage(message);
+        dispatch(setWaitingPayment());
         showToast({
           message: "Booking waiting payment not found",
-          type: "danger",
+          type: "warning",
           placement: "bottom",
         });
         return setIsError(true);
@@ -110,7 +108,7 @@ export const useMyBooking = () => {
   const getWaitingPaymentDetail = async (payload: MyBookingType) => {
     setIsLoading(true);
     dispatch(setWaitingPaymentDetail(payload));
-    navigate(myBookingPaymentPath as never);
+    navigation?.push(myBookingPaymentPath as never);
     setIsLoading(false);
   };
 
@@ -122,9 +120,10 @@ export const useMyBooking = () => {
       setIsLoading(false);
       if (!result.rows.length) {
         setMessage(message);
+        dispatch(setWaitingApproval());
         showToast({
           message: "Booking waiting approval not found",
-          type: "danger",
+          type: "warning",
           placement: "bottom",
         });
         return setIsError(true);
@@ -156,7 +155,7 @@ export const useMyBooking = () => {
         return setIsError(true);
       }
       dispatch(setWaitingApprovalDetail(result));
-      return navigate(myBookingDetailPath as never);
+      return navigation?.push(myBookingDetailPath as never);
     } catch (err) {
       return err;
     }
@@ -170,9 +169,10 @@ export const useMyBooking = () => {
       setIsLoading(false);
       if (!result) {
         setMessage(message);
+        dispatch(setReserved());
         showToast({
           message: "Booking reserved not found",
-          type: "danger",
+          type: "warning",
           placement: "bottom",
         });
         return setIsError(true);
@@ -202,7 +202,7 @@ export const useMyBooking = () => {
         return setIsError(true);
       }
       dispatch(setWaitingApprovalDetail(result));
-      return navigate(myBookingDetailPath as never);
+      return navigation?.push(myBookingDetailPath as never);
     } catch (err) {
       return err;
     }
@@ -216,9 +216,10 @@ export const useMyBooking = () => {
       setIsLoading(false);
       if (!result) {
         setMessage(message);
+        dispatch(setDone());
         showToast({
           message: "Booking done not found",
-          type: "danger",
+          type: "warning",
           placement: "bottom",
         });
         return setIsError(true);
@@ -249,7 +250,7 @@ export const useMyBooking = () => {
         return setIsError(true);
       }
       setIsError(false);
-      return navigate(myBookingPath as never);
+      return navigation?.push(myBookingPath as never);
     } catch (err) {
       return err;
     }

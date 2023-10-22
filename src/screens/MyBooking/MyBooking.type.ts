@@ -82,4 +82,5 @@ export interface ResultMyBooking extends ResultDataList {
 export interface MyBookingCard {
   data: MyBookingType;
   status: BookingStatus;
+  navigation: any;
 }

@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
@@ -36,9 +35,6 @@ const Booking = ({ navigation }) => {
   const [dataSource, setDataSource] = useState<BookingType[]>();
   const [dateChoosen, setDateChoosen] = useState<Date>();
 
-  /* Router */
-  const { navigate } = useNavigation();
-
   /* Redux */
   const dispatch = useDispatch();
   const { cart, courtDetail, scheduleTime } = useSelector(
@@ -48,10 +44,10 @@ const Booking = ({ navigation }) => {
 
   /* Hooks */
   const { fetchScheduleTime, addToCart, isLoading, removeCart, fetchCart } =
-    useBooking();
+    useBooking({ navigation });
 
   useEffect(() => {
-    if (!courtDetail) navigate(venueDetailPath as never);
+    if (!courtDetail) navigation.push(venueDetailPath as never);
   }, [courtDetail]);
 
   useEffect(() => {
@@ -93,7 +89,7 @@ const Booking = ({ navigation }) => {
   };
 
   const onSubmit = async () => {
-    navigate(paymentPath as never);
+    navigation.push(paymentPath as never);
   };
 
   const onAddCart = async () => {
@@ -109,8 +105,10 @@ const Booking = ({ navigation }) => {
         }))!,
       venueDetail?.id as string
     ).then((_) => {
-      setDateChoosen(undefined);
-      setDataSource(undefined);
+      // setDateChoosen(undefined);
+      // setDataSource(undefined);
+      fetchScheduleTime(courtDetail?.id, dateChoosen?.toString() as string);
+      fetchCart(venueDetail?.id as string);
     });
   };
   return (

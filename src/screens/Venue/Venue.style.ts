@@ -8,13 +8,8 @@ const VenueStyle = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 10,
     backgroundColor: "white",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
+    borderWidth: 2,
+    borderColor: colorGray[300],
   },
   cardTitle: {
     fontSize: 12,

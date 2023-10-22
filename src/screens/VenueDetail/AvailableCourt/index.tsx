@@ -3,18 +3,16 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 import CarouselCourt from "react-native-snap-carousel";
 import { IconArrowChevron } from "../../../assets/images";
+import { courtPath } from "../../../constants";
 import { Global, colorPrimary } from "../../../styles/Global.style";
 import { VenueCourt } from "../../../types/venue.type";
 import AvailableCourtCard from "./Card";
-import { useNavigation } from "@react-navigation/native";
-import { courtPath } from "../../../constants";
 
-const AvailableCourt: FC<{ data: VenueCourt[]; title?: string }> = ({
-  data,
-  title,
-}) => {
-  /* Router */
-  const { navigate } = useNavigation();
+const AvailableCourt: FC<{
+  data: VenueCourt[];
+  title?: string;
+  navigation: any;
+}> = ({ data, title, navigation }) => {
   return (
     <React.Fragment>
       <View style={[Global.justifyBetween, { width: "100%" }]}>
@@ -29,7 +27,7 @@ const AvailableCourt: FC<{ data: VenueCourt[]; title?: string }> = ({
           {title || "Available Courts"}
         </Text>
         <TouchableOpacity
-          onPress={() => navigate(courtPath as never)}
+          onPress={() => navigation?.push(courtPath as never)}
           style={[Global.justifyEnd, { gap: 3, marginTop: 4 }]}
         >
           <Text
@@ -63,7 +61,11 @@ const AvailableCourt: FC<{ data: VenueCourt[]; title?: string }> = ({
             sliderWidth={210}
             itemWidth={220}
             renderItem={({ item, index }) => (
-              <AvailableCourtCard item={item} key={index} />
+              <AvailableCourtCard
+                item={item}
+                key={index}
+                navigation={navigation}
+              />
             )}
           />
         </View>

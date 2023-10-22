@@ -1,12 +1,12 @@
 import React, { FC } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { IconPinLocation } from "../../../assets/images";
+import { BASE_URL_PREVIEW_IMG } from "../../../constants/host";
 import { useVenue } from "../../../hooks/useVenue";
 import { Global, colorGray, colorPrimary } from "../../../styles/Global.style";
+import { VenueType } from "../../../types/venue.type";
 import { IDRFormat, subStringLongText } from "../../../utils/formattor";
 import VenueStyle from "../Venue.style";
-import { VenueType } from "../../../types/venue.type";
-import { BASE_URL_PREVIEW_IMG } from "../../../constants/host";
 
 const CardVenue: FC<{ item: VenueType | any }> = ({ item }) => {
   /* Hooks */

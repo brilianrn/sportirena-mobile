@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView from "react-native-maps";
 import { colorGray, colorPrimary } from "../../../styles/Global.style";
 
 const VenueLocation: FC<{ lng: number; lat: number }> = ({ lat, lng }) => {
@@ -8,10 +8,6 @@ const VenueLocation: FC<{ lng: number; lat: number }> = ({ lat, lng }) => {
     latitude: -7.250445,
     longitude: 112.768845,
   });
-
-  const onRegionChange = (region: any) => {
-    setRegion({ region });
-  };
 
   useEffect(() => {
     setRegion({
@@ -34,9 +30,11 @@ const VenueLocation: FC<{ lng: number; lat: number }> = ({ lat, lng }) => {
         </Text>
       </View>
       <MapView
-        region={region}
-        minZoomLevel={15}
-        onRegionChange={onRegionChange}
+        initialRegion={{
+          ...region,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.1,
+        }}
         style={{
           marginTop: 15,
           borderRadius: 10,
@@ -44,11 +42,7 @@ const VenueLocation: FC<{ lng: number; lat: number }> = ({ lat, lng }) => {
           borderColor: colorGray[400],
           height: 144,
         }}
-      >
-        {[region].map((marker, index) => (
-          <Marker key={index} coordinate={marker} />
-        ))}
-      </MapView>
+      />
     </React.Fragment>
   );
 };
