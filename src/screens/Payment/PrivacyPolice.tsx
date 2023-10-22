@@ -3,7 +3,6 @@ import { Text } from "react-native";
 import RenderHtml from "react-native-render-html";
 import { useSelector } from "react-redux";
 import Layout from "../../components/Layout";
-import { paymentPath } from "../../constants";
 import { IRootState } from "../../store/reducers";
 import { colorPrimary } from "../../styles/Global.style";
 

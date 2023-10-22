@@ -31,5 +31,11 @@
         "projectId": "a276bc12-b97d-4e9a-86c3-ddc0d516957b"
       }
     }
+  },
+  "android": {
+    "package": "com.brilianrn11.customermobile",
+    "config": {
+      "googleMaps": { "apiKey": "AIzaSyAZym3p-VgHnsMwaToDhiIPh849YS6C8Rw" }
+    }
   }
 }

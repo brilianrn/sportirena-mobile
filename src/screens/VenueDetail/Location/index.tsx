@@ -9,6 +9,8 @@ const VenueLocation: FC<{ lng: number; lat: number }> = ({ lat, lng }) => {
     longitude: 112.768845,
   });
 
+  console.log(lat, lng);
+
   useEffect(() => {
     setRegion({
       latitude: lat,
