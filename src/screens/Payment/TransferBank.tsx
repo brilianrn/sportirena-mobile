@@ -11,6 +11,7 @@ import Layout from "../../components/Layout";
 import { paymentPath } from "../../constants";
 import { BankTransferType } from "../../core/POST_CreateBooking";
 import { useBooking } from "../../hooks/useBooking";
+import { useVenue } from "../../hooks/useVenue";
 import { IRootState } from "../../store/reducers";
 import { colorDanger } from "../../styles/Global.style";
 import { isNumber } from "../../utils/validator";
@@ -29,6 +30,7 @@ const TransferBank = ({ navigation }) => {
   const { fetchBankNames, createBooking, isLoading } = useBooking({
     navigation,
   });
+  const { fetchServiceFee } = useVenue();
 
   const validationSchema = Yup.object().shape({
     toBankName: Yup.string().required("Bank name required"),
@@ -80,8 +82,14 @@ const TransferBank = ({ navigation }) => {
     }
   };
 
-  const onSubmit = (payload: BankTransferType) => {
-    createBooking({ ...payload, data: paymentBookingHour });
+  const onSubmit = async (payload: BankTransferType) => {
+    createBooking({
+      ...payload,
+      data: paymentBookingHour,
+      serviceFee:
+        (await fetchServiceFee(paymentBookingHour?.[0]?.venueId as string)) ||
+        Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1000),
+    });
   };
 
   const formatMaxDate = useMemo(() => {

@@ -199,7 +199,6 @@ export const useBooking = ({ navigation }) => {
 
   /* Create Booking */
   const createBooking = async (payload: BodyCreateBooking) => {
-    console.log(payload);
     setIsLoading(true);
     try {
       const { message, success } = await postBooking({

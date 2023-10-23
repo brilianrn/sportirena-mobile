@@ -47,7 +47,9 @@ const Detail = ({ navigation }) => {
             marginBottom: 3,
           }}
         >
-          #{waitingApprovalDetail?.invoiceCode}
+          #
+          {waitingApprovalDetail?.invoiceCode ||
+            waitingApprovalDetail?.booking?.invoiceCode}
         </Text>
         {waitingApprovalDetail?.detailbooking?.bookingschedules?.map(
           (e: BookingSchedule, i: number) => (

@@ -59,6 +59,10 @@ const CardMyBooking: FC<MyBookingCard> = ({ data, status, navigation }) => {
         onPress={() =>
           data.statusBook === "WAITING_FOR_APPROVED"
             ? fetchWaitingApprovalDetail(data.id)
+            : data.statusBook === "WAITING_FOR_PAYMENT"
+            ? getWaitingPaymentDetail(data.id)
+            : data.statusBook === "APPROVED"
+            ? fetchReservedDetail(data.id)
             : null
         }
         style={[

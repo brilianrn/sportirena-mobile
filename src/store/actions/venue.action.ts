@@ -2,6 +2,7 @@ import { OptionType } from "../../../App.type";
 import { VenueCourt, VenueType } from "../../types/venue.type";
 import {
   SET_PROVINCES,
+  SET_SERVICE_FEE,
   SET_VENUE_COURT,
   SET_VENUE_DETAIL,
   SET_VENUE_LIST,
@@ -21,4 +22,8 @@ export const setVenueCourt = (payload?: VenueCourt[]) => {
 
 export const setProvinces = (payload?: OptionType[]) => {
   return { type: SET_PROVINCES, payload };
+};
+
+export const setServiceFee = (payload?: number) => {
+  return { type: SET_SERVICE_FEE, payload };
 };

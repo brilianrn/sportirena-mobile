@@ -21,6 +21,7 @@ export interface VenueInitalState {
   venueDetail: VenueType | null;
   venueCourt: VenueCourt[] | null;
   regencies: OptionType[] | null;
+  serviceFee: number | null;
 }
 
 export interface UserInitialState {

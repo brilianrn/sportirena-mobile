@@ -21,6 +21,7 @@ import { Global, colorGray, colorPrimary } from "../../styles/Global.style";
 import { BookingType } from "../Booking/Booking.type";
 import CardBooking from "./CardBooking";
 import CardOffer from "./CardOffer";
+import { useVenue } from "../../hooks/useVenue";
 
 const Payment = ({ navigation }) => {
   /* Local State */
@@ -44,6 +45,7 @@ const Payment = ({ navigation }) => {
 
   /* Hooks */
   const { createBooking, isLoading } = useBooking({ navigation });
+  const { fetchServiceFee } = useVenue();
 
   useEffect(() => {
     if (cart)
@@ -78,7 +80,9 @@ const Payment = ({ navigation }) => {
     if (paymentMethod === "va") {
       return await createBooking({
         data: dataSource as BookingType[],
-        serviceFee: Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1000),
+        serviceFee:
+          (await fetchServiceFee(dataSource?.[0]?.venueId as string)) ||
+          Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1000),
       });
     }
     dispatch(setPaymentBookingHour(dataSource));

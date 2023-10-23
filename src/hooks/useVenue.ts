@@ -5,15 +5,17 @@ import { useDispatch } from "react-redux";
 import { ToastPosition, ToastType } from "../../App.type";
 import { venueDetailPath } from "../constants";
 import { getRegencies } from "../core/GET_Provinces";
+import { getServiceFee } from "../core/GET_ServiceFee";
 import { getVenueCourts } from "../core/GET_VenueCourts";
+import { getVenueDetail } from "../core/GET_VenueDetail";
 import { FacilityType } from "../screens/Home/Home.type";
 import {
   setProvinces,
+  setServiceFee,
   setVenueCourt,
   setVenueDetail,
 } from "../store/actions/venue.action";
 import { QueryParamVenueCourt, VenueType } from "../types/venue.type";
-import { getVenueDetail } from "../core/GET_VenueDetail";
 
 export const useVenue = () => {
   /* Local State */
@@ -137,6 +139,30 @@ export const useVenue = () => {
       return err;
     }
   };
+
+  /* Service Fee */
+  const fetchServiceFee = async (venueId: string) => {
+    setIsLoading(true);
+    try {
+      const { message, result } = await getServiceFee(venueId);
+      setIsLoading(false);
+      if (!result) {
+        setMessage(message);
+        showToast({
+          message: "Service fee not found",
+          type: "danger",
+          placement: "bottom",
+        });
+        setIsError(true);
+        dispatch(setServiceFee(undefined));
+        return null;
+      }
+      dispatch(setServiceFee(result?.serviceFee));
+      return result?.serviceFee;
+    } catch (err) {
+      return null;
+    }
+  };
   return {
     isError,
     message,
@@ -145,5 +171,6 @@ export const useVenue = () => {
     fetchVenueCourt,
     fetchRegencies,
     showToast,
+    fetchServiceFee,
   };
 };

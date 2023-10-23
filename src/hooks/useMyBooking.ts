@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +13,7 @@ import { getReservedDetail } from "../core/GET_ReservedDetail";
 import { getWaitingApproval } from "../core/GET_WaitingApproval";
 import { getWaitingApprovalDetail } from "../core/GET_WaitingApprovalDetail";
 import { getWaitingPayment } from "../core/GET_WaitingPayment";
+import { getWaitingPaymentDetail as waitingPaymentDetail } from "../core/GET_WaitingPaymentDetail";
 import {
   BodyConfirmPayment,
   putConfirmPayment,
@@ -105,7 +105,28 @@ export const useMyBooking = ({ navigation }) => {
   };
 
   /* Booking Waiting Payment Detail */
-  const getWaitingPaymentDetail = async (payload: MyBookingType) => {
+  const getWaitingPaymentDetail = async (payload: MyBookingType | string) => {
+    if (typeof payload === "string") {
+      setIsLoading(true);
+      try {
+        const { message, result } = await waitingPaymentDetail(payload);
+        console.log(result);
+        setIsLoading(false);
+        if (!result) {
+          setMessage(message);
+          showToast({
+            message: "Booking waiting payment detail not found",
+            type: "danger",
+            placement: "bottom",
+          });
+          return setIsError(true);
+        }
+        dispatch(setWaitingApprovalDetail(result));
+        return navigation?.push(myBookingDetailPath as never);
+      } catch (err) {
+        return err;
+      }
+    }
     setIsLoading(true);
     dispatch(setWaitingPaymentDetail(payload));
     navigation?.push(myBookingPaymentPath as never);
@@ -188,6 +209,7 @@ export const useMyBooking = ({ navigation }) => {
 
   /* Booking Waiting Reserved Detail */
   const fetchReservedDetail = async (id: string) => {
+    console.log(id);
     setIsLoading(true);
     try {
       const { message, result } = await getReservedDetail(id);

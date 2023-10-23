@@ -28,7 +28,7 @@ const tabs = [
     value: "APPROVED",
   },
   {
-    label: "Done",
+    label: "Closed",
     value: "DONE",
   },
 ];
