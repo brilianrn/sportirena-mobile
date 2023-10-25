@@ -55,6 +55,11 @@ const Payment = ({ navigation }) => {
     else navigate(bookingName as never);
   }, [cart, setDataSource]);
 
+  const serviceFee = useMemo(
+    async () => await fetchServiceFee(dataSource?.[0]?.venueId as string),
+    [dataSource?.[0]?.venueId]
+  );
+
   const normalPrice = useMemo(() => {
     const tempArr = dataSource?.filter((e) => e.isChecked).map((e) => e.price);
     let price = 0;
@@ -71,7 +76,8 @@ const Payment = ({ navigation }) => {
     () =>
       normalPrice
         ? Number(normalPrice) +
-          Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1000)
+          (Number(serviceFee) ||
+            Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1500))
         : 0,
     [normalPrice]
   );
@@ -81,8 +87,8 @@ const Payment = ({ navigation }) => {
       return await createBooking({
         data: dataSource as BookingType[],
         serviceFee:
-          (await fetchServiceFee(dataSource?.[0]?.venueId as string)) ||
-          Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1000),
+          Number(serviceFee) ||
+          Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1500),
       });
     }
     dispatch(setPaymentBookingHour(dataSource));

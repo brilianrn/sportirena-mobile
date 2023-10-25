@@ -1,10 +1,13 @@
-import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { useDispatch } from "react-redux";
 import { ToastPosition, ToastType } from "../../App.type";
 import { homePath, loginPath, resetPasswordName } from "../constants";
 import { getProfile } from "../core/GET_Profile";
+import {
+  BodyForgotPassword,
+  postForgotPassword,
+} from "../core/POST_ForgotPassword";
 import { BodyLogin, postLogin } from "../core/POST_Login";
 import { BodyRegister, postRegister } from "../core/POST_Register";
 import {
@@ -16,12 +19,8 @@ import {
   retrieveLocalStorageItem,
   storeLocalStorageItem,
 } from "../utils/localStorage";
-import {
-  BodyForgotPassword,
-  postForgotPassword,
-} from "../core/POST_ForgotPassword";
 
-export const useAuth = () => {
+export const useAuth = ({ navigation }) => {
   /* Local State */
   const [loading, setLoading] = useState<boolean>(false);
   const [loggedIn, setLoggedIn] = useState<boolean>(true);
@@ -30,9 +29,6 @@ export const useAuth = () => {
 
   /* Redux */
   const dispatch = useDispatch();
-
-  /* Router */
-  const { navigate } = useNavigation();
 
   /* Toast */
   const toast = useToast();
@@ -53,12 +49,12 @@ export const useAuth = () => {
     (async () => {
       const accessToken = await retrieveLocalStorageItem("accessToken");
       if (accessToken) {
-        navigate(homePath as never);
+        navigation.replace(homePath as never);
       } else {
         setLoggedIn(false);
       }
     })();
-  }, [navigate]);
+  }, [navigation]);
 
   const showToast = ({
     duration = 4000,
@@ -101,7 +97,7 @@ export const useAuth = () => {
           setTimeout(() => {
             setError(false);
             setLoading(false);
-            navigate(homePath as never);
+            navigation.push(homePath as never);
           }, 500);
           return setMessageData(message);
         }
@@ -128,7 +124,7 @@ export const useAuth = () => {
           placement: "bottom",
         });
         setError(false);
-        navigate(loginPath as never);
+        navigation.push(loginPath as never);
         setLoading(false);
         return setMessageData(message);
       }
@@ -150,7 +146,7 @@ export const useAuth = () => {
       if (success && token) {
         dispatch(setTokenRequestForgot(token));
         setError(false);
-        navigate(resetPasswordName as never);
+        navigation.push(resetPasswordName as never);
         setLoading(false);
         return setMessageData(message);
       }
@@ -171,7 +167,7 @@ export const useAuth = () => {
       const { success, message } = await postForgotPassword(payload);
       if (success) {
         setError(false);
-        navigate(loginPath as never);
+        navigation.push(loginPath as never);
         setLoading(false);
         return setMessageData(message);
       }

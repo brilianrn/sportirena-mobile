@@ -19,7 +19,7 @@ import { IRootState } from "../../store/reducers";
 import { Global } from "../../styles/Global.style";
 import LoginStyle from "../Login/Login.style";
 
-const ResetPassowrd = () => {
+const ResetPassowrd = ({ navigation }) => {
   /* Local State */
   const [showPassword, setShowpassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
@@ -32,7 +32,7 @@ const ResetPassowrd = () => {
   const { navigate } = useNavigation();
 
   /* Hooks */
-  const { forgotPassword, loading } = useAuth();
+  const { forgotPassword, loading } = useAuth({ navigation });
 
   const validationSchema = Yup.object().shape({
     password: Yup.string().required("Password required"),

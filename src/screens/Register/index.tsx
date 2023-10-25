@@ -24,7 +24,7 @@ const Register = ({ navigation }) => {
     useState<boolean>(false);
 
   /* Hooks */
-  const { signUp, loading } = useAuth();
+  const { signUp, loading } = useAuth({ navigation });
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()

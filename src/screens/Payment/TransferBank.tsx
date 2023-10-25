@@ -74,7 +74,7 @@ const TransferBank = ({ navigation }) => {
       });
       setValue(
         "serviceFee",
-        Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1000),
+        Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1500),
         {
           shouldValidate: true,
         }
@@ -88,7 +88,7 @@ const TransferBank = ({ navigation }) => {
       data: paymentBookingHour,
       serviceFee:
         (await fetchServiceFee(paymentBookingHour?.[0]?.venueId as string)) ||
-        Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1000),
+        Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1500),
     });
   };
 

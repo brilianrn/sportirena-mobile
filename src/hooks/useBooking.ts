@@ -19,6 +19,7 @@ import {
   setCourtDetail,
   setScheduleTime,
 } from "../store/actions/booking.action";
+import { retrieveLocalStorageItem } from "../utils/localStorage";
 
 export const useBooking = ({ navigation }) => {
   /* Local State */
@@ -31,9 +32,6 @@ export const useBooking = ({ navigation }) => {
 
   /* Toast */
   const toast = useToast();
-
-  /* Router */
-  const { navigate } = useNavigation();
 
   const resetState = () => {
     setIsError(false);
@@ -69,6 +67,10 @@ export const useBooking = ({ navigation }) => {
   const fetchCourtDetail = async (id: string) => {
     setIsLoading(true);
     try {
+      const accessToken = await retrieveLocalStorageItem("accessToken");
+      if (!accessToken) {
+        return navigation.replace(loginPath as never);
+      }
       const { message, result } = await getCourtDetail(id);
       setIsLoading(false);
       if (!result) {
@@ -82,7 +84,7 @@ export const useBooking = ({ navigation }) => {
       }
       setIsError(false);
       dispatch(setCourtDetail(result));
-      return navigate(bookingName as never);
+      return navigation.push(bookingName as never);
     } catch (err) {
       return err;
     }
@@ -104,7 +106,7 @@ export const useBooking = ({ navigation }) => {
           type: "danger",
           placement: "bottom",
         });
-        if (!success) navigate(loginPath as never);
+        if (!success) navigation.push(loginPath as never);
         setIsLoading(false);
         return setIsError(true);
       }

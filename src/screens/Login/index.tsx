@@ -1,5 +1,4 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -22,18 +21,15 @@ import {
 } from "../../utils/localStorage";
 import LoginStyle from "./Login.style";
 
-const Login = () => {
+const Login = ({ navigation }) => {
   /* Local State */
   const [showPassword, setShowpassword] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [forgotPassword, setForgotPassword] = useState<boolean>(false);
   const [emailForgot, setEmailForgot] = useState<string>();
 
-  /* Navigate */
-  const { navigate } = useNavigation();
-
   /* Hooks */
-  const { signIn, loading, requestForgot } = useAuth();
+  const { signIn, loading, requestForgot } = useAuth({ navigation });
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Wrong format email").required("Email required"),
@@ -53,7 +49,7 @@ const Login = () => {
     (async () => {
       const token = await retrieveLocalStorageItem("accessToken");
       const user = await retrieveLocalStorageItem("userInfo");
-      if (token || user) navigate(homePath as never);
+      if (token || user) navigation.replace(homePath as never);
       else {
         await Promise.all([
           removeLocalStorageItem("accessToken"),
@@ -105,7 +101,9 @@ const Login = () => {
               <Text style={LoginStyle.greeting}>Welcome back!</Text>
               <Text style={LoginStyle.title}>Login to continue.</Text>
             </View>
-            <TouchableOpacity onPress={() => navigate(homePath as never)}>
+            <TouchableOpacity
+              onPress={() => navigation.push(homePath as never)}
+            >
               <Image source={IconSportirena} />
             </TouchableOpacity>
           </View>
@@ -162,7 +160,7 @@ const Login = () => {
             </Text>
             <Button.Link
               label="Register"
-              onClick={() => navigate(registerName as never)}
+              onClick={() => navigation.push(registerName as never)}
             />
           </View>
         </View>

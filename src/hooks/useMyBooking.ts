@@ -110,7 +110,6 @@ export const useMyBooking = ({ navigation }) => {
       setIsLoading(true);
       try {
         const { message, result } = await waitingPaymentDetail(payload);
-        console.log(result);
         setIsLoading(false);
         if (!result) {
           setMessage(message);
@@ -209,7 +208,6 @@ export const useMyBooking = ({ navigation }) => {
 
   /* Booking Waiting Reserved Detail */
   const fetchReservedDetail = async (id: string) => {
-    console.log(id);
     setIsLoading(true);
     try {
       const { message, result } = await getReservedDetail(id);
@@ -257,7 +255,6 @@ export const useMyBooking = ({ navigation }) => {
 
   /* Confirm Payment */
   const confirmPayment = async (payload: BodyConfirmPayment) => {
-    console.log(payload);
     setIsLoading(true);
     try {
       const { message, success } = await putConfirmPayment(payload);

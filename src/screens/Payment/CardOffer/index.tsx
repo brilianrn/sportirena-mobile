@@ -98,7 +98,7 @@ const CardOffer: FC<CardOfferProps> = ({
             </Text>
             <Text style={{ fontSize: 10, fontWeight: "600", marginBottom: 10 }}>
               IDR{" "}
-              {IDRFormat(Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1000))},-
+              {IDRFormat(Number(process.env.EXPO_PUBLIC_SERVICE_FEE || 1500))},-
             </Text>
             <Text style={{ fontSize: 10, fontWeight: "600" }}>
               IDR {IDRFormat(priceWithServiceFee)},-
