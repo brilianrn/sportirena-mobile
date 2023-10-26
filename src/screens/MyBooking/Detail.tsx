@@ -51,77 +51,156 @@ const Detail = ({ navigation }) => {
           {waitingApprovalDetail?.invoiceCode ||
             waitingApprovalDetail?.booking?.invoiceCode}
         </Text>
-        {waitingApprovalDetail?.detailbooking?.bookingschedules?.map(
-          (e: BookingSchedule, i: number) => (
-            <View key={i}>
-              <Text
-                style={{
-                  fontSize: 14,
-                  fontWeight: "bold",
-                  marginBottom: 11,
-                  color: colorPrimary.default,
-                  marginVertical: 12,
-                }}
-              >
-                {e.courtName}
-              </Text>
-              <View style={Global.justifyBetween}>
-                <View style={{ width: "70%" }}>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: "bold",
-                      color: colorGray[500],
-                      marginBottom: 7,
-                    }}
-                  >
-                    Date
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 10,
-                      color: colorGray[500],
-                      marginBottom: 7,
-                    }}
-                  >
-                    {moment(e.bookDate).format("dddd, DD MMMM yyyy")}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: colorGray[500],
-                      marginBottom: 7,
-                    }}
-                  >
-                    {e.startTime} - {e.endTime}
-                  </Text>
-                </View>
-                <View style={{ width: "30%" }}>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: "bold",
-                      color: colorGray[500],
-                      marginBottom: 7,
-                    }}
-                  >
-                    Price
-                  </Text>
-                  <Text style={{ color: "transparent", fontSize: 0 }}>0</Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      marginBottom: 7,
-                      fontWeight: "bold",
-                      color: colorPrimary.default,
-                    }}
-                  >
-                    Rp {IDRFormat(e.price)},-
-                  </Text>
-                </View>
+        {waitingApprovalDetail?.status === "APPROVED" ||
+        !waitingApprovalDetail?.detailbooking?.bookingschedules?.length ? (
+          <View>
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: "bold",
+                marginBottom: 11,
+                color: colorPrimary.default,
+                marginVertical: 12,
+              }}
+            >
+              {waitingApprovalDetail?.courtName}
+            </Text>
+            <View style={Global.justifyBetween}>
+              <View style={{ width: "70%" }}>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontWeight: "bold",
+                    color: colorGray[500],
+                    marginBottom: 7,
+                  }}
+                >
+                  Date
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    color: colorGray[500],
+                    marginBottom: 7,
+                  }}
+                >
+                  {moment(waitingApprovalDetail?.bookDate).format(
+                    "dddd, DD MMMM yyyy"
+                  )}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: colorGray[500],
+                    marginBottom: 7,
+                  }}
+                >
+                  {waitingApprovalDetail?.startTime} -{" "}
+                  {waitingApprovalDetail?.endTime}
+                </Text>
+              </View>
+              <View style={{ width: "30%" }}>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontWeight: "bold",
+                    color: colorGray[500],
+                    marginBottom: 7,
+                  }}
+                >
+                  Price
+                </Text>
+                <Text style={{ color: "transparent", fontSize: 0 }}>0</Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    marginBottom: 7,
+                    fontWeight: "bold",
+                    color: colorPrimary.default,
+                  }}
+                >
+                  Rp {IDRFormat(waitingApprovalDetail?.price)},-
+                </Text>
               </View>
             </View>
-          )
+          </View>
+        ) : (
+          <>
+            {waitingApprovalDetail?.detailbooking?.bookingschedules?.map(
+              (e: BookingSchedule, i: number) => (
+                <View key={i}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: "bold",
+                      marginBottom: 11,
+                      color: colorPrimary.default,
+                      marginVertical: 12,
+                    }}
+                  >
+                    {e.courtName}
+                  </Text>
+                  <View style={Global.justifyBetween}>
+                    <View style={{ width: "70%" }}>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          fontWeight: "bold",
+                          color: colorGray[500],
+                          marginBottom: 7,
+                        }}
+                      >
+                        Date
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 10,
+                          color: colorGray[500],
+                          marginBottom: 7,
+                        }}
+                      >
+                        {moment(e.bookDate).format("dddd, DD MMMM yyyy")}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: colorGray[500],
+                          marginBottom: 7,
+                        }}
+                      >
+                        {e.startTime} - {e.endTime}
+                      </Text>
+                    </View>
+                    <View style={{ width: "30%" }}>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          fontWeight: "bold",
+                          color: colorGray[500],
+                          marginBottom: 7,
+                        }}
+                      >
+                        Price
+                      </Text>
+                      <Text style={{ color: "transparent", fontSize: 0 }}>
+                        0
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          marginBottom: 7,
+                          fontWeight: "bold",
+                          color: colorPrimary.default,
+                        }}
+                      >
+                        Rp {IDRFormat(e.price)},-
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              )
+            )}
+          </>
         )}
       </Layout>
     </React.Fragment>
