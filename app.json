@@ -37,5 +37,6 @@
     "config": {
       "googleMaps": { "apiKey": "AIzaSyAZym3p-VgHnsMwaToDhiIPh849YS6C8Rw" }
     }
-  }
+  },
+  "permissions": ["android.permission.INTERNET"]
 }
