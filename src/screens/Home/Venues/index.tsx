@@ -53,13 +53,15 @@ const Venues: FC<VenuesProps> = ({ data }) => {
             justifyContent: "center",
           }}
         >
-          <Carousel
-            layout="default"
-            data={data as VenueType[]}
-            sliderWidth={210}
-            itemWidth={190}
-            renderItem={({ item, index }) => <Card data={item} key={index} />}
-          />
+          {data && data.length > 0 && (
+            <Carousel
+              layout="default"
+              data={data as VenueType[]}
+              sliderWidth={210}
+              itemWidth={190}
+              renderItem={({ item, index }) => <Card data={item} key={index} />}
+            />
+          )}
         </View>
       </SafeAreaView>
     </View>

@@ -53,16 +53,18 @@ const OtherVenue: FC<{ data: VenueType[] }> = ({ data }) => {
             justifyContent: "center",
           }}
         >
-          <CarouselCourt
-            layout="default"
-            loop
-            data={data}
-            sliderWidth={210}
-            itemWidth={220}
-            renderItem={({ item, index }) => (
-              <OtherVenueCard item={item} key={index} />
-            )}
-          />
+          {data && data.length > 0 && (
+            <CarouselCourt
+              layout="default"
+              loop
+              data={data}
+              sliderWidth={210}
+              itemWidth={220}
+              renderItem={({ item, index }) => (
+                <OtherVenueCard item={item} key={index} />
+              )}
+            />
+          )}
         </View>
       </SafeAreaView>
     </React.Fragment>

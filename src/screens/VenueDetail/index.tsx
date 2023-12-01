@@ -29,9 +29,12 @@ import CardFacilityType from "../Home/FacilityType/Card";
 import { FacilityType } from "../Home/Home.type";
 import AvailableCourt from "./AvailableCourt";
 import VenueDetailStyle from "./VenueDetail.style";
+import VenueLocation from "./Location";
 
 const VenueDetail = ({ navigation }) => {
   /* Local State */
+
+  const [galleries, setGalleries] = useState([]);
   const [isShare, setIsShare] = useState<boolean>(false);
 
   /* Redux */
@@ -73,6 +76,11 @@ const VenueDetail = ({ navigation }) => {
     }
     setIsShare(false);
   };
+
+  // const SetGalleries = async () => {
+  //   setGalleries([`${BASE_URL_PREVIEW_IMG}/${venueDetail?.pathName}/${venueDetail?.imageName}`])
+  // }
+  console.log(galleries)
   return (
     <React.Fragment>
       <Modal
@@ -102,31 +110,33 @@ const VenueDetail = ({ navigation }) => {
             height: 182,
           }}
         >
-          <Carousel
-            data={[
-              `${BASE_URL_PREVIEW_IMG}/${venueDetail?.pathName}/${venueDetail?.imageName}`,
-            ]}
-            autoPlay
-            autoPlayTime={4000}
-            dotStyle={{
-              backgroundColor: "white",
-              width: 8,
-              height: 8,
-              borderRadius: 20,
-              marginBottom: 42,
-            }}
-            renderItem={(item) => (
-              <Image
-                key={item}
-                source={{ uri: item }}
-                style={{
-                  height: 182,
-                  width: deviceWidth - 80,
-                  borderRadius: 10,
-                }}
-              />
-            )}
-          />
+          {galleries && galleries.length > 0 && (
+            <Carousel
+              data={[
+                `${BASE_URL_PREVIEW_IMG}/${venueDetail?.pathName}/${venueDetail?.imageName}`,
+              ]}
+              autoPlay
+              autoPlayTime={4000}
+              dotStyle={{
+                backgroundColor: "white",
+                width: 8,
+                height: 8,
+                borderRadius: 20,
+                marginBottom: 42,
+              }}
+              renderItem={(item) => (
+                <Image
+                  key={item}
+                  source={{ uri: item }}
+                  style={{
+                    height: 182,
+                    width: deviceWidth - 80,
+                    borderRadius: 10,
+                  }}
+                />
+              )}
+            />
+          )}
         </View>
         <View style={[Global.justifyBetween, { marginTop: 17 }]}>
           <Text
@@ -225,10 +235,10 @@ const VenueDetail = ({ navigation }) => {
           </Text>
         </View>
         <AvailableCourt data={venueCourt} navigation={navigation} />
-        {/* <VenueLocation
+        <VenueLocation
           lat={+venueDetail.latitude}
           lng={+venueDetail.longitude}
-        /> */}
+        />
       </Layout>
     </React.Fragment>
   );

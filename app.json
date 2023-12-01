@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.brilianrn.customermobile"
@@ -21,21 +23,25 @@
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.brilianrn.customermobile"
+      "package": "com.brilianrn.customermobile",
+      "permissions": ["android.permission.INTERNET"]
     },
     "web": {
       "favicon": "./src/assets/images/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "a276bc12-b97d-4e9a-86c3-ddc0d516957b"
+        "projectId": "dfd9a09c-dd04-488c-86bc-f582d0e5adfa"
       }
-    }
+    },
+    "owner": "sajudin"
   },
   "android": {
     "package": "com.brilianrn11.customermobile",
     "config": {
-      "googleMaps": { "apiKey": "AIzaSyAZym3p-VgHnsMwaToDhiIPh849YS6C8Rw" }
+      "googleMaps": {
+        "apiKey": "AIzaSyCEZThoCQqgyeIsTezPD1TBeL-i6rjrd08"
+      }
     }
   }
 }

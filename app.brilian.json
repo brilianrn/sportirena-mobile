@@ -1,0 +1,42 @@
+{
+    "expo": {
+      "name": "Sportirena",
+      "slug": "customer-mobile",
+      "version": "1.0.0",
+      "orientation": "portrait",
+      "icon": "./src/assets/images/icon.png",
+      "userInterfaceStyle": "light",
+      "splash": {
+        "image": "./src/assets/images/splash.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#ffffff"
+      },
+      "assetBundlePatterns": ["**/*"],
+      "ios": {
+        "supportsTablet": true,
+        "bundleIdentifier": "com.brilianrn.customermobile"
+      },
+      "android": {
+        "adaptiveIcon": {
+          "foregroundImage": "./src/assets/images/adaptive-icon.png",
+          "backgroundColor": "#ffffff"
+        },
+        "package": "com.brilianrn.customermobile"
+      },
+      "web": {
+        "favicon": "./src/assets/images/favicon.png"
+      },
+      "extra": {
+        "eas": {
+          "projectId": "a276bc12-b97d-4e9a-86c3-ddc0d516957b"
+        }
+      }
+    },
+    "android": {
+      "package": "com.brilianrn11.customermobile",
+      "config": {
+        "googleMaps": { "apiKey": "AIzaSyAZym3p-VgHnsMwaToDhiIPh849YS6C8Rw" }
+      }
+    }
+  }
+  
