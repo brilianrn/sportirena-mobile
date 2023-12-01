@@ -28,6 +28,7 @@ import { iconTypeFormatter, subStringLongText } from "../../utils/formattor";
 import CardFacilityType from "../Home/FacilityType/Card";
 import { FacilityType } from "../Home/Home.type";
 import AvailableCourt from "./AvailableCourt";
+import VenueLocation from "./Location";
 import VenueDetailStyle from "./VenueDetail.style";
 import VenueLocation from "./Location";
 

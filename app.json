@@ -43,5 +43,6 @@
         "apiKey": "AIzaSyCEZThoCQqgyeIsTezPD1TBeL-i6rjrd08"
       }
     }
-  }
+  },
+  "permissions": ["android.permission.INTERNET"]
 }
