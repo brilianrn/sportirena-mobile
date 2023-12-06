@@ -13,11 +13,14 @@
     },
     "preview-apk": {
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "credentialsSource": "local"
       }
     },
     "production": {
-      "node": "20.9.0"
+      "android": {
+        "credentialsSource": "local"
+      }
     }
   },
   "submit": {

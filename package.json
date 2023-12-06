@@ -13,7 +13,8 @@
     "check-build": "npx expo install --check",
     "build-configure": "eas build:configure",
     "build-android": "eas build -p android --profile preview",
-    "build-android-apk": "eas build -p android --profile preview-apk"
+    "build-android-apk": "eas build -p android --profile preview-apk",
+    "build-android-prod": "eas build -p android --profile production"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",
@@ -24,7 +25,7 @@
     "@stream-io/flat-list-mvcp": "^0.10.3",
     "axios": "^1.5.0",
     "env-cmd": "^10.1.0",
-    "expo": "~49.0.7",
+    "expo": "^49.0.21",
     "expo-image-manipulator": "~11.3.0",
     "expo-image-picker": "~14.3.2",
     "expo-linking": "~5.0.2",
@@ -42,7 +43,7 @@
     "react-native-dropdown-select-list": "^2.0.5",
     "react-native-image-crop-picker": "^0.40.0",
     "react-native-image-picker": "^4.10.0",
-    "react-native-maps": "^1.7.1",
+    "react-native-maps": "1.7.1",
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^17.1.0",
     "react-native-pager-view": "6.2.0",
@@ -69,7 +70,7 @@
   },
   "private": true,
   "engines": {
-    "node": "16.18.1"
+    "node": "18.18.0"
   },
   "expo": {
     "install": {
