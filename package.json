@@ -24,6 +24,7 @@
     "@react-navigation/native-stack": "^6.9.13",
     "@stream-io/flat-list-mvcp": "^0.10.3",
     "axios": "^1.5.0",
+    "deprecated-react-native-prop-types": "^5.0.0",
     "env-cmd": "^10.1.0",
     "expo": "^49.0.21",
     "expo-image-manipulator": "~11.3.0",

@@ -28,7 +28,7 @@ import { iconTypeFormatter, subStringLongText } from "../../utils/formattor";
 import CardFacilityType from "../Home/FacilityType/Card";
 import { FacilityType } from "../Home/Home.type";
 import AvailableCourt from "./AvailableCourt";
-import VenueLocation from "./Location";
+// import VenueLocation from "./Location";
 import VenueDetailStyle from "./VenueDetail.style";
 
 const VenueDetail = ({ navigation }) => {
@@ -235,10 +235,10 @@ const VenueDetail = ({ navigation }) => {
           </Text>
         </View>
         <AvailableCourt data={venueCourt} navigation={navigation} />
-        <VenueLocation
+        {/*<VenueLocation
           lat={+venueDetail.latitude}
           lng={+venueDetail.longitude}
-        />
+        />*/}
       </Layout>
     </React.Fragment>
   );
