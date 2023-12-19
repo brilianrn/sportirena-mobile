@@ -1,3 +1,4 @@
+import moment from "moment";
 import {
   IconBadminton,
   IconBasketBall,
@@ -76,4 +77,39 @@ export const iconTypeFormatter = (facilityType: FacilityTypeName) => {
     default:
       return IconTennisBall;
   }
+};
+
+export const convertNumToArr = (num: number) => {
+  const tempArr: number[] = [];
+  for (let i = 0; i < num; i++) {
+    tempArr.push(i);
+  }
+  return tempArr;
+};
+
+export const formatDateArr = (startDate: string, endDate: string) => {
+  if (new Date(startDate) >= new Date(endDate)) return [];
+  const date1 = moment(startDate);
+  const date2 = moment(endDate);
+  const arrNum = convertNumToArr(date2.diff(date1, "days"));
+  return [
+    ...arrNum.map((e) => new Date(moment(startDate).add(e, "days").toString())),
+    new Date(endDate),
+  ];
+};
+
+export const kFormatter = (num: number) => {
+  const absValue = Math.abs(num) / 1000;
+  return Math.abs(num) > 999
+    ? Math.sign(num) * absValue + "k"
+    : Math.sign(num) * absValue;
+};
+
+export const formatCmpctNumber = (number: number) => {
+  const usformatter = Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 2,
+    notation: "compact",
+    compactDisplay: "short",
+  });
+  return usformatter.format(number);
 };

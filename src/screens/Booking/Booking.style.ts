@@ -6,25 +6,26 @@ const BookingStyle = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 1,
     borderColor: colorPrimary.default,
-    borderRadius: 10,
   },
   cardSelected: {
     backgroundColor: "#DBEAE4",
     borderWidth: 1,
     borderColor: colorPrimary.default,
-    borderRadius: 10,
   },
   cardWaitingPayment: {
     backgroundColor: "#F8ECE0",
     borderWidth: 1,
     borderColor: "#FBAD60",
-    borderRadius: 10,
   },
   cardReserved: {
     backgroundColor: "#F8E8E8",
     borderWidth: 1,
     borderColor: "#FF8383",
-    borderRadius: 10,
+  },
+  cardClosed: {
+    backgroundColor: colorGray[300],
+    borderWidth: 1,
+    borderColor: "#FF8383",
   },
   bubbleAvailable: {
     backgroundColor: "white",

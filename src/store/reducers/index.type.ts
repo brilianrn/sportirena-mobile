@@ -3,6 +3,7 @@ import {
   BankType,
   BookingType,
   CourtDetail,
+  ScheduleTime,
 } from "../../screens/Booking/Booking.type";
 import { FacilityType } from "../../screens/Home/Home.type";
 import { MyBookingType } from "../../screens/MyBooking/MyBooking.type";
@@ -45,7 +46,7 @@ export interface MyBookingInitialState {
 
 export interface BookingInitialState {
   courtDetail: CourtDetail | null;
-  scheduleTime: BookingType[] | null;
+  scheduleTime: ScheduleTime[] | null;
   cart: BookingType[] | null;
   paymentBookingHour: BookingType[] | null;
   bankNames: BankType[] | null;

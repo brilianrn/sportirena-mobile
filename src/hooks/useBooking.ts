@@ -91,14 +91,20 @@ export const useBooking = ({ navigation }) => {
   };
 
   /* Schedule Time */
-  const fetchScheduleTime = async (id: string, date: string) => {
+  const fetchScheduleTime = async (
+    id: string,
+    fromDate: string,
+    toDate: string
+  ) => {
     setIsLoading(true);
     try {
-      const formatDate = moment(new Date(date)).format("YYYY-MM-DD");
-      const { message, result, success } = await getScheduleTime(
-        id,
-        formatDate
-      );
+      const startDate = moment(new Date(fromDate)).format("YYYY-MM-DD");
+      const endDate = moment(new Date(toDate)).format("YYYY-MM-DD");
+      const { message, result, success } = await getScheduleTime({
+        endDate,
+        courtId: id,
+        startDate,
+      });
       if (!result) {
         setMessage(message);
         showToast({
@@ -112,7 +118,7 @@ export const useBooking = ({ navigation }) => {
       }
       setIsLoading(false);
       setIsError(false);
-      return dispatch(setScheduleTime(result));
+      return dispatch(setScheduleTime(result.slice(0, 7)));
     } catch (err) {
       return err;
     }
@@ -144,26 +150,129 @@ export const useBooking = ({ navigation }) => {
   };
 
   /* Add Booking to Cart */
-  const addToCart = async (payload: BookingType[], venueId?: string) => {
+  // const addToCart = async (payload: BookingType[], venueId?: string) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const { message, success } = await postCart(payload);
+  //     setIsLoading(false);
+  //     if (!success) {
+  //       setMessage(message);
+  // showToast({
+  //   message: message || "Add to cart failed",
+  //   type: "danger",
+  //   placement: "bottom",
+  // });
+  //       return setIsError(true);
+  //     }
+  //     await fetchCart(venueId as string);
+  //     return setIsError(false);
+  //   } catch (err) {
+  //     return err;
+  //   }
+  // };
+  const addToCart = async (
+    payload: any,
+    filter: any,
+    { courtId, date, customerId, courtName }
+  ) => {
     setIsLoading(true);
     try {
-      const { message, success } = await postCart(payload);
-      setIsLoading(false);
-      if (!success) {
-        setMessage(message);
+      const { success, message } = await postCart(payload);
+      if (success) {
+        // await eventTotalCart(filter.customerId);
+        // await fetchBookingAllHours(filter, {
+        //   courtId,
+        //   courtName,
+        //   customerId,
+        //   date,
+        // });
+        showToast({
+          message: message || "Add to cart success",
+          type: "success",
+          placement: "bottom",
+        });
+      } else {
+        setMessage("Add to cart failed");
         showToast({
           message: message || "Add to cart failed",
           type: "danger",
           placement: "bottom",
         });
-        return setIsError(true);
       }
-      await fetchCart(venueId as string);
-      return setIsError(false);
+      return setIsLoading(false);
     } catch (err) {
-      return err;
+      setMessage("Internal server error!");
+      showToast({
+        message: message || "Add to cart failed",
+        type: "danger",
+        placement: "bottom",
+      });
+      return setIsLoading(false);
     }
   };
+
+  // const eventTotalCart = async (customerId) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const { success, message, rows } = await getTotalCart(customerId);
+  //     if (success) {
+  //       dispatch(setTotalCart(rows));
+  //     } else {
+  //       dispatch(setTotalCart(0));
+  //       setMessage("Get total cart failed");
+  //       toastNotif({
+  //         message: message || "Get total cart failed",
+  //         type: "error",
+  //       });
+  //     }
+  //     return setIsLoading(false);
+  //   } catch (err) {
+  //     dispatch(setTotalCart(0));
+  //     setMessage("Internal server error!");
+  //     toastNotif({
+  //       message: err.message || "Internal server error!",
+  //       type: "error",
+  //     });
+  //     return setIsLoading(false);
+  //   }
+  // };
+
+  // const fetchBookingAllHours = async (
+  //   queryParams,
+  //   { courtId, date, customerId, courtName }
+  // ) => {
+  //   setLoading(true);
+  //   try {
+  //     const { success, message, result } = await getBookingsAllHours(
+  //       queryParams
+  //     );
+  //     if (success && result) {
+  //       const d = result?.map((e) => ({
+  //         ...e,
+  //         times: e?.times?.map((el) => ({
+  //           ...el,
+  //           customerId,
+  //           courtId,
+  //           courtName,
+  //           openHoursId: el?.id,
+  //         })),
+  //       }));
+  //       dispatch(setBookingsAllHours(d));
+  //     } else {
+  //       dispatch(setBookingsAllHours());
+  //       setMessage("Data not found");
+  //       toastNotif({ message: message || "Data not found", type: "error" });
+  //     }
+  //     return setLoading(false);
+  //   } catch (err) {
+  //     setMessage("Internal server error!");
+  //     toastNotif({
+  //       message: err.message || "Internal server error!",
+  //       type: "error",
+  //     });
+  //     return setLoading(false);
+  //   }
+  // };
 
   /* Delete Cart */
   const removeCart = async (id: string, venueId?: string) => {

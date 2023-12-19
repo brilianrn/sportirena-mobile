@@ -1,3 +1,31 @@
+export type TimeType = {
+  timestamp: number;
+  date: string;
+  available: boolean;
+  id?: string;
+  idRelation?: string;
+  idVenue?: string;
+  status?: boolean | 0 | 1;
+  day?: string;
+  startTime?: string;
+  endTime?: string;
+  startEndTime?: string;
+  startTimeOri?: string;
+  statusBook?: string;
+  price?: number;
+  venueId?: string;
+  courtId?: string;
+  courtName?: string;
+  openHoursId?: string;
+};
+
+export interface ScheduleTime {
+  startEndTime: string;
+  startTime: string;
+  endTime: string;
+  times: Array<TimeType>;
+}
+
 export interface BookingType {
   statusBook:
     | "CLOSE"
@@ -18,8 +46,9 @@ export interface BookingType {
   price: number;
   venueId?: string;
   courtId?: string;
-  cartId?: string;
+  courtName?: string;
   openHoursId?: string;
+  cartId?: string;
   date?: string;
   bookDate?: string;
   customerId?: string;

@@ -210,7 +210,7 @@ const Payment = ({ navigation }) => {
             <ImageRN source={IconInformationGray} />
           </TouchableOpacity>
         </View>
-        <View style={{ height: "5%" }}>
+        <View style={{ height: "2%" }}>
           <InputRadio
             type="row"
             value={paymentMethod}

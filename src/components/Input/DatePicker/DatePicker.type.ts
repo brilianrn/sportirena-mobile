@@ -8,10 +8,26 @@ export interface DatePickerProps {
   setValue?: (value: Date) => void;
   style?: StyleProp<ViewStyle>;
   required?: boolean;
-  placeholder: string;
+  placeholder?: string;
   label?: string;
   errorMessage?: string;
   minDate?: Date;
   maxDate?: number;
   mode?: "date" | "time" | "datetime";
+}
+
+export interface DateRangeProps {
+  totalDiffDays: number;
+  startDate: Date;
+  endDate: Date;
+  setStartDate: (value: Date) => void;
+  setEndDate: (value: Date) => void;
+  style?: StyleProp<ViewStyle>;
+  displayDaysStyle?: StyleProp<ViewStyle>;
+  minDate: Date;
+  isDisplayDays?: boolean;
+  selectedDate?: string;
+  setSelectedDate?: (value: string) => void;
+  maxDate?: Date;
+  isDisabled?: boolean;
 }

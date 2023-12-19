@@ -6,10 +6,12 @@ export const deviceWidth = Dimensions.get("window").width;
 export const deviceHeight = Dimensions.get("window").height;
 
 export const colorDanger = {
+  100: "#F8E8E8",
   default: "#CC3434",
   lighter: "#FCE3D6",
 };
 export const colorWarning = {
+  100: "#F8ECE0",
   default: "#FFC32B",
   lighter: "#FFF8EF",
   darker: "#904E01",
@@ -20,6 +22,7 @@ export const colorPrimary = {
   200: "#A7E0CB",
   250: "#B8D5C6",
   300: "#6CE56E",
+  400: "#CCEADE",
   default: "#004A2F",
   lighter: "#12563E",
 };

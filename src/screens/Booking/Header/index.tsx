@@ -1,7 +1,5 @@
 import React, { FC } from "react";
-import { Image as ImageRN, Text, View } from "react-native";
-import { IconParking, IconToilet, IconWifi } from "../../../assets/images";
-import Barier from "../../../components/Barrier";
+import { Text, View } from "react-native";
 import Image from "../../../components/Image";
 import {
   Global,
@@ -18,44 +16,30 @@ import { BookingHeaderProps } from "../Booking.type";
 const BookingHeader: FC<BookingHeaderProps> = ({ courtDetail, venueName }) => {
   return (
     <React.Fragment>
-      <Image
-        useBaseUrl
-        src={`${courtDetail?.pathName}/${courtDetail?.imageName}`}
-        style={[HomeStyle.banner, { height: 182 }]}
-      />
       <View style={[Global.justifyBetween, { gap: 8 }]}>
         <View>
           <Text style={{ fontSize: 12, fontWeight: "500" }}>
             {venueName || ""}
           </Text>
           <Text
-            style={[
-              HomeStyle.titleHome,
-              { marginBottom: 15, color: colorPrimary.default },
-            ]}
+            style={{
+              color: colorBrown.default,
+              fontSize: 10,
+              fontWeight: "400",
+              marginTop: 13,
+            }}
           >
-            {courtDetail?.courtName}
+            Starting Price
           </Text>
-          <View style={[Global.justifyStart, { gap: 6 }]}>
-            <Text
-              style={{
-                color: colorBrown.default,
-                fontSize: 10,
-                fontWeight: "400",
-              }}
-            >
-              Starting Price
-            </Text>
-            <Text
-              style={{
-                color: colorPrimary.default,
-                fontSize: 10,
-                fontWeight: "600",
-              }}
-            >
-              Rp {IDRFormat(courtDetail?.min)},-
-            </Text>
-          </View>
+          <Text
+            style={{
+              color: colorPrimary.default,
+              fontSize: 10,
+              fontWeight: "600",
+            }}
+          >
+            Rp {IDRFormat(courtDetail?.min)},-
+          </Text>
         </View>
         <CardFacilityType
           title={courtDetail?.facility}
@@ -70,24 +54,31 @@ const BookingHeader: FC<BookingHeaderProps> = ({ courtDetail, venueName }) => {
           }}
         />
       </View>
-      <Barier style={{ marginTop: 7, marginBottom: 11 }} />
-      <View style={[Global.justifyStart, { gap: 10, alignItems: "center" }]}>
-        <ImageRN source={IconToilet} />
-        <Text style={[{ fontSize: 5, color: colorGray[500] }]}>●</Text>
-        <ImageRN source={IconParking} />
-        <Text style={[{ fontSize: 5, color: colorGray[500] }]}>●</Text>
-        <ImageRN source={IconWifi} />
-      </View>
+      <Image
+        useBaseUrl
+        src={`${courtDetail?.pathName}/${courtDetail?.imageName}`}
+        style={[HomeStyle.banner, { height: 182 }]}
+      />
       <Text
         style={{
           fontSize: 10,
           color: colorDark[600],
           textAlign: "justify",
-          marginTop: 12,
+          marginTop: 14,
           marginBottom: 8,
         }}
       >
         {courtDetail?.description}
+      </Text>
+      <Text
+        style={{
+          marginTop: 21,
+          fontSize: 10,
+          fontWeight: "bold",
+          color: colorPrimary.default,
+        }}
+      >
+        Booking Online at {venueName}
       </Text>
     </React.Fragment>
   );

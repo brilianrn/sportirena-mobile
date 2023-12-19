@@ -28,7 +28,6 @@ import { iconTypeFormatter, subStringLongText } from "../../utils/formattor";
 import CardFacilityType from "../Home/FacilityType/Card";
 import { FacilityType } from "../Home/Home.type";
 import AvailableCourt from "./AvailableCourt";
-// import VenueLocation from "./Location";
 import VenueDetailStyle from "./VenueDetail.style";
 
 const VenueDetail = ({ navigation }) => {
@@ -76,11 +75,6 @@ const VenueDetail = ({ navigation }) => {
     }
     setIsShare(false);
   };
-
-  // const SetGalleries = async () => {
-  //   setGalleries([`${BASE_URL_PREVIEW_IMG}/${venueDetail?.pathName}/${venueDetail?.imageName}`])
-  // }
-  console.log(galleries)
   return (
     <React.Fragment>
       <Modal

@@ -11,7 +11,6 @@ import VenueStyle from "../Venue.style";
 const CardVenue: FC<{ item: VenueType | any }> = ({ item }) => {
   /* Hooks */
   const { fetchVenueDetail } = useVenue();
-
   return (
     <React.Fragment>
       <TouchableOpacity

@@ -2,6 +2,7 @@ import {
   BankType,
   BookingType,
   CourtDetail,
+  ScheduleTime,
 } from "../../screens/Booking/Booking.type";
 import {
   SET_BANK_NAMES,
@@ -15,7 +16,7 @@ export const setCourtDetail = (payload?: CourtDetail) => {
   return { type: SET_COURT_DETAIL, payload };
 };
 
-export const setScheduleTime = (payload?: BookingType[]) => {
+export const setScheduleTime = (payload?: ScheduleTime[]) => {
   return { type: SET_SCHEDULE_TIME, payload };
 };
 

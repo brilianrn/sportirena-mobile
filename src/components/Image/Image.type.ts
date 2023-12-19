@@ -6,4 +6,5 @@ export interface ImageProps {
   width?: number;
   style?: StyleProp<ImageStyle>;
   useBaseUrl?: boolean;
+  onPress?: () => void;
 }

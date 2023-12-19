@@ -1,18 +1,17 @@
 import moment from "moment";
-import React, { useEffect, useState } from "react";
-import {
-  FlatList,
-  Image as ImageRN,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import SafeAreaView from "react-native-safe-area-view";
+import React, { useEffect, useMemo, useState } from "react";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { IconCart, IconCartRoller } from "../../assets/images";
+import {
+  IconCardBooked,
+  IconCardClosed,
+  IconCardWaiting,
+  IconCart,
+  IconCartCard,
+  IconCartRoller,
+} from "../../assets/images";
 import Button from "../../components/Button";
-import ButtonLink from "../../components/Button/Link";
-import { InputDate } from "../../components/Input";
+import { InputDateRange } from "../../components/Input";
 import Layout from "../../components/Layout";
 import { paymentPath, venueDetailPath } from "../../constants";
 import { useBooking } from "../../hooks/useBooking";
@@ -21,19 +20,23 @@ import { IRootState } from "../../store/reducers";
 import {
   Global,
   colorDanger,
-  colorDark,
   colorGray,
   colorPrimary,
+  colorWarning,
 } from "../../styles/Global.style";
-import { IDRFormat } from "../../utils/formattor";
+import { formatDateArr, kFormatter } from "../../utils/formattor";
+import { retrieveLocalStorageItem } from "../../utils/localStorage";
 import BookingStyle from "./Booking.style";
-import { BookingType } from "./Booking.type";
+import { ScheduleTime, TimeType } from "./Booking.type";
 import BookingHeader from "./Header";
 
 const Booking = ({ navigation }) => {
   /* Local State */
-  const [dataSource, setDataSource] = useState<BookingType[]>();
-  const [dateChoosen, setDateChoosen] = useState<Date>();
+  const [dataSource, setDataSource] = useState<Array<ScheduleTime>>();
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(
+    new Date(moment().add(6, "days").toString())
+  );
 
   /* Redux */
   const dispatch = useDispatch();
@@ -43,44 +46,60 @@ const Booking = ({ navigation }) => {
   const { venueDetail } = useSelector((state: IRootState) => state.venue);
 
   /* Hooks */
-  const { fetchScheduleTime, addToCart, isLoading, removeCart, fetchCart } =
-    useBooking({ navigation });
+  const { fetchScheduleTime, addToCart, isLoading, fetchCart } = useBooking({
+    navigation,
+  });
 
   useEffect(() => {
     if (!courtDetail) navigation.push(venueDetailPath as never);
   }, [courtDetail]);
 
   useEffect(() => {
-    if (courtDetail?.id && dateChoosen) {
-      console.log(dateChoosen);
-      fetchScheduleTime(courtDetail?.id, dateChoosen?.toString() as string);
+    if (courtDetail?.id && startDate && endDate) {
+      fetchScheduleTime(
+        courtDetail?.id,
+        startDate?.toString(),
+        endDate?.toString()
+      );
       fetchCart(venueDetail?.id as string);
     } else {
       dispatch(setScheduleTime(undefined));
     }
-  }, [courtDetail, dateChoosen]);
+  }, [courtDetail, startDate]);
 
   useEffect(() => {
-    setDataSource(
-      scheduleTime?.length
-        ? scheduleTime?.map((e: BookingType) => ({
-            ...e,
-            isOldCard: e.statusBook === "CART",
-            isChecked: true,
-          }))
-        : []
-    );
+    setDataSource(scheduleTime?.length ? scheduleTime : []);
+    // setDataSource(
+    //   scheduleTime?.length
+    //     ? scheduleTime?.map((e: BookingType) => ({
+    //         ...e,
+    //         isOldCard: e.statusBook === "CART",
+    //         isChecked: true,
+    //       }))
+    //     : []
+    // );
   }, [scheduleTime]);
 
-  const onChooseCard = (id: string) => {
+  const onChooseCard = (time: string, id: string) => {
     setDataSource(
       dataSource?.map((e) => {
-        if (e.id === id) {
-          if (e.statusBook === "CART")
-            removeCart(id, venueDetail?.id as string);
+        if (e.startEndTime === time) {
           return {
             ...e,
-            statusBook: e.statusBook === "AVAILABLE" ? "SELECTED" : "AVAILABLE",
+            times: e.times.map((el) => {
+              if (id === el.id) {
+                return {
+                  ...el,
+                  statusBook:
+                    el.statusBook?.toUpperCase() === "AVAILABLE"
+                      ? "SELECTED"
+                      : el.statusBook?.toUpperCase() === "SELECTED"
+                      ? "AVAILABLE"
+                      : el.statusBook,
+                };
+              }
+              return el;
+            }),
           };
         }
         return e;
@@ -92,25 +111,67 @@ const Booking = ({ navigation }) => {
     navigation.push(paymentPath as never);
   };
 
-  const onAddCart = async () => {
-    addToCart(
-      dataSource
-        ?.filter((e) => e.statusBook === "SELECTED")
-        .map((e) => ({
-          ...e,
-          date: moment(dateChoosen).format("yyyy-MM-DD"),
-          openHoursId: e.id,
-          courtId: courtDetail?.id,
-          venueId: courtDetail?.idVenue,
-        }))!,
-      venueDetail?.id as string
-    ).then((_) => {
-      // setDateChoosen(undefined);
-      // setDataSource(undefined);
-      fetchScheduleTime(courtDetail?.id, dateChoosen?.toString() as string);
-      fetchCart(venueDetail?.id as string);
+  const selectedBook = useMemo(() => {
+    const result: TimeType[] = [];
+    dataSource?.forEach((e) => {
+      e?.times?.forEach((el) => {
+        if (el?.statusBook?.toLowerCase() === "selected") {
+          result.push({
+            ...el,
+            courtId: courtDetail?.id,
+            venueId: courtDetail?.idVenue,
+            courtName: courtDetail?.courtName,
+            openHoursId: el?.id,
+          });
+        }
+      });
     });
+    return result;
+  }, [dataSource]);
+
+  const onAddCart = async () => {
+    const payload = selectedBook.filter(
+      (e) => e.statusBook?.toLowerCase() === "selected"
+    );
+    if (payload?.length) {
+      const user = await retrieveLocalStorageItem("userInfo");
+      const userInfo = JSON.parse(user as string);
+      addToCart(
+        selectedBook.filter((e) => e.statusBook?.toLowerCase() === "selected"),
+        {
+          startDate: moment(new Date(startDate)).format("yyyy-MM-DD"),
+          endDate: moment(new Date(endDate)).format("yyyy-MM-DD"),
+          courtId: courtDetail?.id,
+          customerId: userInfo?.id,
+        },
+        {
+          courtId: courtDetail?.id,
+          customerId: userInfo?.id,
+          courtName: courtDetail?.label,
+          date: moment(new Date(startDate)).format("yyyy-MM-DD"),
+        }
+      ).then(async () => {
+        setDataSource(undefined);
+        await fetchScheduleTime(
+          courtDetail?.id,
+          startDate?.toString(),
+          endDate?.toString()
+        );
+      });
+    }
   };
+
+  const cartBook = useMemo(() => {
+    const result: TimeType[] = [];
+    dataSource?.forEach((e) => {
+      e?.times?.forEach((el) => {
+        if (el?.statusBook?.toLowerCase() === "cart") {
+          result.push(el);
+        }
+      });
+    });
+    return result;
+  }, [dataSource]);
   return (
     <React.Fragment>
       <Layout
@@ -124,191 +185,234 @@ const Booking = ({ navigation }) => {
           courtDetail={courtDetail}
           venueName={venueDetail?.venueName}
         />
-        <InputDate
-          label="Date"
-          placeholder="DD-MMM-YYYY"
-          name="untilDate"
-          setValue={setDateChoosen}
-          value={dateChoosen}
-          minDate={new Date()}
-          maxDate={30}
-        />
-        <Text style={[Global.label, { marginTop: 13 }]}>Booking Court</Text>
-        <Text
+        <View
+          style={{
+            width: "100%",
+            alignItems: "center",
+          }}
+        >
+          <InputDateRange
+            style={{
+              width: 300,
+              marginHorizontal: "auto",
+              justifyContent: "center",
+              marginTop: 23,
+            }}
+            totalDiffDays={6}
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+            minDate={new Date()}
+            maxDate={new Date(moment().add(29, "days").toString())}
+          />
+        </View>
+        <View style={[Global.justifyBetween, { marginTop: 12 }]}>
+          <View style={[Global.justifyStart, { gap: 5, flex: 1 }]}>
+            <View
+              style={{
+                backgroundColor: colorPrimary[400],
+                height: 15,
+                width: 15,
+                marginVertical: "auto",
+              }}
+            />
+            <Text style={{ marginVertical: "auto", fontSize: 8, marginTop: 2 }}>
+              Selected
+            </Text>
+          </View>
+          <View style={[Global.justifyStart, { gap: 5, flex: 1 }]}>
+            <View
+              style={{
+                backgroundColor: colorWarning[100],
+                height: 15,
+                width: 15,
+                marginVertical: "auto",
+              }}
+            />
+            <Text style={{ marginVertical: "auto", fontSize: 8, marginTop: 2 }}>
+              Waiting for Payment
+            </Text>
+          </View>
+          <View
+            style={[Global.justifyStart, { gap: 5, flex: 1, paddingLeft: 39 }]}
+          >
+            <View
+              style={{
+                backgroundColor: colorDanger[100],
+                height: 15,
+                width: 15,
+                marginVertical: "auto",
+              }}
+            />
+            <Text style={{ marginVertical: "auto", fontSize: 8, marginTop: 2 }}>
+              Booked
+            </Text>
+          </View>
+          <View style={[Global.justifyStart, { gap: 5, flex: 1 }]}>
+            <View
+              style={{
+                backgroundColor: colorGray[300],
+                height: 15,
+                width: 15,
+                marginVertical: "auto",
+              }}
+            />
+            <Text style={{ marginVertical: "auto", fontSize: 8, marginTop: 2 }}>
+              Not Available
+            </Text>
+          </View>
+        </View>
+        <View
           style={[
-            Global.justifyStart,
-            {
-              marginBottom: 11,
-              gap: 10,
-              color: colorGray[500],
-              fontSize: 10,
-              fontWeight: "300",
-            },
+            Global.justifyBetween,
+            { gap: 7, alignSelf: "center", marginTop: 20, marginBottom: 10 },
           ]}
         >
-          <Text style={{ fontWeight: "bold" }}>Search: </Text>
-          <Text>
-            {dateChoosen && (
-              <Text>{`${moment(dateChoosen).format("DD MMMM YYYY")}`}</Text>
-            )}
-          </Text>
-          <Text
-            style={{
-              fontSize: 10,
-              fontWeight: "600",
-            }}
-          >
-            {dateChoosen && (
-              <ButtonLink
-                label=" | Clear"
-                style={{ fontSize: 10, color: colorDanger.default }}
-                onClick={() => setDateChoosen(undefined)}
-              />
-            )}
-          </Text>
-        </Text>
+          {formatDateArr(startDate.toString(), endDate.toString()).map(
+            (e, i) => (
+              <View style={{ width: 47 }} key={i}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 10,
+                    fontWeight: "600",
+                    color: "#737374",
+                    marginBottom: 4,
+                  }}
+                >
+                  {moment(new Date(e).toString()).format("ddd")}
+                </Text>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 10,
+                  }}
+                >
+                  {moment(new Date(e).toString()).format("D MMM")}
+                </Text>
+              </View>
+            )
+          )}
+        </View>
         {isLoading ? (
           <Text
             style={{
               textAlign: "center",
-              marginTop: 50,
-              fontSize: 12,
-              color: colorDark.default,
-              fontStyle: "italic",
+              marginTop: 100,
+              color: colorPrimary.default,
             }}
           >
             Loading ...
           </Text>
-        ) : dataSource?.length ? (
-          <SafeAreaView
-            style={{
-              flex: 1,
-              justifyContent: "center",
-            }}
-          >
-            <FlatList
-              data={dataSource}
-              renderItem={({ item, index }) => (
-                <TouchableOpacity
-                  onPress={() =>
-                    (item.statusBook === "AVAILABLE" ||
-                      item.statusBook === "SELECTED" ||
-                      item.statusBook === "CART") &&
-                    onChooseCard(item.id)
-                  }
-                  style={[
-                    BookingStyle[
-                      item.statusBook === "AVAILABLE"
-                        ? "cardAvailable"
-                        : item.statusBook === "SELECTED" ||
-                          item.statusBook === "CART"
-                        ? "cardSelected"
-                        : item.statusBook === "WAITING_FOR_PAYMENT"
-                        ? "cardWaitingPayment"
-                        : item.statusBook === "APPROVED" ||
-                          item.statusBook === "WAITING_FOR_APPROVED"
-                        ? "cardReserved"
-                        : ""
-                    ],
-                    {
-                      flexDirection: "column",
-                      marginVertical: 2,
-                      marginHorizontal: 2,
-                      width: 100,
-                      height: 92,
-                      position: "relative",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      padding: 10,
-                    },
-                  ]}
-                  key={index}
-                >
-                  <View
+        ) : (
+          <>
+            {dataSource?.map((e, i) => (
+              <View
+                key={i}
+                style={[
+                  Global.justifyBetween,
+                  { gap: 7, alignSelf: "center", marginTop: 5 },
+                ]}
+              >
+                {e.times.map((el, j) => (
+                  <TouchableOpacity
+                    onPress={() =>
+                      (el.statusBook === "AVAILABLE" ||
+                        el.statusBook === "SELECTED" ||
+                        el.statusBook === "CART") &&
+                      onChooseCard(e.startEndTime, el?.id as string)
+                    }
                     style={[
                       BookingStyle[
-                        item.statusBook === "AVAILABLE"
-                          ? "bubbleAvailable"
-                          : item.statusBook === "SELECTED" ||
-                            item.statusBook === "CART"
-                          ? "bubbleSelected"
-                          : item.statusBook === "WAITING_FOR_PAYMENT"
-                          ? "bubbleWaitingPayement"
-                          : item.statusBook === "APPROVED" ||
-                            item.statusBook === "WAITING_FOR_APPROVED"
-                          ? "bubbleReserved"
-                          : ""
+                        el.statusBook === "AVAILABLE"
+                          ? "cardAvailable"
+                          : el.statusBook === "SELECTED" ||
+                            el.statusBook === "CART"
+                          ? "cardSelected"
+                          : el.statusBook === "WAITING_FOR_PAYMENT"
+                          ? "cardWaitingPayment"
+                          : el.statusBook === "APPROVED" ||
+                            el.statusBook === "WAITING_FOR_APPROVED"
+                          ? "cardReserved"
+                          : "cardClosed"
                       ],
-                      { position: "absolute", right: 6.5, top: 6.5 },
+                      {
+                        width: 47,
+                        borderWidth: 1,
+                        borderColor: colorGray[300],
+                        paddingVertical: 10,
+                        paddingHorizontal: 2,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      },
                     ]}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 10,
-                      color:
-                        item.statusBook === "WAITING_FOR_PAYMENT"
-                          ? "#FBAD60"
-                          : item.statusBook === "APPROVED" ||
-                            item.statusBook === "WAITING_FOR_APPROVED"
-                          ? "#FF8383"
-                          : colorPrimary.default,
-                    }}
+                    key={j}
                   >
-                    {item.startTime} - {item.endTime}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 11,
-                      marginVertical: 2,
-                      fontWeight: "600",
-                      color:
-                        item.statusBook === "WAITING_FOR_PAYMENT"
-                          ? "#FBAD60"
-                          : item.statusBook === "APPROVED" ||
-                            item.statusBook === "WAITING_FOR_APPROVED"
-                          ? "#FF8383"
-                          : colorPrimary.default,
-                    }}
-                  >
-                    Rp {IDRFormat(item.price)}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 9,
-                      textAlign: "center",
-                      color:
-                        item.statusBook === "WAITING_FOR_PAYMENT"
-                          ? "#FBAD60"
-                          : item.statusBook === "APPROVED" ||
-                            item.statusBook === "WAITING_FOR_APPROVED"
-                          ? "#FF8383"
-                          : colorPrimary.default,
-                    }}
-                  >
-                    {item.statusBook}
-                  </Text>
-                </TouchableOpacity>
-              )}
-              numColumns={3}
-            />
-          </SafeAreaView>
-        ) : (
-          <Text
-            style={{
-              textAlign: "center",
-              marginTop: 50,
-              fontSize: 12,
-              color: colorDark.default,
-              fontStyle: "italic",
-            }}
-          >
-            {isLoading ? "Loading ..." : "-- Data not found --"}
-          </Text>
+                    {el.startTime &&
+                      (el.statusBook === "AVAILABLE" ||
+                        el.statusBook === "SELECTED") && (
+                        <Text
+                          style={{
+                            textAlign: "center",
+                            fontSize: 10,
+                            fontWeight: "600",
+                            color: "#737374",
+                            marginBottom: 3,
+                          }}
+                        >
+                          {el.startTime}
+                        </Text>
+                      )}
+                    {!el.startTime && !el.price ? (
+                      <Image
+                        source={IconCardClosed}
+                        style={{ width: 15, height: 15 }}
+                      />
+                    ) : (
+                      <>
+                        {el.statusBook === "CART" ? (
+                          <Image
+                            source={IconCartCard}
+                            style={{ height: 13, width: 15 }}
+                          />
+                        ) : el.statusBook === "WAITING_FOR_PAYMENT" ? (
+                          <Image
+                            source={IconCardWaiting}
+                            style={{ height: 20 }}
+                          />
+                        ) : el.statusBook === "WAITING_FOR_APPROVED" ||
+                          el.statusBook === "APPROVED" ? (
+                          <Image
+                            source={IconCardBooked}
+                            style={{ width: 15, height: 15 }}
+                          />
+                        ) : null}
+                      </>
+                    )}
+                    {el?.price &&
+                      (el.statusBook === "AVAILABLE" ||
+                        el.statusBook === "SELECTED") && (
+                        <Text
+                          style={{
+                            textAlign: "center",
+                            fontSize: 12,
+                            fontWeight: "600",
+                          }}
+                        >
+                          {el.price
+                            ? kFormatter(el.price || 0)
+                            : "Not Available"}
+                        </Text>
+                      )}
+                  </TouchableOpacity>
+                ))}
+              </View>
+            ))}
+          </>
         )}
       </Layout>
-      {dataSource?.filter(
-        (e) => e.statusBook === "SELECTED" || e.statusBook === "CART"
-      )?.length ? (
+      {selectedBook?.length || cartBook?.length ? (
         <View style={[Global.justifyBetween, BookingStyle.cardTotalHour]}>
           <TouchableOpacity
             onPress={onAddCart}
@@ -321,17 +425,19 @@ const Booking = ({ navigation }) => {
                 paddingHorizontal: 6,
                 position: "absolute",
                 top: -10,
-                right: -10,
+                right: -18,
                 borderRadius: 50,
+                minWidth: 30,
+                maxWidth: 50,
               }}
             >
               <Text
                 style={{ fontSize: 10, color: "white", textAlign: "center" }}
               >
-                {dataSource?.filter((e) => e.statusBook === "SELECTED")?.length}
+                {selectedBook?.length}
               </Text>
             </View>
-            <ImageRN source={IconCartRoller} />
+            <Image source={IconCartRoller} />
           </TouchableOpacity>
           <View style={[Global.justifyEnd, { gap: 8 }]}>
             <Button
@@ -351,17 +457,19 @@ const Booking = ({ navigation }) => {
                   paddingHorizontal: 6,
                   position: "absolute",
                   top: -10,
-                  right: -10,
+                  right: -18,
                   borderRadius: 50,
+                  width: 30,
+                  maxWidth: 50,
                 }}
               >
                 <Text
                   style={{ fontSize: 10, color: "white", textAlign: "center" }}
                 >
-                  {dataSource?.filter((e) => e.statusBook === "CART")?.length}
+                  {cartBook?.length}
                 </Text>
               </View>
-              <ImageRN source={IconCart} />
+              <Image source={IconCart} />
             </TouchableOpacity>
           </View>
         </View>
