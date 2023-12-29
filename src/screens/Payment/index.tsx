@@ -238,7 +238,7 @@ const Payment = ({ navigation }) => {
             !isCheckPrivacyPolice
           }
           isSubmit={isLoading}
-          style={{ marginTop: 19 }}
+          style={{ marginTop: 39 }}
         />
       </Layout>
     </React.Fragment>

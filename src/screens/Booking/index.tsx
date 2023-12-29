@@ -1,6 +1,6 @@
 import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   IconCardBooked,
@@ -207,7 +207,12 @@ const Booking = ({ navigation }) => {
             maxDate={new Date(moment().add(29, "days").toString())}
           />
         </View>
-        <View style={[Global.justifyBetween, { marginTop: 12 }]}>
+        <View
+          style={[
+            Global.justifyBetween,
+            { marginTop: 12, alignSelf: "center" },
+          ]}
+        >
           <View style={[Global.justifyStart, { gap: 5, flex: 1 }]}>
             <View
               style={{
@@ -231,11 +236,11 @@ const Booking = ({ navigation }) => {
               }}
             />
             <Text style={{ marginVertical: "auto", fontSize: 8, marginTop: 2 }}>
-              Waiting for Payment
+              Wait Payment
             </Text>
           </View>
           <View
-            style={[Global.justifyStart, { gap: 5, flex: 1, paddingLeft: 39 }]}
+            style={[Global.justifyStart, { gap: 5, flex: 1, paddingLeft: 20 }]}
           >
             <View
               style={{
@@ -263,154 +268,163 @@ const Booking = ({ navigation }) => {
             </Text>
           </View>
         </View>
-        <View
-          style={[
-            Global.justifyBetween,
-            { gap: 7, alignSelf: "center", marginTop: 20, marginBottom: 10 },
-          ]}
-        >
-          {formatDateArr(startDate.toString(), endDate.toString()).map(
-            (e, i) => (
-              <View style={{ width: 47 }} key={i}>
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontSize: 10,
-                    fontWeight: "600",
-                    color: "#737374",
-                    marginBottom: 4,
-                  }}
-                >
-                  {moment(new Date(e).toString()).format("ddd")}
-                </Text>
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontSize: 10,
-                  }}
-                >
-                  {moment(new Date(e).toString()).format("D MMM")}
-                </Text>
-              </View>
-            )
-          )}
-        </View>
-        {isLoading ? (
-          <Text
-            style={{
-              textAlign: "center",
-              marginTop: 100,
-              color: colorPrimary.default,
-            }}
-          >
-            Loading ...
-          </Text>
-        ) : (
-          <>
-            {dataSource?.map((e, i) => (
-              <View
-                key={i}
-                style={[
-                  Global.justifyBetween,
-                  { gap: 7, alignSelf: "center", marginTop: 5 },
-                ]}
+        <ScrollView horizontal style={{ alignSelf: "center" }}>
+          <View>
+            <View
+              style={[
+                Global.justifyBetween,
+                {
+                  gap: 7,
+                  alignSelf: "center",
+                  marginTop: 20,
+                  marginBottom: 10,
+                },
+              ]}
+            >
+              {formatDateArr(startDate.toString(), endDate.toString()).map(
+                (e, i) => (
+                  <View style={{ width: 40 }} key={i}>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontSize: 10,
+                        fontWeight: "600",
+                        color: "#737374",
+                        marginBottom: 4,
+                      }}
+                    >
+                      {moment(new Date(e).toString()).format("ddd")}
+                    </Text>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontSize: 10,
+                      }}
+                    >
+                      {moment(new Date(e).toString()).format("D MMM")}
+                    </Text>
+                  </View>
+                )
+              )}
+            </View>
+            {isLoading ? (
+              <Text
+                style={{
+                  textAlign: "center",
+                  marginTop: 100,
+                  color: colorPrimary.default,
+                }}
               >
-                {e.times.map((el, j) => (
-                  <TouchableOpacity
-                    onPress={() =>
-                      (el.statusBook === "AVAILABLE" ||
-                        el.statusBook === "SELECTED" ||
-                        el.statusBook === "CART") &&
-                      onChooseCard(e.startEndTime, el?.id as string)
-                    }
+                Loading ...
+              </Text>
+            ) : (
+              <>
+                {dataSource?.map((e, i) => (
+                  <View
+                    key={i}
                     style={[
-                      BookingStyle[
-                        el.statusBook === "AVAILABLE"
-                          ? "cardAvailable"
-                          : el.statusBook === "SELECTED" ||
-                            el.statusBook === "CART"
-                          ? "cardSelected"
-                          : el.statusBook === "WAITING_FOR_PAYMENT"
-                          ? "cardWaitingPayment"
-                          : el.statusBook === "APPROVED" ||
-                            el.statusBook === "WAITING_FOR_APPROVED"
-                          ? "cardReserved"
-                          : "cardClosed"
-                      ],
-                      {
-                        width: 47,
-                        borderWidth: 1,
-                        borderColor: colorGray[300],
-                        paddingVertical: 10,
-                        paddingHorizontal: 2,
-                        alignItems: "center",
-                        justifyContent: "center",
-                      },
+                      Global.justifyBetween,
+                      { gap: 7, alignSelf: "center", marginTop: 5 },
                     ]}
-                    key={j}
                   >
-                    {el.startTime &&
-                      (el.statusBook === "AVAILABLE" ||
-                        el.statusBook === "SELECTED") && (
-                        <Text
-                          style={{
-                            textAlign: "center",
-                            fontSize: 10,
-                            fontWeight: "600",
-                            color: "#737374",
-                            marginBottom: 3,
-                          }}
-                        >
-                          {el.startTime}
-                        </Text>
-                      )}
-                    {!el.startTime && !el.price ? (
-                      <Image
-                        source={IconCardClosed}
-                        style={{ width: 15, height: 15 }}
-                      />
-                    ) : (
-                      <>
-                        {el.statusBook === "CART" ? (
+                    {e.times.map((el, j) => (
+                      <TouchableOpacity
+                        onPress={() =>
+                          (el.statusBook === "AVAILABLE" ||
+                            el.statusBook === "SELECTED" ||
+                            el.statusBook === "CART") &&
+                          onChooseCard(e.startEndTime, el?.id as string)
+                        }
+                        style={[
+                          BookingStyle[
+                            el.statusBook === "AVAILABLE"
+                              ? "cardAvailable"
+                              : el.statusBook === "SELECTED" ||
+                                el.statusBook === "CART"
+                              ? "cardSelected"
+                              : el.statusBook === "WAITING_FOR_PAYMENT"
+                              ? "cardWaitingPayment"
+                              : el.statusBook === "APPROVED" ||
+                                el.statusBook === "WAITING_FOR_APPROVED"
+                              ? "cardReserved"
+                              : "cardClosed"
+                          ],
+                          {
+                            width: 40,
+                            borderWidth: 1,
+                            borderColor: colorGray[300],
+                            paddingVertical: 10,
+                            paddingHorizontal: 2,
+                            alignItems: "center",
+                            justifyContent: "center",
+                          },
+                        ]}
+                        key={j}
+                      >
+                        {el.startTime &&
+                          (el.statusBook === "AVAILABLE" ||
+                            el.statusBook === "SELECTED") && (
+                            <Text
+                              style={{
+                                textAlign: "center",
+                                fontSize: 10,
+                                fontWeight: "600",
+                                color: "#737374",
+                                marginBottom: 3,
+                              }}
+                            >
+                              {el.startTime}
+                            </Text>
+                          )}
+                        {!el.startTime && !el.price ? (
                           <Image
-                            source={IconCartCard}
-                            style={{ height: 13, width: 15 }}
-                          />
-                        ) : el.statusBook === "WAITING_FOR_PAYMENT" ? (
-                          <Image
-                            source={IconCardWaiting}
-                            style={{ height: 20 }}
-                          />
-                        ) : el.statusBook === "WAITING_FOR_APPROVED" ||
-                          el.statusBook === "APPROVED" ? (
-                          <Image
-                            source={IconCardBooked}
+                            source={IconCardClosed}
                             style={{ width: 15, height: 15 }}
                           />
-                        ) : null}
-                      </>
-                    )}
-                    {el?.price &&
-                      (el.statusBook === "AVAILABLE" ||
-                        el.statusBook === "SELECTED") && (
-                        <Text
-                          style={{
-                            textAlign: "center",
-                            fontSize: 12,
-                            fontWeight: "600",
-                          }}
-                        >
-                          {el.price
-                            ? kFormatter(el.price || 0)
-                            : "Not Available"}
-                        </Text>
-                      )}
-                  </TouchableOpacity>
+                        ) : (
+                          <>
+                            {el.statusBook === "CART" ? (
+                              <Image
+                                source={IconCartCard}
+                                style={{ height: 13, width: 15 }}
+                              />
+                            ) : el.statusBook === "WAITING_FOR_PAYMENT" ? (
+                              <Image
+                                source={IconCardWaiting}
+                                style={{ height: 20 }}
+                              />
+                            ) : el.statusBook === "WAITING_FOR_APPROVED" ||
+                              el.statusBook === "APPROVED" ? (
+                              <Image
+                                source={IconCardBooked}
+                                style={{ width: 15, height: 15 }}
+                              />
+                            ) : null}
+                          </>
+                        )}
+                        {el?.price &&
+                          (el.statusBook === "AVAILABLE" ||
+                            el.statusBook === "SELECTED") && (
+                            <Text
+                              style={{
+                                textAlign: "center",
+                                fontSize: 12,
+                                fontWeight: "600",
+                              }}
+                            >
+                              {el.price
+                                ? kFormatter(el.price || 0)
+                                : "Not Available"}
+                            </Text>
+                          )}
+                      </TouchableOpacity>
+                    ))}
+                  </View>
                 ))}
-              </View>
-            ))}
-          </>
-        )}
+              </>
+            )}
+          </View>
+        </ScrollView>
       </Layout>
       {selectedBook?.length || cartBook?.length ? (
         <View style={[Global.justifyBetween, BookingStyle.cardTotalHour]}>
@@ -447,9 +461,12 @@ const Booking = ({ navigation }) => {
               onClick={onSubmit}
               size="sm"
               isSubmit={isLoading}
-              isDisable={!cart?.length}
+              isDisable={!cartBook?.length}
             />
-            <TouchableOpacity style={{ marginTop: 10, position: "relative" }}>
+            <TouchableOpacity
+              onPress={cartBook?.length ? onSubmit : undefined}
+              style={{ marginTop: 10, position: "relative" }}
+            >
               <View
                 style={{
                   backgroundColor: colorDanger.default,
